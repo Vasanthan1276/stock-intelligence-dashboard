@@ -1,0 +1,388 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>V Stock Intelligence</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: #07111f;
+    color: #eaf2ff;
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+}
+
+.container {
+    width: min(1200px, 94%);
+    margin: 0 auto;
+    padding: 30px 0 60px;
+}
+
+.header {
+    margin-bottom: 28px;
+}
+
+.title {
+    font-size: 34px;
+    font-weight: 800;
+    margin-bottom: 5px;
+}
+
+.subtitle {
+    color: #8ba5c7;
+    font-size: 15px;
+}
+
+.hero {
+    display: grid;
+    grid-template-columns:
+        repeat(auto-fit, minmax(210px, 1fr));
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.card {
+    background: #101d30;
+    border: 1px solid #223653;
+    border-radius: 16px;
+    padding: 22px;
+}
+
+.label {
+    color: #89a1c1;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.price {
+    font-size: 38px;
+    font-weight: 800;
+    margin-top: 8px;
+}
+
+.value {
+    font-size: 25px;
+    font-weight: 700;
+    margin-top: 10px;
+}
+
+.positive {
+    color: #4ee1a0;
+}
+
+.negative {
+    color: #ff6b7d;
+}
+
+.signal {
+    font-size: 28px;
+    font-weight: 800;
+    color: #53b7ff;
+    margin-top: 10px;
+}
+
+.section {
+    margin-top: 20px;
+}
+
+.section-title {
+    font-size: 21px;
+    font-weight: 750;
+    margin-bottom: 15px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns:
+        repeat(auto-fit, minmax(180px, 1fr));
+    gap: 14px;
+}
+
+.metric {
+    background: #0b1728;
+    border-radius: 12px;
+    padding: 16px;
+}
+
+.metric-name {
+    color: #8da4c2;
+    font-size: 13px;
+}
+
+.metric-value {
+    margin-top: 7px;
+    font-size: 21px;
+    font-weight: 700;
+}
+
+.reason {
+    padding: 11px 0;
+    border-bottom: 1px solid #21344f;
+    color: #c9d8eb;
+}
+
+.reason:last-child {
+    border-bottom: none;
+}
+
+.footer {
+    text-align: center;
+    color: #6f88aa;
+    margin-top: 32px;
+    font-size: 13px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="header">
+
+        <div class="title">
+            V Stock Intelligence
+        </div>
+
+        <div class="subtitle">
+            Micron Technology · NASDAQ: MU
+        </div>
+
+    </div>
+
+    <div class="hero">
+
+        <div class="card">
+
+            <div class="label">
+                Current Price
+            </div>
+
+            <div class="price">
+                $848.95
+            </div>
+
+            <div class="negative">
+                -4.25
+                (-0.50%)
+            </div>
+
+        </div>
+
+        <div class="card">
+
+            <div class="label">
+                Technical Signal
+            </div>
+
+            <div class="signal">
+                HOLD
+            </div>
+
+            <div class="subtitle">
+                Score: 1
+            </div>
+
+        </div>
+
+        <div class="card">
+
+            <div class="label">
+                52 Week Range
+            </div>
+
+            <div class="value">
+                $103.21
+            </div>
+
+            <div class="subtitle">
+                to $1,254.81
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="card section">
+
+        <div class="section-title">
+            Technical Analysis
+        </div>
+
+        <div class="grid">
+
+            <div class="metric">
+
+                <div class="metric-name">
+                    RSI (14)
+                </div>
+
+                <div class="metric-value">
+                    24.0
+                </div>
+
+            </div>
+
+            <div class="metric">
+
+                <div class="metric-name">
+                    20 Day MA
+                </div>
+
+                <div class="metric-value">
+                    $1,023.33
+                </div>
+
+            </div>
+
+            <div class="metric">
+
+                <div class="metric-name">
+                    50 Day MA
+                </div>
+
+                <div class="metric-value">
+                    $933.57
+                </div>
+
+            </div>
+
+            <div class="metric">
+
+                <div class="metric-name">
+                    200 Day MA
+                </div>
+
+                <div class="metric-value">
+                    $482.91
+                </div>
+
+            </div>
+
+            <div class="metric">
+
+                <div class="metric-name">
+                    MACD
+                </div>
+
+                <div class="metric-value">
+                    -17.84
+                </div>
+
+            </div>
+
+            <div class="metric">
+
+                <div class="metric-name">
+                    MACD Signal
+                </div>
+
+                <div class="metric-value">
+                    12.73
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="card section">
+
+        <div class="section-title">
+            Key Price Levels
+        </div>
+
+        <div class="grid">
+
+            <div class="metric">
+
+                <div class="metric-name">
+                    Resistance
+                </div>
+
+                <div class="metric-value">
+                    $1,254.81
+                </div>
+
+            </div>
+
+            <div class="metric">
+
+                <div class="metric-name">
+                    Current Price
+                </div>
+
+                <div class="metric-value">
+                    $848.95
+                </div>
+
+            </div>
+
+            <div class="metric">
+
+                <div class="metric-name">
+                    Support
+                </div>
+
+                <div class="metric-value">
+                    $804.00
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="card section">
+
+        <div class="section-title">
+            Why this signal?
+        </div>
+
+        <div class="reason">Price is below the 20-day moving average.</div><div class="reason">Price is below the 50-day moving average.</div><div class="reason">Price is above the long-term 200-day moving average.</div><div class="reason">MACD momentum is bearish.</div><div class="reason">RSI suggests the stock may be oversold.</div>
+
+    </div>
+
+
+    <div class="footer">
+
+        Last updated:
+        18 July 2026, 23:47 UTC
+
+        <br><br>
+
+        Research dashboard only.
+        Not financial advice.
+
+    </div>
+
+</div>
+
+</body>
+
+</html>
