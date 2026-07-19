@@ -1,16 +1,11 @@
 
-
 <!DOCTYPE html>
-
 
 <html lang="en">
 
-
 <head>
 
-
 <meta charset="UTF-8">
-
 
 <meta
     name="viewport"
@@ -20,27 +15,18 @@
     "
 >
 
-
 <title>
-
 V Stock Intelligence
-
 </title>
-
 
 <style>
 
-
 * {
-
     box-sizing:
         border-box;
-
 }
 
-
 body {
-
     margin:
         0;
 
@@ -54,12 +40,9 @@ body {
         Arial,
         Helvetica,
         sans-serif;
-
 }
 
-
 .container {
-
     width:
         min(
             1380px,
@@ -72,12 +55,9 @@ body {
     padding:
         28px 0
         60px;
-
 }
 
-
 .header {
-
     display:
         flex;
 
@@ -89,32 +69,23 @@ body {
 
     margin-bottom:
         24px;
-
 }
 
-
 .main-title {
-
     font-size:
         36px;
 
     font-weight:
         800;
-
 }
-
 
 .subtitle,
 .muted {
-
     color:
         #8ca5c4;
-
 }
 
-
 .updated {
-
     color:
         #748dab;
 
@@ -123,12 +94,9 @@ body {
 
     text-align:
         right;
-
 }
 
-
 .card {
-
     background:
         #111e31;
 
@@ -141,31 +109,22 @@ body {
 
     padding:
         21px;
-
 }
-
 
 .section {
-
     margin-top:
         20px;
-
 }
 
-
 .section-title {
-
     font-size:
         22px;
 
     font-weight:
         800;
-
 }
 
-
 .section-subtitle {
-
     color:
         #8098b6;
 
@@ -177,12 +136,9 @@ body {
 
     margin-bottom:
         16px;
-
 }
 
-
 .micron-layout {
-
     display:
         grid;
 
@@ -197,12 +153,9 @@ body {
 
     align-items:
         center;
-
 }
 
-
 .micron-label {
-
     color:
         #62b8ff;
 
@@ -211,12 +164,9 @@ body {
 
     font-weight:
         800;
-
 }
 
-
 .micron-title {
-
     font-size:
         27px;
 
@@ -225,24 +175,18 @@ body {
 
     margin:
         7px 0;
-
 }
-
 
 .micron-price,
 .micron-score {
-
     font-size:
         32px;
 
     font-weight:
         800;
-
 }
 
-
 .primary-button {
-
     display:
         inline-block;
 
@@ -263,12 +207,9 @@ body {
 
     border-radius:
         10px;
-
 }
 
-
 .opportunity-grid {
-
     display:
         grid;
 
@@ -280,12 +221,9 @@ body {
 
     gap:
         13px;
-
 }
 
-
 .opportunity-card {
-
     background:
         #0b1728;
 
@@ -294,12 +232,9 @@ body {
 
     padding:
         16px;
-
 }
 
-
 .opportunity-top {
-
     display:
         flex;
 
@@ -308,23 +243,17 @@ body {
 
     gap:
         8px;
-
 }
 
-
 .opportunity-ticker {
-
     font-size:
         20px;
 
     font-weight:
         800;
-
 }
 
-
 .opportunity-name {
-
     color:
         #829bb9;
 
@@ -333,15 +262,20 @@ body {
 
     margin-top:
         4px;
-
-    min-height:
-        30px;
-
 }
 
+.sector {
+    color:
+        #607c9f;
+
+    font-size:
+        10px;
+
+    margin-top:
+        4px;
+}
 
 .opportunity-price {
-
     font-size:
         23px;
 
@@ -350,17 +284,18 @@ body {
 
     margin-top:
         18px;
-
 }
 
-
-.score-row {
-
+.score-row,
+.quality-row {
     display:
         flex;
 
     justify-content:
         space-between;
+
+    align-items:
+        center;
 
     padding:
         8px 0;
@@ -374,12 +309,15 @@ body {
 
     color:
         #a1b5cf;
-
 }
 
+.quality-row {
+    border-bottom:
+        none;
+}
 
-.rating-badge {
-
+.rating-badge,
+.quality-badge {
     display:
         inline-block;
 
@@ -394,12 +332,9 @@ body {
 
     font-weight:
         800;
-
 }
 
-
 .strong-buy {
-
     color:
         #51e5a0;
 
@@ -410,12 +345,9 @@ body {
             143,
             0.15
         );
-
 }
 
-
 .buy {
-
     color:
         #66bdff;
 
@@ -426,72 +358,152 @@ body {
             255,
             0.15
         );
-
 }
-
 
 .hold {
-
     color:
         #f4cd69;
-
 }
-
 
 .watch {
-
     color:
         #ffa165;
-
 }
-
 
 .caution {
-
     color:
         #ff7183;
-
 }
 
+.quality-good {
+    color:
+        #55dea0;
+}
+
+.quality-medium {
+    color:
+        #f3c968;
+}
+
+.quality-low {
+    color:
+        #ff7a87;
+}
 
 .positive {
-
     color:
         #51e0a0;
-
 }
-
 
 .negative {
-
     color:
         #ff7183;
-
 }
 
+.screen-grid {
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(
+            4,
+            1fr
+        );
+
+    gap:
+        14px;
+}
+
+.screen-card {
+    background:
+        #0b1728;
+
+    border-radius:
+        13px;
+
+    padding:
+        17px;
+}
+
+.screen-title {
+    font-size:
+        17px;
+
+    font-weight:
+        800;
+
+    margin-bottom:
+        12px;
+}
+
+.mini-row {
+    display:
+        flex;
+
+    justify-content:
+        space-between;
+
+    gap:
+        12px;
+
+    padding:
+        11px 0;
+
+    border-bottom:
+        1px solid
+        #223650;
+}
+
+.mini-row:last-child {
+    border-bottom:
+        none;
+}
+
+.mini-ticker {
+    font-weight:
+        800;
+}
+
+.mini-name {
+    color:
+        #7b95b5;
+
+    font-size:
+        11px;
+
+    margin-top:
+        3px;
+}
+
+.mini-score {
+    color:
+        #62b8ff;
+
+    font-size:
+        12px;
+
+    font-weight:
+        700;
+
+    text-align:
+        right;
+}
 
 .table-wrapper {
-
     overflow-x:
         auto;
-
 }
 
-
 table {
-
     width:
         100%;
 
     border-collapse:
         collapse;
-
 }
-
 
 th,
 td {
-
     padding:
         13px 10px;
 
@@ -501,39 +513,27 @@ td {
     border-bottom:
         1px solid
         #20344f;
-
 }
 
-
 th {
-
     color:
         #7892b1;
 
     font-size:
         11px;
-
 }
-
 
 td {
-
     font-size:
         13px;
-
 }
-
 
 .stock-name {
-
     font-weight:
         700;
-
 }
 
-
 .ticker {
-
     color:
         #738caa;
 
@@ -542,20 +542,14 @@ td {
 
     margin-top:
         3px;
-
 }
-
 
 .score {
-
     font-weight:
         800;
-
 }
 
-
 .footer {
-
     text-align:
         center;
 
@@ -567,114 +561,91 @@ td {
 
     font-size:
         12px;
-
 }
-
 
 @media (
     max-width: 1100px
 ) {
 
     .opportunity-grid {
-
         grid-template-columns:
             repeat(
                 2,
                 1fr
             );
-
     }
 
-
-    .micron-layout {
-
+    .screen-grid {
         grid-template-columns:
             repeat(
                 2,
                 1fr
             );
+    }
 
+    .micron-layout {
+        grid-template-columns:
+            repeat(
+                2,
+                1fr
+            );
     }
 
 }
-
 
 @media (
     max-width: 720px
 ) {
 
     .header {
-
         display:
             block;
-
     }
 
-
     .updated {
-
         text-align:
             left;
 
         margin-top:
             10px;
-
     }
-
 
     .opportunity-grid,
+    .screen-grid,
     .micron-layout {
-
         grid-template-columns:
             1fr;
-
     }
 
-
     .desktop-column {
-
         display:
             none;
-
     }
 
 }
 
-
 </style>
-
 
 </head>
 
-
 <body>
-
 
 <div class="container">
 
 
 <div class="header">
 
-
     <div>
 
-
         <div class="main-title">
-
             V Stock Intelligence
-
         </div>
-
 
         <div class="subtitle">
-
             US & Singapore Market Opportunity Dashboard
-
         </div>
 
-
     </div>
-
 
     <div class="updated">
 
@@ -682,10 +653,9 @@ td {
 
         <br>
 
-        19 July 2026, 00:30 UTC
+        19 July 2026, 00:38 UTC
 
     </div>
-
 
 </div>
 
@@ -693,98 +663,66 @@ td {
 <div class="card">
 
     
-
     <div class="micron-layout">
 
-
         <div>
-
 
             <div class="micron-label">
-
                 FLAGSHIP STOCK REPORT
-
             </div>
-
 
             <div class="micron-title">
-
                 Micron Technology
-
             </div>
-
 
             <div class="muted">
-
                 NASDAQ: MU
-
             </div>
-
 
         </div>
 
 
         <div>
-
 
             <div class="micron-price">
-
                 $848.95
-
             </div>
-
 
             <div class="negative">
-
                 -0.50%
-
             </div>
-
 
         </div>
 
 
         <div>
 
-
             <div class="micron-score">
-
                 78/100
-
             </div>
-
 
             <span class="
                 rating-badge
                 buy
             ">
-
                 BUY
-
             </span>
-
 
         </div>
 
 
         <div>
 
-
             <a
                 class="primary-button"
                 href="micron/"
             >
-
                 Open Full Micron Report →
-
             </a>
-
 
         </div>
 
-
     </div>
-
     
 
 </div>
@@ -795,60 +733,43 @@ td {
     section
 ">
 
-
     <div class="section-title">
-
         US Top Opportunities
-
     </div>
-
 
     <div class="section-subtitle">
-
         Highest-ranked stocks in the current US watch universe
-
     </div>
-
 
     <div class="opportunity-grid">
 
         
-
         <div class="opportunity-card">
-
 
             <div class="opportunity-top">
 
-
                 <div>
 
-
                     <div class="opportunity-ticker">
-
                         GS
-
                     </div>
-
 
                     <div class="opportunity-name">
-
                         Goldman Sachs
-
                     </div>
 
+                    <div class="sector">
+                        Financials
+                    </div>
 
                 </div>
-
 
                 <div class="
                     rating-badge
                     strong-buy
                 ">
-
                     STRONG BUY
-
                 </div>
-
 
             </div>
 
@@ -874,7 +795,7 @@ td {
                 </div>
 
                 <div>
-                    86/100
+                    87/100
                 </div>
 
             </div>
@@ -919,45 +840,51 @@ td {
             </div>
 
 
+            <div class="quality-row">
+
+                <span>
+                    Data quality
+                </span>
+
+                <span class="
+                    quality-badge
+                    quality-good
+                ">
+
+                    High
+
+                </span>
+
+            </div>
+
         </div>
-
         
-
         <div class="opportunity-card">
-
 
             <div class="opportunity-top">
 
-
                 <div>
 
-
                     <div class="opportunity-ticker">
-
                         JPM
-
                     </div>
-
 
                     <div class="opportunity-name">
-
                         JPMorgan Chase
-
                     </div>
 
+                    <div class="sector">
+                        Financials
+                    </div>
 
                 </div>
-
 
                 <div class="
                     rating-badge
                     strong-buy
                 ">
-
                     STRONG BUY
-
                 </div>
-
 
             </div>
 
@@ -983,7 +910,7 @@ td {
                 </div>
 
                 <div>
-                    82/100
+                    83/100
                 </div>
 
             </div>
@@ -1028,45 +955,51 @@ td {
             </div>
 
 
+            <div class="quality-row">
+
+                <span>
+                    Data quality
+                </span>
+
+                <span class="
+                    quality-badge
+                    quality-good
+                ">
+
+                    High
+
+                </span>
+
+            </div>
+
         </div>
-
         
-
         <div class="opportunity-card">
-
 
             <div class="opportunity-top">
 
-
                 <div>
 
-
                     <div class="opportunity-ticker">
-
                         BAC
-
                     </div>
-
 
                     <div class="opportunity-name">
-
                         Bank of America
-
                     </div>
 
+                    <div class="sector">
+                        Financials
+                    </div>
 
                 </div>
-
 
                 <div class="
                     rating-badge
                     strong-buy
                 ">
-
                     STRONG BUY
-
                 </div>
-
 
             </div>
 
@@ -1092,7 +1025,7 @@ td {
                 </div>
 
                 <div>
-                    81/100
+                    83/100
                 </div>
 
             </div>
@@ -1137,45 +1070,166 @@ td {
             </div>
 
 
+            <div class="quality-row">
+
+                <span>
+                    Data quality
+                </span>
+
+                <span class="
+                    quality-badge
+                    quality-good
+                ">
+
+                    High
+
+                </span>
+
+            </div>
+
         </div>
-
         
-
         <div class="opportunity-card">
-
 
             <div class="opportunity-top">
 
-
                 <div>
 
-
                     <div class="opportunity-ticker">
-
-                        META
-
+                        V
                     </div>
-
 
                     <div class="opportunity-name">
-
-                        Meta Platforms
-
+                        Visa
                     </div>
 
+                    <div class="sector">
+                        Financials
+                    </div>
 
                 </div>
-
 
                 <div class="
                     rating-badge
                     strong-buy
                 ">
-
                     STRONG BUY
+                </div>
+
+            </div>
+
+
+            <div class="opportunity-price">
+
+                $358.56
+
+            </div>
+
+
+            <div class="negative">
+
+                -1.80%
+
+            </div>
+
+
+            <div class="score-row">
+
+                <div>
+                    Score
+                </div>
+
+                <div>
+                    81/100
+                </div>
+
+            </div>
+
+
+            <div class="score-row">
+
+                <div>
+                    Technical
+                </div>
+
+                <div>
+                    100
+                </div>
+
+            </div>
+
+
+            <div class="score-row">
+
+                <div>
+                    Momentum
+                </div>
+
+                <div>
+                    73
+                </div>
+
+            </div>
+
+
+            <div class="score-row">
+
+                <div>
+                    Fundamentals
+                </div>
+
+                <div>
+                    80
+                </div>
+
+            </div>
+
+
+            <div class="quality-row">
+
+                <span>
+                    Data quality
+                </span>
+
+                <span class="
+                    quality-badge
+                    quality-good
+                ">
+
+                    High
+
+                </span>
+
+            </div>
+
+        </div>
+        
+        <div class="opportunity-card">
+
+            <div class="opportunity-top">
+
+                <div>
+
+                    <div class="opportunity-ticker">
+                        META
+                    </div>
+
+                    <div class="opportunity-name">
+                        Meta Platforms
+                    </div>
+
+                    <div class="sector">
+                        Communication Services
+                    </div>
 
                 </div>
 
+                <div class="
+                    rating-badge
+                    strong-buy
+                ">
+                    STRONG BUY
+                </div>
 
             </div>
 
@@ -1246,121 +1300,27 @@ td {
             </div>
 
 
-        </div>
+            <div class="quality-row">
 
-        
+                <span>
+                    Data quality
+                </span>
 
-        <div class="opportunity-card">
-
-
-            <div class="opportunity-top">
-
-
-                <div>
-
-
-                    <div class="opportunity-ticker">
-
-                        BLK
-
-                    </div>
-
-
-                    <div class="opportunity-name">
-
-                        BlackRock
-
-                    </div>
-
-
-                </div>
-
-
-                <div class="
-                    rating-badge
-                    strong-buy
+                <span class="
+                    quality-badge
+                    quality-good
                 ">
 
-                    STRONG BUY
+                    High
 
-                </div>
-
-
-            </div>
-
-
-            <div class="opportunity-price">
-
-                $1,072.20
+                </span>
 
             </div>
-
-
-            <div class="negative">
-
-                -1.37%
-
-            </div>
-
-
-            <div class="score-row">
-
-                <div>
-                    Score
-                </div>
-
-                <div>
-                    80/100
-                </div>
-
-            </div>
-
-
-            <div class="score-row">
-
-                <div>
-                    Technical
-                </div>
-
-                <div>
-                    90
-                </div>
-
-            </div>
-
-
-            <div class="score-row">
-
-                <div>
-                    Momentum
-                </div>
-
-                <div>
-                    55
-                </div>
-
-            </div>
-
-
-            <div class="score-row">
-
-                <div>
-                    Fundamentals
-                </div>
-
-                <div>
-                    86
-                </div>
-
-            </div>
-
 
         </div>
-
         
 
     </div>
-
 
 </div>
 
@@ -1370,60 +1330,43 @@ td {
     section
 ">
 
-
     <div class="section-title">
-
         Singapore Top Opportunities
-
     </div>
-
 
     <div class="section-subtitle">
-
         Highest-ranked SGX stocks in the current Singapore watch universe
-
     </div>
-
 
     <div class="opportunity-grid">
 
         
-
         <div class="opportunity-card">
-
 
             <div class="opportunity-top">
 
-
                 <div>
 
-
                     <div class="opportunity-ticker">
-
                         U11.SI
-
                     </div>
-
 
                     <div class="opportunity-name">
-
                         UOB
-
                     </div>
 
+                    <div class="sector">
+                        Banks
+                    </div>
 
                 </div>
-
 
                 <div class="
                     rating-badge
                     buy
                 ">
-
                     BUY
-
                 </div>
-
 
             </div>
 
@@ -1494,45 +1437,51 @@ td {
             </div>
 
 
+            <div class="quality-row">
+
+                <span>
+                    Data quality
+                </span>
+
+                <span class="
+                    quality-badge
+                    quality-medium
+                ">
+
+                    Medium
+
+                </span>
+
+            </div>
+
         </div>
-
         
-
         <div class="opportunity-card">
-
 
             <div class="opportunity-top">
 
-
                 <div>
 
-
                     <div class="opportunity-ticker">
-
                         F34.SI
-
                     </div>
-
 
                     <div class="opportunity-name">
-
                         Wilmar International
-
                     </div>
 
+                    <div class="sector">
+                        Consumer
+                    </div>
 
                 </div>
-
 
                 <div class="
                     rating-badge
                     buy
                 ">
-
                     BUY
-
                 </div>
-
 
             </div>
 
@@ -1603,45 +1552,166 @@ td {
             </div>
 
 
+            <div class="quality-row">
+
+                <span>
+                    Data quality
+                </span>
+
+                <span class="
+                    quality-badge
+                    quality-good
+                ">
+
+                    High
+
+                </span>
+
+            </div>
+
         </div>
-
         
-
         <div class="opportunity-card">
-
 
             <div class="opportunity-top">
 
-
                 <div>
 
-
                     <div class="opportunity-ticker">
-
-                        O39.SI
-
+                        D05.SI
                     </div>
-
 
                     <div class="opportunity-name">
-
-                        OCBC
-
+                        DBS Group
                     </div>
 
+                    <div class="sector">
+                        Banks
+                    </div>
 
                 </div>
-
 
                 <div class="
                     rating-badge
                     buy
                 ">
-
                     BUY
+                </div>
+
+            </div>
+
+
+            <div class="opportunity-price">
+
+                S$71.96
+
+            </div>
+
+
+            <div class="negative">
+
+                -0.72%
+
+            </div>
+
+
+            <div class="score-row">
+
+                <div>
+                    Score
+                </div>
+
+                <div>
+                    75/100
+                </div>
+
+            </div>
+
+
+            <div class="score-row">
+
+                <div>
+                    Technical
+                </div>
+
+                <div>
+                    85
+                </div>
+
+            </div>
+
+
+            <div class="score-row">
+
+                <div>
+                    Momentum
+                </div>
+
+                <div>
+                    90
+                </div>
+
+            </div>
+
+
+            <div class="score-row">
+
+                <div>
+                    Fundamentals
+                </div>
+
+                <div>
+                    60
+                </div>
+
+            </div>
+
+
+            <div class="quality-row">
+
+                <span>
+                    Data quality
+                </span>
+
+                <span class="
+                    quality-badge
+                    quality-low
+                ">
+
+                    Limited
+
+                </span>
+
+            </div>
+
+        </div>
+        
+        <div class="opportunity-card">
+
+            <div class="opportunity-top">
+
+                <div>
+
+                    <div class="opportunity-ticker">
+                        O39.SI
+                    </div>
+
+                    <div class="opportunity-name">
+                        OCBC
+                    </div>
+
+                    <div class="sector">
+                        Banks
+                    </div>
 
                 </div>
 
+                <div class="
+                    rating-badge
+                    buy
+                ">
+                    BUY
+                </div>
 
             </div>
 
@@ -1712,154 +1782,51 @@ td {
             </div>
 
 
-        </div>
+            <div class="quality-row">
 
-        
+                <span>
+                    Data quality
+                </span>
 
-        <div class="opportunity-card">
-
-
-            <div class="opportunity-top">
-
-
-                <div>
-
-
-                    <div class="opportunity-ticker">
-
-                        D05.SI
-
-                    </div>
-
-
-                    <div class="opportunity-name">
-
-                        DBS Group
-
-                    </div>
-
-
-                </div>
-
-
-                <div class="
-                    rating-badge
-                    buy
+                <span class="
+                    quality-badge
+                    quality-low
                 ">
 
-                    BUY
+                    Limited
 
-                </div>
-
-
-            </div>
-
-
-            <div class="opportunity-price">
-
-                S$71.96
+                </span>
 
             </div>
-
-
-            <div class="negative">
-
-                -0.72%
-
-            </div>
-
-
-            <div class="score-row">
-
-                <div>
-                    Score
-                </div>
-
-                <div>
-                    74/100
-                </div>
-
-            </div>
-
-
-            <div class="score-row">
-
-                <div>
-                    Technical
-                </div>
-
-                <div>
-                    85
-                </div>
-
-            </div>
-
-
-            <div class="score-row">
-
-                <div>
-                    Momentum
-                </div>
-
-                <div>
-                    90
-                </div>
-
-            </div>
-
-
-            <div class="score-row">
-
-                <div>
-                    Fundamentals
-                </div>
-
-                <div>
-                    60
-                </div>
-
-            </div>
-
 
         </div>
-
         
-
         <div class="opportunity-card">
-
 
             <div class="opportunity-top">
 
-
                 <div>
 
-
                     <div class="opportunity-ticker">
-
                         AJBU.SI
-
                     </div>
-
 
                     <div class="opportunity-name">
-
                         Keppel DC REIT
-
                     </div>
 
+                    <div class="sector">
+                        REIT
+                    </div>
 
                 </div>
-
 
                 <div class="
                     rating-badge
                     buy
                 ">
-
                     BUY
-
                 </div>
-
 
             </div>
 
@@ -1930,12 +1897,27 @@ td {
             </div>
 
 
-        </div>
+            <div class="quality-row">
 
+                <span>
+                    Data quality
+                </span>
+
+                <span class="
+                    quality-badge
+                    quality-good
+                ">
+
+                    High
+
+                </span>
+
+            </div>
+
+        </div>
         
 
     </div>
-
 
 </div>
 
@@ -1945,22 +1927,588 @@ td {
     section
 ">
 
-
     <div class="section-title">
+        Market Opportunity Screens
+    </div>
 
-        US Stock Rankings
+    <div class="section-subtitle">
+        Different ways to identify potential opportunities beyond the overall score
+    </div>
+
+    <div class="screen-grid">
+
+
+        <div class="screen-card">
+
+            <div class="screen-title">
+                Oversold Watch
+            </div>
+
+            
+        <div class="mini-row">
+
+            <div>
+
+                <div class="mini-ticker">
+                    U96.SI
+                </div>
+
+                <div class="mini-name">
+                    Sembcorp Industries
+                </div>
+
+                <div class="sector">
+                    Industrials
+                </div>
+
+            </div>
+
+            <div class="mini-score">
+                RSI 22.8
+            </div>
+
+        </div>
+        
+        <div class="mini-row">
+
+            <div>
+
+                <div class="mini-ticker">
+                    ORCL
+                </div>
+
+                <div class="mini-name">
+                    Oracle
+                </div>
+
+                <div class="sector">
+                    Technology
+                </div>
+
+            </div>
+
+            <div class="mini-score">
+                RSI 29.3
+            </div>
+
+        </div>
+        
+        <div class="mini-row">
+
+            <div>
+
+                <div class="mini-ticker">
+                    NFLX
+                </div>
+
+                <div class="mini-name">
+                    Netflix
+                </div>
+
+                <div class="sector">
+                    Communication Services
+                </div>
+
+            </div>
+
+            <div class="mini-score">
+                RSI 30.7
+            </div>
+
+        </div>
+        
+
+        </div>
+
+
+        <div class="screen-card">
+
+            <div class="screen-title">
+                Momentum Leaders
+            </div>
+
+            
+        <div class="mini-row">
+
+            <div>
+
+                <div class="mini-ticker">
+                    AAPL
+                </div>
+
+                <div class="mini-name">
+                    Apple
+                </div>
+
+                <div class="sector">
+                    Technology
+                </div>
+
+            </div>
+
+            <div class="mini-score">
+                Momentum 94/100
+            </div>
+
+        </div>
+        
+        <div class="mini-row">
+
+            <div>
+
+                <div class="mini-ticker">
+                    O39.SI
+                </div>
+
+                <div class="mini-name">
+                    OCBC
+                </div>
+
+                <div class="sector">
+                    Banks
+                </div>
+
+            </div>
+
+            <div class="mini-score">
+                Momentum 94/100
+            </div>
+
+        </div>
+        
+        <div class="mini-row">
+
+            <div>
+
+                <div class="mini-ticker">
+                    UNH
+                </div>
+
+                <div class="mini-name">
+                    UnitedHealth
+                </div>
+
+                <div class="sector">
+                    Healthcare
+                </div>
+
+            </div>
+
+            <div class="mini-score">
+                Momentum 90/100
+            </div>
+
+        </div>
+        
+        <div class="mini-row">
+
+            <div>
+
+                <div class="mini-ticker">
+                    D05.SI
+                </div>
+
+                <div class="mini-name">
+                    DBS Group
+                </div>
+
+                <div class="sector">
+                    Banks
+                </div>
+
+            </div>
+
+            <div class="mini-score">
+                Momentum 90/100
+            </div>
+
+        </div>
+        
+        <div class="mini-row">
+
+            <div>
+
+                <div class="mini-ticker">
+                    ABBV
+                </div>
+
+                <div class="mini-name">
+                    AbbVie
+                </div>
+
+                <div class="sector">
+                    Healthcare
+                </div>
+
+            </div>
+
+            <div class="mini-score">
+                Momentum 86/100
+            </div>
+
+        </div>
+        
+        <div class="mini-row">
+
+            <div>
+
+                <div class="mini-ticker">
+                    S58.SI
+                </div>
+
+                <div class="mini-name">
+                    SATS
+                </div>
+
+                <div class="sector">
+                    Transport
+                </div>
+
+            </div>
+
+            <div class="mini-score">
+                Momentum 85/100
+            </div>
+
+        </div>
+        
+
+        </div>
+
+
+        <div class="screen-card">
+
+            <div class="screen-title">
+                Value Opportunities
+            </div>
+
+            
+        <div class="mini-row">
+
+            <div>
+
+                <div class="mini-ticker">
+                    MU
+                </div>
+
+                <div class="mini-name">
+                    Micron Technology
+                </div>
+
+                <div class="sector">
+                    Semiconductors
+                </div>
+
+            </div>
+
+            <div class="mini-score">
+                Value 90/100
+            </div>
+
+        </div>
+        
+        <div class="mini-row">
+
+            <div>
+
+                <div class="mini-ticker">
+                    BS6.SI
+                </div>
+
+                <div class="mini-name">
+                    Yangzijiang Shipbuilding
+                </div>
+
+                <div class="sector">
+                    Industrials
+                </div>
+
+            </div>
+
+            <div class="mini-score">
+                Value 90/100
+            </div>
+
+        </div>
+        
+        <div class="mini-row">
+
+            <div>
+
+                <div class="mini-ticker">
+                    GS
+                </div>
+
+                <div class="mini-name">
+                    Goldman Sachs
+                </div>
+
+                <div class="sector">
+                    Financials
+                </div>
+
+            </div>
+
+            <div class="mini-score">
+                Value 80/100
+            </div>
+
+        </div>
+        
+        <div class="mini-row">
+
+            <div>
+
+                <div class="mini-ticker">
+                    BLK
+                </div>
+
+                <div class="mini-name">
+                    BlackRock
+                </div>
+
+                <div class="sector">
+                    Financials
+                </div>
+
+            </div>
+
+            <div class="mini-score">
+                Value 80/100
+            </div>
+
+        </div>
+        
+        <div class="mini-row">
+
+            <div>
+
+                <div class="mini-ticker">
+                    BAC
+                </div>
+
+                <div class="mini-name">
+                    Bank of America
+                </div>
+
+                <div class="sector">
+                    Financials
+                </div>
+
+            </div>
+
+            <div class="mini-score">
+                Value 90/100
+            </div>
+
+        </div>
+        
+        <div class="mini-row">
+
+            <div>
+
+                <div class="mini-ticker">
+                    U14.SI
+                </div>
+
+                <div class="mini-name">
+                    UOL Group
+                </div>
+
+                <div class="sector">
+                    Property
+                </div>
+
+            </div>
+
+            <div class="mini-score">
+                Value 82/100
+            </div>
+
+        </div>
+        
+
+        </div>
+
+
+        <div class="screen-card">
+
+            <div class="screen-title">
+                Best Balanced
+            </div>
+
+            
+        <div class="mini-row">
+
+            <div>
+
+                <div class="mini-ticker">
+                    GS
+                </div>
+
+                <div class="mini-name">
+                    Goldman Sachs
+                </div>
+
+                <div class="sector">
+                    Financials
+                </div>
+
+            </div>
+
+            <div class="mini-score">
+                Balance 81/100
+            </div>
+
+        </div>
+        
+        <div class="mini-row">
+
+            <div>
+
+                <div class="mini-ticker">
+                    BAC
+                </div>
+
+                <div class="mini-name">
+                    Bank of America
+                </div>
+
+                <div class="sector">
+                    Financials
+                </div>
+
+            </div>
+
+            <div class="mini-score">
+                Balance 81/100
+            </div>
+
+        </div>
+        
+        <div class="mini-row">
+
+            <div>
+
+                <div class="mini-ticker">
+                    JPM
+                </div>
+
+                <div class="mini-name">
+                    JPMorgan Chase
+                </div>
+
+                <div class="sector">
+                    Financials
+                </div>
+
+            </div>
+
+            <div class="mini-score">
+                Balance 80/100
+            </div>
+
+        </div>
+        
+        <div class="mini-row">
+
+            <div>
+
+                <div class="mini-ticker">
+                    ABBV
+                </div>
+
+                <div class="mini-name">
+                    AbbVie
+                </div>
+
+                <div class="sector">
+                    Healthcare
+                </div>
+
+            </div>
+
+            <div class="mini-score">
+                Balance 77/100
+            </div>
+
+        </div>
+        
+        <div class="mini-row">
+
+            <div>
+
+                <div class="mini-ticker">
+                    V
+                </div>
+
+                <div class="mini-name">
+                    Visa
+                </div>
+
+                <div class="sector">
+                    Financials
+                </div>
+
+            </div>
+
+            <div class="mini-score">
+                Balance 75/100
+            </div>
+
+        </div>
+        
+        <div class="mini-row">
+
+            <div>
+
+                <div class="mini-ticker">
+                    U11.SI
+                </div>
+
+                <div class="mini-name">
+                    UOB
+                </div>
+
+                <div class="sector">
+                    Banks
+                </div>
+
+            </div>
+
+            <div class="mini-score">
+                Balance 74/100
+            </div>
+
+        </div>
+        
+
+        </div>
+
 
     </div>
 
+</div>
+
+
+<div class="
+    card
+    section
+">
+
+    <div class="section-title">
+        US Stock Rankings
+    </div>
+
+    <div class="section-subtitle">
+        Sector, scoring and data-quality comparison
+    </div>
 
     <div class="table-wrapper">
 
-
         <table>
 
-
             <thead>
-
 
                 <tr>
 
@@ -1988,90 +2536,79 @@ td {
                         Value
                     </th>
 
-                    <th>
-                        Score
-                    </th>
+                    <th>Score</th>
 
-                    <th>
-                        Rating
-                    </th>
+                    <th>Data</th>
+
+                    <th>Rating</th>
 
                 </tr>
 
-
             </thead>
-
 
             <tbody>
 
                 
-
         <tr>
-
 
             <td>
                 1
             </td>
 
-
             <td>
-
 
                 <div class="stock-name">
-
                     Goldman Sachs
-
                 </div>
-
 
                 <div class="ticker">
-
                     GS
-
                 </div>
 
+                <div class="sector">
+                    Financials
+                </div>
 
             </td>
-
 
             <td>
-
                 $1,065.22
-
             </td>
-
 
             <td class="negative">
-
                 -2.76%
-
             </td>
-
 
             <td class="desktop-column">
                 100
             </td>
 
-
             <td class="desktop-column">
                 73
             </td>
-
 
             <td class="desktop-column">
                 88
             </td>
 
-
             <td class="desktop-column">
-                75
+                80
             </td>
-
 
             <td class="score">
-                86
+                87
             </td>
 
+            <td>
+
+                <span class="
+                    quality-badge
+                    quality-good
+                ">
+                    100%
+                </span>
+
+            </td>
 
             <td>
 
@@ -2079,84 +2616,73 @@ td {
                     rating-badge
                     strong-buy
                 ">
-
                     STRONG BUY
-
                 </span>
 
             </td>
 
-
         </tr>
-
         
-
         <tr>
-
 
             <td>
                 2
             </td>
 
-
             <td>
-
 
                 <div class="stock-name">
-
                     JPMorgan Chase
-
                 </div>
-
 
                 <div class="ticker">
-
                     JPM
-
                 </div>
 
+                <div class="sector">
+                    Financials
+                </div>
 
             </td>
-
 
             <td>
-
                 $341.10
-
             </td>
-
 
             <td class="negative">
-
                 -0.60%
-
             </td>
-
 
             <td class="desktop-column">
                 100
             </td>
 
-
             <td class="desktop-column">
                 79
             </td>
 
-
             <td class="desktop-column">
                 75
             </td>
 
-
             <td class="desktop-column">
-                75
+                80
             </td>
-
 
             <td class="score">
-                82
+                83
             </td>
 
+            <td>
+
+                <span class="
+                    quality-badge
+                    quality-good
+                ">
+                    80%
+                </span>
+
+            </td>
 
             <td>
 
@@ -2164,84 +2690,73 @@ td {
                     rating-badge
                     strong-buy
                 ">
-
                     STRONG BUY
-
                 </span>
 
             </td>
 
-
         </tr>
-
         
-
         <tr>
-
 
             <td>
                 3
             </td>
 
-
             <td>
-
 
                 <div class="stock-name">
-
                     Bank of America
-
                 </div>
-
 
                 <div class="ticker">
-
                     BAC
-
                 </div>
 
+                <div class="sector">
+                    Financials
+                </div>
 
             </td>
-
 
             <td>
-
                 $61.27
-
             </td>
-
 
             <td class="negative">
-
                 -0.36%
-
             </td>
-
 
             <td class="desktop-column">
                 93
             </td>
 
-
             <td class="desktop-column">
                 79
             </td>
-
 
             <td class="desktop-column">
                 75
             </td>
 
-
             <td class="desktop-column">
-                80
+                90
             </td>
-
 
             <td class="score">
-                81
+                83
             </td>
 
+            <td>
+
+                <span class="
+                    quality-badge
+                    quality-good
+                ">
+                    80%
+                </span>
+
+            </td>
 
             <td>
 
@@ -2249,339 +2764,295 @@ td {
                     rating-badge
                     strong-buy
                 ">
-
                     STRONG BUY
-
                 </span>
 
             </td>
 
-
         </tr>
-
         
-
         <tr>
-
 
             <td>
                 4
             </td>
 
-
             <td>
-
 
                 <div class="stock-name">
-
-                    Meta Platforms
-
-                </div>
-
-
-                <div class="ticker">
-
-                    META
-
-                </div>
-
-
-            </td>
-
-
-            <td>
-
-                $646.01
-
-            </td>
-
-
-            <td class="negative">
-
-                -2.79%
-
-            </td>
-
-
-            <td class="desktop-column">
-                90
-            </td>
-
-
-            <td class="desktop-column">
-                58
-            </td>
-
-
-            <td class="desktop-column">
-                94
-            </td>
-
-
-            <td class="desktop-column">
-                55
-            </td>
-
-
-            <td class="score">
-                80
-            </td>
-
-
-            <td>
-
-                <span class="
-                    rating-badge
-                    strong-buy
-                ">
-
-                    STRONG BUY
-
-                </span>
-
-            </td>
-
-
-        </tr>
-
-        
-
-        <tr>
-
-
-            <td>
-                5
-            </td>
-
-
-            <td>
-
-
-                <div class="stock-name">
-
-                    BlackRock
-
-                </div>
-
-
-                <div class="ticker">
-
-                    BLK
-
-                </div>
-
-
-            </td>
-
-
-            <td>
-
-                $1,072.20
-
-            </td>
-
-
-            <td class="negative">
-
-                -1.37%
-
-            </td>
-
-
-            <td class="desktop-column">
-                90
-            </td>
-
-
-            <td class="desktop-column">
-                55
-            </td>
-
-
-            <td class="desktop-column">
-                86
-            </td>
-
-
-            <td class="desktop-column">
-                80
-            </td>
-
-
-            <td class="score">
-                80
-            </td>
-
-
-            <td>
-
-                <span class="
-                    rating-badge
-                    strong-buy
-                ">
-
-                    STRONG BUY
-
-                </span>
-
-            </td>
-
-
-        </tr>
-
-        
-
-        <tr>
-
-
-            <td>
-                6
-            </td>
-
-
-            <td>
-
-
-                <div class="stock-name">
-
-                    NVIDIA
-
-                </div>
-
-
-                <div class="ticker">
-
-                    NVDA
-
-                </div>
-
-
-            </td>
-
-
-            <td>
-
-                $202.81
-
-            </td>
-
-
-            <td class="negative">
-
-                -2.21%
-
-            </td>
-
-
-            <td class="desktop-column">
-                80
-            </td>
-
-
-            <td class="desktop-column">
-                62
-            </td>
-
-
-            <td class="desktop-column">
-                95
-            </td>
-
-
-            <td class="desktop-column">
-                55
-            </td>
-
-
-            <td class="score">
-                79
-            </td>
-
-
-            <td>
-
-                <span class="
-                    rating-badge
-                    buy
-                ">
-
-                    BUY
-
-                </span>
-
-            </td>
-
-
-        </tr>
-
-        
-
-        <tr>
-
-
-            <td>
-                7
-            </td>
-
-
-            <td>
-
-
-                <div class="stock-name">
-
                     Visa
-
                 </div>
-
 
                 <div class="ticker">
-
                     V
-
                 </div>
 
+                <div class="sector">
+                    Financials
+                </div>
 
             </td>
-
 
             <td>
-
                 $358.56
-
             </td>
-
 
             <td class="negative">
-
                 -1.80%
-
             </td>
-
 
             <td class="desktop-column">
                 100
             </td>
 
-
             <td class="desktop-column">
                 73
             </td>
-
 
             <td class="desktop-column">
                 80
             </td>
 
-
             <td class="desktop-column">
-                48
+                65
             </td>
 
+            <td class="score">
+                81
+            </td>
+
+            <td>
+
+                <span class="
+                    quality-badge
+                    quality-good
+                ">
+                    100%
+                </span>
+
+            </td>
+
+            <td>
+
+                <span class="
+                    rating-badge
+                    strong-buy
+                ">
+                    STRONG BUY
+                </span>
+
+            </td>
+
+        </tr>
+        
+        <tr>
+
+            <td>
+                5
+            </td>
+
+            <td>
+
+                <div class="stock-name">
+                    Meta Platforms
+                </div>
+
+                <div class="ticker">
+                    META
+                </div>
+
+                <div class="sector">
+                    Communication Services
+                </div>
+
+            </td>
+
+            <td>
+                $646.01
+            </td>
+
+            <td class="negative">
+                -2.79%
+            </td>
+
+            <td class="desktop-column">
+                90
+            </td>
+
+            <td class="desktop-column">
+                58
+            </td>
+
+            <td class="desktop-column">
+                94
+            </td>
+
+            <td class="desktop-column">
+                55
+            </td>
+
+            <td class="score">
+                80
+            </td>
+
+            <td>
+
+                <span class="
+                    quality-badge
+                    quality-good
+                ">
+                    100%
+                </span>
+
+            </td>
+
+            <td>
+
+                <span class="
+                    rating-badge
+                    strong-buy
+                ">
+                    STRONG BUY
+                </span>
+
+            </td>
+
+        </tr>
+        
+        <tr>
+
+            <td>
+                6
+            </td>
+
+            <td>
+
+                <div class="stock-name">
+                    BlackRock
+                </div>
+
+                <div class="ticker">
+                    BLK
+                </div>
+
+                <div class="sector">
+                    Financials
+                </div>
+
+            </td>
+
+            <td>
+                $1,072.20
+            </td>
+
+            <td class="negative">
+                -1.37%
+            </td>
+
+            <td class="desktop-column">
+                90
+            </td>
+
+            <td class="desktop-column">
+                55
+            </td>
+
+            <td class="desktop-column">
+                86
+            </td>
+
+            <td class="desktop-column">
+                80
+            </td>
+
+            <td class="score">
+                80
+            </td>
+
+            <td>
+
+                <span class="
+                    quality-badge
+                    quality-good
+                ">
+                    80%
+                </span>
+
+            </td>
+
+            <td>
+
+                <span class="
+                    rating-badge
+                    strong-buy
+                ">
+                    STRONG BUY
+                </span>
+
+            </td>
+
+        </tr>
+        
+        <tr>
+
+            <td>
+                7
+            </td>
+
+            <td>
+
+                <div class="stock-name">
+                    NVIDIA
+                </div>
+
+                <div class="ticker">
+                    NVDA
+                </div>
+
+                <div class="sector">
+                    Semiconductors
+                </div>
+
+            </td>
+
+            <td>
+                $202.81
+            </td>
+
+            <td class="negative">
+                -2.21%
+            </td>
+
+            <td class="desktop-column">
+                80
+            </td>
+
+            <td class="desktop-column">
+                62
+            </td>
+
+            <td class="desktop-column">
+                95
+            </td>
+
+            <td class="desktop-column">
+                55
+            </td>
 
             <td class="score">
                 79
             </td>
 
+            <td>
+
+                <span class="
+                    quality-badge
+                    quality-good
+                ">
+                    100%
+                </span>
+
+            </td>
 
             <td>
 
@@ -2589,84 +3060,73 @@ td {
                     rating-badge
                     buy
                 ">
-
                     BUY
-
                 </span>
 
             </td>
 
-
         </tr>
-
         
-
         <tr>
-
 
             <td>
                 8
             </td>
 
-
             <td>
-
 
                 <div class="stock-name">
-
                     Micron Technology
-
                 </div>
-
 
                 <div class="ticker">
-
                     MU
-
                 </div>
 
+                <div class="sector">
+                    Semiconductors
+                </div>
 
             </td>
-
 
             <td>
-
                 $848.95
-
             </td>
-
 
             <td class="negative">
-
                 -0.50%
-
             </td>
-
 
             <td class="desktop-column">
                 50
             </td>
 
-
             <td class="desktop-column">
                 72
             </td>
-
 
             <td class="desktop-column">
                 95
             </td>
 
-
             <td class="desktop-column">
                 90
             </td>
-
 
             <td class="score">
                 78
             </td>
 
+            <td>
+
+                <span class="
+                    quality-badge
+                    quality-good
+                ">
+                    100%
+                </span>
+
+            </td>
 
             <td>
 
@@ -2674,84 +3134,73 @@ td {
                     rating-badge
                     buy
                 ">
-
                     BUY
-
                 </span>
 
             </td>
 
-
         </tr>
-
         
-
         <tr>
-
 
             <td>
                 9
             </td>
 
-
             <td>
-
 
                 <div class="stock-name">
-
                     AbbVie
-
                 </div>
-
 
                 <div class="ticker">
-
                     ABBV
-
                 </div>
 
+                <div class="sector">
+                    Healthcare
+                </div>
 
             </td>
-
 
             <td>
-
                 $254.49
-
             </td>
-
 
             <td class="positive">
-
                 +0.04%
-
             </td>
-
 
             <td class="desktop-column">
                 85
             </td>
-
 
             <td class="desktop-column">
                 86
             </td>
 
-
             <td class="desktop-column">
                 65
             </td>
 
-
             <td class="desktop-column">
                 82
             </td>
-
 
             <td class="score">
                 77
             </td>
 
+            <td>
+
+                <span class="
+                    quality-badge
+                    quality-good
+                ">
+                    80%
+                </span>
+
+            </td>
 
             <td>
 
@@ -2759,84 +3208,73 @@ td {
                     rating-badge
                     buy
                 ">
-
                     BUY
-
                 </span>
 
             </td>
 
-
         </tr>
-
         
-
         <tr>
-
 
             <td>
                 10
             </td>
 
-
             <td>
-
 
                 <div class="stock-name">
-
                     Apple
-
                 </div>
-
 
                 <div class="ticker">
-
                     AAPL
-
                 </div>
 
+                <div class="sector">
+                    Technology
+                </div>
 
             </td>
-
 
             <td>
-
                 $333.74
-
             </td>
-
 
             <td class="positive">
-
                 +0.14%
-
             </td>
-
 
             <td class="desktop-column">
                 93
             </td>
 
-
             <td class="desktop-column">
                 94
             </td>
-
 
             <td class="desktop-column">
                 71
             </td>
 
-
             <td class="desktop-column">
                 38
             </td>
-
 
             <td class="score">
                 76
             </td>
 
+            <td>
+
+                <span class="
+                    quality-badge
+                    quality-good
+                ">
+                    100%
+                </span>
+
+            </td>
 
             <td>
 
@@ -2844,84 +3282,73 @@ td {
                     rating-badge
                     buy
                 ">
-
                     BUY
-
                 </span>
 
             </td>
 
-
         </tr>
-
         
-
         <tr>
-
 
             <td>
                 11
             </td>
 
-
             <td>
-
 
                 <div class="stock-name">
-
                     Morgan Stanley
-
                 </div>
-
 
                 <div class="ticker">
-
                     MS
-
                 </div>
 
+                <div class="sector">
+                    Financials
+                </div>
 
             </td>
-
 
             <td>
-
                 $215.50
-
             </td>
-
 
             <td class="negative">
-
                 -1.31%
-
             </td>
-
 
             <td class="desktop-column">
                 70
             </td>
 
-
             <td class="desktop-column">
                 72
             </td>
-
 
             <td class="desktop-column">
                 85
             </td>
 
-
             <td class="desktop-column">
                 65
             </td>
-
 
             <td class="score">
                 76
             </td>
 
+            <td>
+
+                <span class="
+                    quality-badge
+                    quality-good
+                ">
+                    80%
+                </span>
+
+            </td>
 
             <td>
 
@@ -2929,169 +3356,73 @@ td {
                     rating-badge
                     buy
                 ">
-
                     BUY
-
                 </span>
 
             </td>
 
-
         </tr>
-
         
-
         <tr>
-
 
             <td>
                 12
             </td>
 
-
             <td>
-
 
                 <div class="stock-name">
-
-                    Merck
-
-                </div>
-
-
-                <div class="ticker">
-
-                    MRK
-
-                </div>
-
-
-            </td>
-
-
-            <td>
-
-                $127.50
-
-            </td>
-
-
-            <td class="negative">
-
-                -0.10%
-
-            </td>
-
-
-            <td class="desktop-column">
-                85
-            </td>
-
-
-            <td class="desktop-column">
-                84
-            </td>
-
-
-            <td class="desktop-column">
-                74
-            </td>
-
-
-            <td class="desktop-column">
-                55
-            </td>
-
-
-            <td class="score">
-                76
-            </td>
-
-
-            <td>
-
-                <span class="
-                    rating-badge
-                    buy
-                ">
-
-                    BUY
-
-                </span>
-
-            </td>
-
-
-        </tr>
-
-        
-
-        <tr>
-
-
-            <td>
-                13
-            </td>
-
-
-            <td>
-
-
-                <div class="stock-name">
-
                     Eli Lilly
-
                 </div>
-
 
                 <div class="ticker">
-
                     LLY
-
                 </div>
 
+                <div class="sector">
+                    Healthcare
+                </div>
 
             </td>
-
 
             <td>
-
                 $1,179.11
-
             </td>
-
 
             <td class="positive">
-
                 +0.85%
-
             </td>
-
 
             <td class="desktop-column">
                 85
             </td>
 
-
             <td class="desktop-column">
                 76
             </td>
-
 
             <td class="desktop-column">
                 81
             </td>
 
-
             <td class="desktop-column">
-                38
+                45
             </td>
-
 
             <td class="score">
-                75
+                76
             </td>
 
+            <td>
+
+                <span class="
+                    quality-badge
+                    quality-good
+                ">
+                    100%
+                </span>
+
+            </td>
 
             <td>
 
@@ -3099,84 +3430,147 @@ td {
                     rating-badge
                     buy
                 ">
-
                     BUY
-
                 </span>
 
             </td>
 
-
         </tr>
-
         
-
         <tr>
 
+            <td>
+                13
+            </td>
+
+            <td>
+
+                <div class="stock-name">
+                    Merck
+                </div>
+
+                <div class="ticker">
+                    MRK
+                </div>
+
+                <div class="sector">
+                    Healthcare
+                </div>
+
+            </td>
+
+            <td>
+                $127.50
+            </td>
+
+            <td class="negative">
+                -0.10%
+            </td>
+
+            <td class="desktop-column">
+                85
+            </td>
+
+            <td class="desktop-column">
+                84
+            </td>
+
+            <td class="desktop-column">
+                74
+            </td>
+
+            <td class="desktop-column">
+                55
+            </td>
+
+            <td class="score">
+                76
+            </td>
+
+            <td>
+
+                <span class="
+                    quality-badge
+                    quality-good
+                ">
+                    85%
+                </span>
+
+            </td>
+
+            <td>
+
+                <span class="
+                    rating-badge
+                    buy
+                ">
+                    BUY
+                </span>
+
+            </td>
+
+        </tr>
+        
+        <tr>
 
             <td>
                 14
             </td>
 
-
             <td>
-
 
                 <div class="stock-name">
-
                     ASML
-
                 </div>
-
 
                 <div class="ticker">
-
                     ASML
-
                 </div>
 
+                <div class="sector">
+                    Semiconductor Equipment
+                </div>
 
             </td>
-
 
             <td>
-
                 $1,747.58
-
             </td>
-
 
             <td class="negative">
-
                 -2.09%
-
             </td>
-
 
             <td class="desktop-column">
                 70
             </td>
-
 
             <td class="desktop-column">
                 82
             </td>
 
-
             <td class="desktop-column">
                 83
             </td>
-
 
             <td class="desktop-column">
                 38
             </td>
 
-
             <td class="score">
                 73
             </td>
 
+            <td>
+
+                <span class="
+                    quality-badge
+                    quality-good
+                ">
+                    100%
+                </span>
+
+            </td>
 
             <td>
 
@@ -3184,84 +3578,73 @@ td {
                     rating-badge
                     buy
                 ">
-
                     BUY
-
                 </span>
 
             </td>
 
-
         </tr>
-
         
-
         <tr>
-
 
             <td>
                 15
             </td>
 
-
             <td>
-
 
                 <div class="stock-name">
-
                     Chevron
-
                 </div>
-
 
                 <div class="ticker">
-
                     CVX
-
                 </div>
 
+                <div class="sector">
+                    Energy
+                </div>
 
             </td>
-
 
             <td>
-
                 $187.38
-
             </td>
-
 
             <td class="positive">
-
                 +1.91%
-
             </td>
-
 
             <td class="desktop-column">
                 100
             </td>
 
-
             <td class="desktop-column">
                 67
             </td>
-
 
             <td class="desktop-column">
                 59
             </td>
 
-
             <td class="desktop-column">
                 75
             </td>
-
 
             <td class="score">
                 73
             </td>
 
+            <td>
+
+                <span class="
+                    quality-badge
+                    quality-good
+                ">
+                    100%
+                </span>
+
+            </td>
 
             <td>
 
@@ -3269,84 +3652,73 @@ td {
                     rating-badge
                     buy
                 ">
-
                     BUY
-
                 </span>
 
             </td>
 
-
         </tr>
-
         
-
         <tr>
-
 
             <td>
                 16
             </td>
 
-
             <td>
-
 
                 <div class="stock-name">
-
                     American Express
-
                 </div>
-
 
                 <div class="ticker">
-
                     AXP
-
                 </div>
 
+                <div class="sector">
+                    Financials
+                </div>
 
             </td>
-
 
             <td>
-
                 $355.35
-
             </td>
-
 
             <td class="negative">
-
                 -1.72%
-
             </td>
-
 
             <td class="desktop-column">
                 90
             </td>
-
 
             <td class="desktop-column">
                 56
             </td>
 
-
             <td class="desktop-column">
                 76
             </td>
-
 
             <td class="desktop-column">
                 55
             </td>
 
-
             <td class="score">
                 72
             </td>
 
+            <td>
+
+                <span class="
+                    quality-badge
+                    quality-good
+                ">
+                    100%
+                </span>
+
+            </td>
 
             <td>
 
@@ -3354,84 +3726,73 @@ td {
                     rating-badge
                     buy
                 ">
-
                     BUY
-
                 </span>
 
             </td>
 
-
         </tr>
-
         
-
         <tr>
-
 
             <td>
                 17
             </td>
 
-
             <td>
-
 
                 <div class="stock-name">
-
                     Exxon Mobil
-
                 </div>
-
 
                 <div class="ticker">
-
                     XOM
-
                 </div>
 
+                <div class="sector">
+                    Energy
+                </div>
 
             </td>
-
 
             <td>
-
                 $147.36
-
             </td>
-
 
             <td class="positive">
-
                 +0.97%
-
             </td>
-
 
             <td class="desktop-column">
                 100
             </td>
-
 
             <td class="desktop-column">
                 67
             </td>
 
-
             <td class="desktop-column">
                 55
             </td>
-
 
             <td class="desktop-column">
                 80
             </td>
 
-
             <td class="score">
                 72
             </td>
 
+            <td>
+
+                <span class="
+                    quality-badge
+                    quality-good
+                ">
+                    100%
+                </span>
+
+            </td>
 
             <td>
 
@@ -3439,84 +3800,73 @@ td {
                     rating-badge
                     buy
                 ">
-
                     BUY
-
                 </span>
 
             </td>
 
-
         </tr>
-
         
-
         <tr>
-
 
             <td>
                 18
             </td>
 
-
             <td>
-
 
                 <div class="stock-name">
-
                     ConocoPhillips
-
                 </div>
-
 
                 <div class="ticker">
-
                     COP
-
                 </div>
 
+                <div class="sector">
+                    Energy
+                </div>
 
             </td>
-
 
             <td>
-
                 $114.71
-
             </td>
-
 
             <td class="positive">
-
                 +1.66%
-
             </td>
-
 
             <td class="desktop-column">
                 100
             </td>
 
-
             <td class="desktop-column">
                 61
             </td>
 
-
             <td class="desktop-column">
                 58
             </td>
-
 
             <td class="desktop-column">
                 75
             </td>
 
-
             <td class="score">
                 72
             </td>
 
+            <td>
+
+                <span class="
+                    quality-badge
+                    quality-good
+                ">
+                    100%
+                </span>
+
+            </td>
 
             <td>
 
@@ -3524,84 +3874,73 @@ td {
                     rating-badge
                     buy
                 ">
-
                     BUY
-
                 </span>
 
             </td>
 
-
         </tr>
-
         
-
         <tr>
-
 
             <td>
                 19
             </td>
 
-
             <td>
-
 
                 <div class="stock-name">
-
                     Mastercard
-
                 </div>
-
 
                 <div class="ticker">
-
                     MA
-
                 </div>
 
+                <div class="sector">
+                    Financials
+                </div>
 
             </td>
-
 
             <td>
-
                 $543.60
-
             </td>
-
 
             <td class="negative">
-
                 -1.44%
-
             </td>
-
 
             <td class="desktop-column">
                 90
             </td>
 
-
             <td class="desktop-column">
                 58
             </td>
-
 
             <td class="desktop-column">
                 69
             </td>
 
-
             <td class="desktop-column">
                 65
             </td>
-
 
             <td class="score">
                 71
             </td>
 
+            <td>
+
+                <span class="
+                    quality-badge
+                    quality-good
+                ">
+                    100%
+                </span>
+
+            </td>
 
             <td>
 
@@ -3609,84 +3948,73 @@ td {
                     rating-badge
                     buy
                 ">
-
                     BUY
-
                 </span>
 
             </td>
 
-
         </tr>
-
         
-
         <tr>
-
 
             <td>
                 20
             </td>
 
-
             <td>
-
 
                 <div class="stock-name">
-
                     Applied Materials
-
                 </div>
-
 
                 <div class="ticker">
-
                     AMAT
-
                 </div>
 
+                <div class="sector">
+                    Semiconductor Equipment
+                </div>
 
             </td>
-
 
             <td>
-
                 $529.66
-
             </td>
-
 
             <td class="negative">
-
                 -5.57%
-
             </td>
-
 
             <td class="desktop-column">
                 70
             </td>
-
 
             <td class="desktop-column">
                 76
             </td>
 
-
             <td class="desktop-column">
                 80
             </td>
-
 
             <td class="desktop-column">
                 38
             </td>
 
-
             <td class="score">
                 70
             </td>
 
+            <td>
+
+                <span class="
+                    quality-badge
+                    quality-good
+                ">
+                    100%
+                </span>
+
+            </td>
 
             <td>
 
@@ -3694,26 +4022,389 @@ td {
                     rating-badge
                     buy
                 ">
-
                     BUY
-
                 </span>
 
             </td>
 
+        </tr>
+        
+        <tr>
+
+            <td>
+                21
+            </td>
+
+            <td>
+
+                <div class="stock-name">
+                    Amazon
+                </div>
+
+                <div class="ticker">
+                    AMZN
+                </div>
+
+                <div class="sector">
+                    Consumer / Technology
+                </div>
+
+            </td>
+
+            <td>
+                $247.23
+            </td>
+
+            <td class="negative">
+                -1.06%
+            </td>
+
+            <td class="desktop-column">
+                80
+            </td>
+
+            <td class="desktop-column">
+                56
+            </td>
+
+            <td class="desktop-column">
+                78
+            </td>
+
+            <td class="desktop-column">
+                48
+            </td>
+
+            <td class="score">
+                70
+            </td>
+
+            <td>
+
+                <span class="
+                    quality-badge
+                    quality-good
+                ">
+                    100%
+                </span>
+
+            </td>
+
+            <td>
+
+                <span class="
+                    rating-badge
+                    buy
+                ">
+                    BUY
+                </span>
+
+            </td>
 
         </tr>
+        
+        <tr>
 
+            <td>
+                22
+            </td>
+
+            <td>
+
+                <div class="stock-name">
+                    Broadcom
+                </div>
+
+                <div class="ticker">
+                    AVGO
+                </div>
+
+                <div class="sector">
+                    Semiconductors
+                </div>
+
+            </td>
+
+            <td>
+                $370.83
+            </td>
+
+            <td class="negative">
+                -0.97%
+            </td>
+
+            <td class="desktop-column">
+                65
+            </td>
+
+            <td class="desktop-column">
+                44
+            </td>
+
+            <td class="desktop-column">
+                91
+            </td>
+
+            <td class="desktop-column">
+                48
+            </td>
+
+            <td class="score">
+                69
+            </td>
+
+            <td>
+
+                <span class="
+                    quality-badge
+                    quality-good
+                ">
+                    100%
+                </span>
+
+            </td>
+
+            <td>
+
+                <span class="
+                    rating-badge
+                    buy
+                ">
+                    BUY
+                </span>
+
+            </td>
+
+        </tr>
+        
+        <tr>
+
+            <td>
+                23
+            </td>
+
+            <td>
+
+                <div class="stock-name">
+                    TSMC
+                </div>
+
+                <div class="ticker">
+                    TSM
+                </div>
+
+                <div class="sector">
+                    Semiconductors
+                </div>
+
+            </td>
+
+            <td>
+                $398.37
+            </td>
+
+            <td class="negative">
+                -2.77%
+            </td>
+
+            <td class="desktop-column">
+                43
+            </td>
+
+            <td class="desktop-column">
+                67
+            </td>
+
+            <td class="desktop-column">
+                93
+            </td>
+
+            <td class="desktop-column">
+                48
+            </td>
+
+            <td class="score">
+                69
+            </td>
+
+            <td>
+
+                <span class="
+                    quality-badge
+                    quality-good
+                ">
+                    100%
+                </span>
+
+            </td>
+
+            <td>
+
+                <span class="
+                    rating-badge
+                    buy
+                ">
+                    BUY
+                </span>
+
+            </td>
+
+        </tr>
+        
+        <tr>
+
+            <td>
+                24
+            </td>
+
+            <td>
+
+                <div class="stock-name">
+                    UnitedHealth
+                </div>
+
+                <div class="ticker">
+                    UNH
+                </div>
+
+                <div class="sector">
+                    Healthcare
+                </div>
+
+            </td>
+
+            <td>
+                $426.09
+            </td>
+
+            <td class="positive">
+                +0.64%
+            </td>
+
+            <td class="desktop-column">
+                85
+            </td>
+
+            <td class="desktop-column">
+                90
+            </td>
+
+            <td class="desktop-column">
+                53
+            </td>
+
+            <td class="desktop-column">
+                58
+            </td>
+
+            <td class="score">
+                69
+            </td>
+
+            <td>
+
+                <span class="
+                    quality-badge
+                    quality-good
+                ">
+                    100%
+                </span>
+
+            </td>
+
+            <td>
+
+                <span class="
+                    rating-badge
+                    buy
+                ">
+                    BUY
+                </span>
+
+            </td>
+
+        </tr>
+        
+        <tr>
+
+            <td>
+                25
+            </td>
+
+            <td>
+
+                <div class="stock-name">
+                    Thermo Fisher Scientific
+                </div>
+
+                <div class="ticker">
+                    TMO
+                </div>
+
+                <div class="sector">
+                    Healthcare
+                </div>
+
+            </td>
+
+            <td>
+                $532.48
+            </td>
+
+            <td class="negative">
+                -1.97%
+            </td>
+
+            <td class="desktop-column">
+                90
+            </td>
+
+            <td class="desktop-column">
+                52
+            </td>
+
+            <td class="desktop-column">
+                66
+            </td>
+
+            <td class="desktop-column">
+                65
+            </td>
+
+            <td class="score">
+                69
+            </td>
+
+            <td>
+
+                <span class="
+                    quality-badge
+                    quality-good
+                ">
+                    100%
+                </span>
+
+            </td>
+
+            <td>
+
+                <span class="
+                    rating-badge
+                    buy
+                ">
+                    BUY
+                </span>
+
+            </td>
+
+        </tr>
         
 
             </tbody>
 
-
         </table>
 
-
     </div>
-
 
 </div>
 
@@ -3723,22 +4414,19 @@ td {
     section
 ">
 
-
     <div class="section-title">
-
         Singapore Stock Rankings
-
     </div>
 
+    <div class="section-subtitle">
+        SGX rankings with data-quality visibility
+    </div>
 
     <div class="table-wrapper">
 
-
         <table>
 
-
             <thead>
-
 
                 <tr>
 
@@ -3766,90 +4454,79 @@ td {
                         Value
                     </th>
 
-                    <th>
-                        Score
-                    </th>
+                    <th>Score</th>
 
-                    <th>
-                        Rating
-                    </th>
+                    <th>Data</th>
+
+                    <th>Rating</th>
 
                 </tr>
 
-
             </thead>
-
 
             <tbody>
 
                 
-
         <tr>
-
 
             <td>
                 1
             </td>
 
-
             <td>
-
 
                 <div class="stock-name">
-
                     UOB
-
                 </div>
-
 
                 <div class="ticker">
-
                     U11.SI
-
                 </div>
 
+                <div class="sector">
+                    Banks
+                </div>
 
             </td>
-
 
             <td>
-
                 S$42.47
-
             </td>
-
 
             <td class="negative">
-
                 -2.37%
-
             </td>
-
 
             <td class="desktop-column">
                 100
             </td>
 
-
             <td class="desktop-column">
                 78
             </td>
-
 
             <td class="desktop-column">
                 55
             </td>
 
-
             <td class="desktop-column">
                 90
             </td>
-
 
             <td class="score">
                 76
             </td>
 
+            <td>
+
+                <span class="
+                    quality-badge
+                    quality-medium
+                ">
+                    65%
+                </span>
+
+            </td>
 
             <td>
 
@@ -3857,84 +4534,73 @@ td {
                     rating-badge
                     buy
                 ">
-
                     BUY
-
                 </span>
 
             </td>
 
-
         </tr>
-
         
-
         <tr>
-
 
             <td>
                 2
             </td>
 
-
             <td>
-
 
                 <div class="stock-name">
-
                     Wilmar International
-
                 </div>
-
 
                 <div class="ticker">
-
                     F34.SI
-
                 </div>
 
+                <div class="sector">
+                    Consumer
+                </div>
 
             </td>
-
 
             <td>
-
                 S$3.87
-
             </td>
-
 
             <td class="negative">
-
                 -0.77%
-
             </td>
-
 
             <td class="desktop-column">
                 100
             </td>
 
-
             <td class="desktop-column">
                 76
             </td>
 
-
             <td class="desktop-column">
                 56
             </td>
-
 
             <td class="desktop-column">
                 88
             </td>
 
-
             <td class="score">
                 76
             </td>
 
+            <td>
+
+                <span class="
+                    quality-badge
+                    quality-good
+                ">
+                    100%
+                </span>
+
+            </td>
 
             <td>
 
@@ -3942,594 +4608,73 @@ td {
                     rating-badge
                     buy
                 ">
-
                     BUY
-
                 </span>
 
             </td>
 
-
         </tr>
-
         
-
         <tr>
-
 
             <td>
                 3
             </td>
 
-
             <td>
-
 
                 <div class="stock-name">
-
-                    OCBC
-
-                </div>
-
-
-                <div class="ticker">
-
-                    O39.SI
-
-                </div>
-
-
-            </td>
-
-
-            <td>
-
-                S$28.56
-
-            </td>
-
-
-            <td class="negative">
-
-                -0.76%
-
-            </td>
-
-
-            <td class="desktop-column">
-                85
-            </td>
-
-
-            <td class="desktop-column">
-                94
-            </td>
-
-
-            <td class="desktop-column">
-                60
-            </td>
-
-
-            <td class="desktop-column">
-                75
-            </td>
-
-
-            <td class="score">
-                75
-            </td>
-
-
-            <td>
-
-                <span class="
-                    rating-badge
-                    buy
-                ">
-
-                    BUY
-
-                </span>
-
-            </td>
-
-
-        </tr>
-
-        
-
-        <tr>
-
-
-            <td>
-                4
-            </td>
-
-
-            <td>
-
-
-                <div class="stock-name">
-
                     DBS Group
-
                 </div>
-
 
                 <div class="ticker">
-
                     D05.SI
-
                 </div>
 
+                <div class="sector">
+                    Banks
+                </div>
 
             </td>
-
 
             <td>
-
                 S$71.96
-
             </td>
-
 
             <td class="negative">
-
                 -0.72%
-
             </td>
-
 
             <td class="desktop-column">
                 85
             </td>
 
-
             <td class="desktop-column">
                 90
             </td>
-
 
             <td class="desktop-column">
                 60
             </td>
-
-
-            <td class="desktop-column">
-                75
-            </td>
-
-
-            <td class="score">
-                74
-            </td>
-
-
-            <td>
-
-                <span class="
-                    rating-badge
-                    buy
-                ">
-
-                    BUY
-
-                </span>
-
-            </td>
-
-
-        </tr>
-
-        
-
-        <tr>
-
-
-            <td>
-                5
-            </td>
-
-
-            <td>
-
-
-                <div class="stock-name">
-
-                    Keppel DC REIT
-
-                </div>
-
-
-                <div class="ticker">
-
-                    AJBU.SI
-
-                </div>
-
-
-            </td>
-
-
-            <td>
-
-                S$2.32
-
-            </td>
-
-
-            <td class="positive">
-
-                +0.00%
-
-            </td>
-
-
-            <td class="desktop-column">
-                90
-            </td>
-
-
-            <td class="desktop-column">
-                61
-            </td>
-
-
-            <td class="desktop-column">
-                69
-            </td>
-
-
-            <td class="desktop-column">
-                75
-            </td>
-
-
-            <td class="score">
-                74
-            </td>
-
-
-            <td>
-
-                <span class="
-                    rating-badge
-                    buy
-                ">
-
-                    BUY
-
-                </span>
-
-            </td>
-
-
-        </tr>
-
-        
-
-        <tr>
-
-
-            <td>
-                6
-            </td>
-
-
-            <td>
-
-
-                <div class="stock-name">
-
-                    iFAST
-
-                </div>
-
-
-                <div class="ticker">
-
-                    AIY.SI
-
-                </div>
-
-
-            </td>
-
-
-            <td>
-
-                S$9.57
-
-            </td>
-
-
-            <td class="positive">
-
-                +0.31%
-
-            </td>
-
-
-            <td class="desktop-column">
-                83
-            </td>
-
-
-            <td class="desktop-column">
-                49
-            </td>
-
-
-            <td class="desktop-column">
-                85
-            </td>
-
-
-            <td class="desktop-column">
-                48
-            </td>
-
-
-            <td class="score">
-                72
-            </td>
-
-
-            <td>
-
-                <span class="
-                    rating-badge
-                    buy
-                ">
-
-                    BUY
-
-                </span>
-
-            </td>
-
-
-        </tr>
-
-        
-
-        <tr>
-
-
-            <td>
-                7
-            </td>
-
-
-            <td>
-
-
-                <div class="stock-name">
-
-                    Yangzijiang Shipbuilding
-
-                </div>
-
-
-                <div class="ticker">
-
-                    BS6.SI
-
-                </div>
-
-
-            </td>
-
-
-            <td>
-
-                S$3.63
-
-            </td>
-
-
-            <td class="negative">
-
-                -0.55%
-
-            </td>
-
-
-            <td class="desktop-column">
-                65
-            </td>
-
-
-            <td class="desktop-column">
-                36
-            </td>
-
-
-            <td class="desktop-column">
-                86
-            </td>
-
-
-            <td class="desktop-column">
-                90
-            </td>
-
-
-            <td class="score">
-                71
-            </td>
-
-
-            <td>
-
-                <span class="
-                    rating-badge
-                    buy
-                ">
-
-                    BUY
-
-                </span>
-
-            </td>
-
-
-        </tr>
-
-        
-
-        <tr>
-
-
-            <td>
-                8
-            </td>
-
-
-            <td>
-
-
-                <div class="stock-name">
-
-                    Thai Beverage
-
-                </div>
-
-
-                <div class="ticker">
-
-                    Y92.SI
-
-                </div>
-
-
-            </td>
-
-
-            <td>
-
-                S$0.46
-
-            </td>
-
-
-            <td class="positive">
-
-                +3.41%
-
-            </td>
-
-
-            <td class="desktop-column">
-                90
-            </td>
-
-
-            <td class="desktop-column">
-                56
-            </td>
-
-
-            <td class="desktop-column">
-                63
-            </td>
-
 
             <td class="desktop-column">
                 80
             </td>
 
-
             <td class="score">
-                71
-            </td>
-
-
-            <td>
-
-                <span class="
-                    rating-badge
-                    buy
-                ">
-
-                    BUY
-
-                </span>
-
-            </td>
-
-
-        </tr>
-
-        
-
-        <tr>
-
-
-            <td>
-                9
-            </td>
-
-
-            <td>
-
-
-                <div class="stock-name">
-
-                    Singapore Exchange
-
-                </div>
-
-
-                <div class="ticker">
-
-                    S68.SI
-
-                </div>
-
-
-            </td>
-
-
-            <td>
-
-                S$23.88
-
-            </td>
-
-
-            <td class="positive">
-
-                +0.08%
-
-            </td>
-
-
-            <td class="desktop-column">
-                70
-            </td>
-
-
-            <td class="desktop-column">
-                78
-            </td>
-
-
-            <td class="desktop-column">
                 75
             </td>
 
+            <td>
 
-            <td class="desktop-column">
-                38
+                <span class="
+                    quality-badge
+                    quality-low
+                ">
+                    55%
+                </span>
+
             </td>
-
-
-            <td class="score">
-                69
-            </td>
-
 
             <td>
 
@@ -4537,339 +4682,591 @@ td {
                     rating-badge
                     buy
                 ">
-
                     BUY
-
                 </span>
 
             </td>
 
-
         </tr>
-
         
-
         <tr>
 
-
             <td>
-                10
+                4
             </td>
 
-
             <td>
-
 
                 <div class="stock-name">
-
-                    Singapore Airlines
-
+                    OCBC
                 </div>
-
 
                 <div class="ticker">
-
-                    C6L.SI
-
+                    O39.SI
                 </div>
 
-
-            </td>
-
-
-            <td>
-
-                S$7.65
-
-            </td>
-
-
-            <td class="positive">
-
-                +0.53%
-
-            </td>
-
-
-            <td class="desktop-column">
-                85
-            </td>
-
-
-            <td class="desktop-column">
-                84
-            </td>
-
-
-            <td class="desktop-column">
-                47
-            </td>
-
-
-            <td class="desktop-column">
-                75
-            </td>
-
-
-            <td class="score">
-                68
-            </td>
-
-
-            <td>
-
-                <span class="
-                    rating-badge
-                    buy
-                ">
-
-                    BUY
-
-                </span>
-
-            </td>
-
-
-        </tr>
-
-        
-
-        <tr>
-
-
-            <td>
-                11
-            </td>
-
-
-            <td>
-
-
-                <div class="stock-name">
-
-                    SATS
-
+                <div class="sector">
+                    Banks
                 </div>
 
-
-                <div class="ticker">
-
-                    S58.SI
-
-                </div>
-
-
             </td>
-
 
             <td>
-
-                S$4.63
-
+                S$28.56
             </td>
-
-
-            <td class="positive">
-
-                +0.87%
-
-            </td>
-
-
-            <td class="desktop-column">
-                78
-            </td>
-
-
-            <td class="desktop-column">
-                85
-            </td>
-
-
-            <td class="desktop-column">
-                53
-            </td>
-
-
-            <td class="desktop-column">
-                68
-            </td>
-
-
-            <td class="score">
-                68
-            </td>
-
-
-            <td>
-
-                <span class="
-                    rating-badge
-                    buy
-                ">
-
-                    BUY
-
-                </span>
-
-            </td>
-
-
-        </tr>
-
-        
-
-        <tr>
-
-
-            <td>
-                12
-            </td>
-
-
-            <td>
-
-
-                <div class="stock-name">
-
-                    CapitaLand Integrated Commercial Trust
-
-                </div>
-
-
-                <div class="ticker">
-
-                    C38U.SI
-
-                </div>
-
-
-            </td>
-
-
-            <td>
-
-                S$2.47
-
-            </td>
-
-
-            <td class="positive">
-
-                +0.82%
-
-            </td>
-
-
-            <td class="desktop-column">
-                83
-            </td>
-
-
-            <td class="desktop-column">
-                62
-            </td>
-
-
-            <td class="desktop-column">
-                56
-            </td>
-
-
-            <td class="desktop-column">
-                75
-            </td>
-
-
-            <td class="score">
-                67
-            </td>
-
-
-            <td>
-
-                <span class="
-                    rating-badge
-                    buy
-                ">
-
-                    BUY
-
-                </span>
-
-            </td>
-
-
-        </tr>
-
-        
-
-        <tr>
-
-
-            <td>
-                13
-            </td>
-
-
-            <td>
-
-
-                <div class="stock-name">
-
-                    Keppel
-
-                </div>
-
-
-                <div class="ticker">
-
-                    BN4.SI
-
-                </div>
-
-
-            </td>
-
-
-            <td>
-
-                S$11.30
-
-            </td>
-
 
             <td class="negative">
+                -0.76%
+            </td>
 
-                -1.40%
+            <td class="desktop-column">
+                85
+            </td>
+
+            <td class="desktop-column">
+                94
+            </td>
+
+            <td class="desktop-column">
+                60
+            </td>
+
+            <td class="desktop-column">
+                75
+            </td>
+
+            <td class="score">
+                75
+            </td>
+
+            <td>
+
+                <span class="
+                    quality-badge
+                    quality-low
+                ">
+                    55%
+                </span>
 
             </td>
 
+            <td>
+
+                <span class="
+                    rating-badge
+                    buy
+                ">
+                    BUY
+                </span>
+
+            </td>
+
+        </tr>
+        
+        <tr>
+
+            <td>
+                5
+            </td>
+
+            <td>
+
+                <div class="stock-name">
+                    Keppel DC REIT
+                </div>
+
+                <div class="ticker">
+                    AJBU.SI
+                </div>
+
+                <div class="sector">
+                    REIT
+                </div>
+
+            </td>
+
+            <td>
+                S$2.32
+            </td>
+
+            <td class="positive">
+                +0.00%
+            </td>
 
             <td class="desktop-column">
                 90
             </td>
 
+            <td class="desktop-column">
+                61
+            </td>
+
+            <td class="desktop-column">
+                69
+            </td>
+
+            <td class="desktop-column">
+                75
+            </td>
+
+            <td class="score">
+                74
+            </td>
+
+            <td>
+
+                <span class="
+                    quality-badge
+                    quality-good
+                ">
+                    80%
+                </span>
+
+            </td>
+
+            <td>
+
+                <span class="
+                    rating-badge
+                    buy
+                ">
+                    BUY
+                </span>
+
+            </td>
+
+        </tr>
+        
+        <tr>
+
+            <td>
+                6
+            </td>
+
+            <td>
+
+                <div class="stock-name">
+                    iFAST
+                </div>
+
+                <div class="ticker">
+                    AIY.SI
+                </div>
+
+                <div class="sector">
+                    Financial Services
+                </div>
+
+            </td>
+
+            <td>
+                S$9.57
+            </td>
+
+            <td class="positive">
+                +0.31%
+            </td>
+
+            <td class="desktop-column">
+                83
+            </td>
 
             <td class="desktop-column">
                 49
             </td>
 
+            <td class="desktop-column">
+                85
+            </td>
+
+            <td class="desktop-column">
+                48
+            </td>
+
+            <td class="score">
+                72
+            </td>
+
+            <td>
+
+                <span class="
+                    quality-badge
+                    quality-good
+                ">
+                    100%
+                </span>
+
+            </td>
+
+            <td>
+
+                <span class="
+                    rating-badge
+                    buy
+                ">
+                    BUY
+                </span>
+
+            </td>
+
+        </tr>
+        
+        <tr>
+
+            <td>
+                7
+            </td>
+
+            <td>
+
+                <div class="stock-name">
+                    Thai Beverage
+                </div>
+
+                <div class="ticker">
+                    Y92.SI
+                </div>
+
+                <div class="sector">
+                    Consumer
+                </div>
+
+            </td>
+
+            <td>
+                S$0.46
+            </td>
+
+            <td class="positive">
+                +3.41%
+            </td>
+
+            <td class="desktop-column">
+                90
+            </td>
 
             <td class="desktop-column">
                 56
             </td>
 
+            <td class="desktop-column">
+                63
+            </td>
+
+            <td class="desktop-column">
+                90
+            </td>
+
+            <td class="score">
+                72
+            </td>
+
+            <td>
+
+                <span class="
+                    quality-badge
+                    quality-good
+                ">
+                    100%
+                </span>
+
+            </td>
+
+            <td>
+
+                <span class="
+                    rating-badge
+                    buy
+                ">
+                    BUY
+                </span>
+
+            </td>
+
+        </tr>
+        
+        <tr>
+
+            <td>
+                8
+            </td>
+
+            <td>
+
+                <div class="stock-name">
+                    Yangzijiang Shipbuilding
+                </div>
+
+                <div class="ticker">
+                    BS6.SI
+                </div>
+
+                <div class="sector">
+                    Industrials
+                </div>
+
+            </td>
+
+            <td>
+                S$3.63
+            </td>
+
+            <td class="negative">
+                -0.55%
+            </td>
+
+            <td class="desktop-column">
+                65
+            </td>
+
+            <td class="desktop-column">
+                36
+            </td>
+
+            <td class="desktop-column">
+                86
+            </td>
+
+            <td class="desktop-column">
+                90
+            </td>
+
+            <td class="score">
+                71
+            </td>
+
+            <td>
+
+                <span class="
+                    quality-badge
+                    quality-good
+                ">
+                    100%
+                </span>
+
+            </td>
+
+            <td>
+
+                <span class="
+                    rating-badge
+                    buy
+                ">
+                    BUY
+                </span>
+
+            </td>
+
+        </tr>
+        
+        <tr>
+
+            <td>
+                9
+            </td>
+
+            <td>
+
+                <div class="stock-name">
+                    Singapore Exchange
+                </div>
+
+                <div class="ticker">
+                    S68.SI
+                </div>
+
+                <div class="sector">
+                    Financial Services
+                </div>
+
+            </td>
+
+            <td>
+                S$23.88
+            </td>
+
+            <td class="positive">
+                +0.08%
+            </td>
+
+            <td class="desktop-column">
+                70
+            </td>
+
+            <td class="desktop-column">
+                78
+            </td>
+
+            <td class="desktop-column">
+                75
+            </td>
+
+            <td class="desktop-column">
+                38
+            </td>
+
+            <td class="score">
+                69
+            </td>
+
+            <td>
+
+                <span class="
+                    quality-badge
+                    quality-good
+                ">
+                    100%
+                </span>
+
+            </td>
+
+            <td>
+
+                <span class="
+                    rating-badge
+                    buy
+                ">
+                    BUY
+                </span>
+
+            </td>
+
+        </tr>
+        
+        <tr>
+
+            <td>
+                10
+            </td>
+
+            <td>
+
+                <div class="stock-name">
+                    Singapore Airlines
+                </div>
+
+                <div class="ticker">
+                    C6L.SI
+                </div>
+
+                <div class="sector">
+                    Transport
+                </div>
+
+            </td>
+
+            <td>
+                S$7.65
+            </td>
+
+            <td class="positive">
+                +0.53%
+            </td>
+
+            <td class="desktop-column">
+                85
+            </td>
+
+            <td class="desktop-column">
+                84
+            </td>
+
+            <td class="desktop-column">
+                47
+            </td>
+
+            <td class="desktop-column">
+                75
+            </td>
+
+            <td class="score">
+                68
+            </td>
+
+            <td>
+
+                <span class="
+                    quality-badge
+                    quality-good
+                ">
+                    100%
+                </span>
+
+            </td>
+
+            <td>
+
+                <span class="
+                    rating-badge
+                    buy
+                ">
+                    BUY
+                </span>
+
+            </td>
+
+        </tr>
+        
+        <tr>
+
+            <td>
+                11
+            </td>
+
+            <td>
+
+                <div class="stock-name">
+                    SATS
+                </div>
+
+                <div class="ticker">
+                    S58.SI
+                </div>
+
+                <div class="sector">
+                    Transport
+                </div>
+
+            </td>
+
+            <td>
+                S$4.63
+            </td>
+
+            <td class="positive">
+                +0.87%
+            </td>
+
+            <td class="desktop-column">
+                78
+            </td>
+
+            <td class="desktop-column">
+                85
+            </td>
+
+            <td class="desktop-column">
+                53
+            </td>
 
             <td class="desktop-column">
                 68
             </td>
 
-
             <td class="score">
-                65
+                68
             </td>
 
+            <td>
+
+                <span class="
+                    quality-badge
+                    quality-good
+                ">
+                    100%
+                </span>
+
+            </td>
 
             <td>
 
@@ -4877,594 +5274,369 @@ td {
                     rating-badge
                     buy
                 ">
-
                     BUY
-
                 </span>
 
             </td>
 
-
         </tr>
-
         
-
         <tr>
 
-
             <td>
-                14
+                12
             </td>
 
-
             <td>
-
 
                 <div class="stock-name">
-
-                    Frasers Centrepoint Trust
-
+                    CapitaLand Integrated Commercial Trust
                 </div>
-
 
                 <div class="ticker">
-
-                    J69U.SI
-
+                    C38U.SI
                 </div>
 
+                <div class="sector">
+                    REIT
+                </div>
 
             </td>
-
 
             <td>
-
-                S$2.26
-
+                S$2.47
             </td>
-
 
             <td class="positive">
-
-                +0.44%
-
+                +0.82%
             </td>
-
 
             <td class="desktop-column">
-                65
+                83
             </td>
-
-
-            <td class="desktop-column">
-                44
-            </td>
-
-
-            <td class="desktop-column">
-                72
-            </td>
-
-
-            <td class="desktop-column">
-                75
-            </td>
-
-
-            <td class="score">
-                65
-            </td>
-
-
-            <td>
-
-                <span class="
-                    rating-badge
-                    buy
-                ">
-
-                    BUY
-
-                </span>
-
-            </td>
-
-
-        </tr>
-
-        
-
-        <tr>
-
-
-            <td>
-                15
-            </td>
-
-
-            <td>
-
-
-                <div class="stock-name">
-
-                    Hongkong Land
-
-                </div>
-
-
-                <div class="ticker">
-
-                    H78.SI
-
-                </div>
-
-
-            </td>
-
-
-            <td>
-
-                S$7.65
-
-            </td>
-
-
-            <td class="positive">
-
-                +1.46%
-
-            </td>
-
-
-            <td class="desktop-column">
-                100
-            </td>
-
-
-            <td class="desktop-column">
-                41
-            </td>
-
-
-            <td class="desktop-column">
-                54
-            </td>
-
-
-            <td class="desktop-column">
-                65
-            </td>
-
-
-            <td class="score">
-                65
-            </td>
-
-
-            <td>
-
-                <span class="
-                    rating-badge
-                    buy
-                ">
-
-                    BUY
-
-                </span>
-
-            </td>
-
-
-        </tr>
-
-        
-
-        <tr>
-
-
-            <td>
-                16
-            </td>
-
-
-            <td>
-
-
-                <div class="stock-name">
-
-                    Mapletree Pan Asia Commercial Trust
-
-                </div>
-
-
-                <div class="ticker">
-
-                    N2IU.SI
-
-                </div>
-
-
-            </td>
-
-
-            <td>
-
-                S$1.34
-
-            </td>
-
-
-            <td class="positive">
-
-                +0.75%
-
-            </td>
-
-
-            <td class="desktop-column">
-                58
-            </td>
-
-
-            <td class="desktop-column">
-                40
-            </td>
-
-
-            <td class="desktop-column">
-                64
-            </td>
-
-
-            <td class="desktop-column">
-                82
-            </td>
-
-
-            <td class="score">
-                60
-            </td>
-
-
-            <td>
-
-                <span class="
-                    rating-badge
-                    hold
-                ">
-
-                    HOLD
-
-                </span>
-
-            </td>
-
-
-        </tr>
-
-        
-
-        <tr>
-
-
-            <td>
-                17
-            </td>
-
-
-            <td>
-
-
-                <div class="stock-name">
-
-                    Mapletree Industrial Trust
-
-                </div>
-
-
-                <div class="ticker">
-
-                    ME8U.SI
-
-                </div>
-
-
-            </td>
-
-
-            <td>
-
-                S$1.94
-
-            </td>
-
-
-            <td class="positive">
-
-                +1.04%
-
-            </td>
-
-
-            <td class="desktop-column">
-                65
-            </td>
-
-
-            <td class="desktop-column">
-                30
-            </td>
-
-
-            <td class="desktop-column">
-                64
-            </td>
-
-
-            <td class="desktop-column">
-                82
-            </td>
-
-
-            <td class="score">
-                60
-            </td>
-
-
-            <td>
-
-                <span class="
-                    rating-badge
-                    hold
-                ">
-
-                    HOLD
-
-                </span>
-
-            </td>
-
-
-        </tr>
-
-        
-
-        <tr>
-
-
-            <td>
-                18
-            </td>
-
-
-            <td>
-
-
-                <div class="stock-name">
-
-                    ComfortDelGro
-
-                </div>
-
-
-                <div class="ticker">
-
-                    C52.SI
-
-                </div>
-
-
-            </td>
-
-
-            <td>
-
-                S$1.34
-
-            </td>
-
-
-            <td class="positive">
-
-                +0.00%
-
-            </td>
-
-
-            <td class="desktop-column">
-                65
-            </td>
-
-
-            <td class="desktop-column">
-                34
-            </td>
-
-
-            <td class="desktop-column">
-                59
-            </td>
-
-
-            <td class="desktop-column">
-                82
-            </td>
-
-
-            <td class="score">
-                59
-            </td>
-
-
-            <td>
-
-                <span class="
-                    rating-badge
-                    hold
-                ">
-
-                    HOLD
-
-                </span>
-
-            </td>
-
-
-        </tr>
-
-        
-
-        <tr>
-
-
-            <td>
-                19
-            </td>
-
-
-            <td>
-
-
-                <div class="stock-name">
-
-                    UOL Group
-
-                </div>
-
-
-                <div class="ticker">
-
-                    U14.SI
-
-                </div>
-
-
-            </td>
-
-
-            <td>
-
-                S$9.60
-
-            </td>
-
-
-            <td class="negative">
-
-                -0.83%
-
-            </td>
-
-
-            <td class="desktop-column">
-                40
-            </td>
-
-
-            <td class="desktop-column">
-                34
-            </td>
-
-
-            <td class="desktop-column">
-                75
-            </td>
-
-
-            <td class="desktop-column">
-                82
-            </td>
-
-
-            <td class="score">
-                59
-            </td>
-
-
-            <td>
-
-                <span class="
-                    rating-badge
-                    hold
-                ">
-
-                    HOLD
-
-                </span>
-
-            </td>
-
-
-        </tr>
-
-        
-
-        <tr>
-
-
-            <td>
-                20
-            </td>
-
-
-            <td>
-
-
-                <div class="stock-name">
-
-                    Genting Singapore
-
-                </div>
-
-
-                <div class="ticker">
-
-                    G13.SI
-
-                </div>
-
-
-            </td>
-
-
-            <td>
-
-                S$0.63
-
-            </td>
-
-
-            <td class="positive">
-
-                +0.00%
-
-            </td>
-
-
-            <td class="desktop-column">
-                65
-            </td>
-
-
-            <td class="desktop-column">
-                30
-            </td>
-
 
             <td class="desktop-column">
                 62
             </td>
 
+            <td class="desktop-column">
+                56
+            </td>
+
+            <td class="desktop-column">
+                75
+            </td>
+
+            <td class="score">
+                67
+            </td>
+
+            <td>
+
+                <span class="
+                    quality-badge
+                    quality-good
+                ">
+                    100%
+                </span>
+
+            </td>
+
+            <td>
+
+                <span class="
+                    rating-badge
+                    buy
+                ">
+                    BUY
+                </span>
+
+            </td>
+
+        </tr>
+        
+        <tr>
+
+            <td>
+                13
+            </td>
+
+            <td>
+
+                <div class="stock-name">
+                    Keppel
+                </div>
+
+                <div class="ticker">
+                    BN4.SI
+                </div>
+
+                <div class="sector">
+                    Industrials
+                </div>
+
+            </td>
+
+            <td>
+                S$11.30
+            </td>
+
+            <td class="negative">
+                -1.40%
+            </td>
+
+            <td class="desktop-column">
+                90
+            </td>
+
+            <td class="desktop-column">
+                49
+            </td>
+
+            <td class="desktop-column">
+                56
+            </td>
+
+            <td class="desktop-column">
+                68
+            </td>
+
+            <td class="score">
+                65
+            </td>
+
+            <td>
+
+                <span class="
+                    quality-badge
+                    quality-medium
+                ">
+                    70%
+                </span>
+
+            </td>
+
+            <td>
+
+                <span class="
+                    rating-badge
+                    buy
+                ">
+                    BUY
+                </span>
+
+            </td>
+
+        </tr>
+        
+        <tr>
+
+            <td>
+                14
+            </td>
+
+            <td>
+
+                <div class="stock-name">
+                    Frasers Centrepoint Trust
+                </div>
+
+                <div class="ticker">
+                    J69U.SI
+                </div>
+
+                <div class="sector">
+                    REIT
+                </div>
+
+            </td>
+
+            <td>
+                S$2.26
+            </td>
+
+            <td class="positive">
+                +0.44%
+            </td>
+
+            <td class="desktop-column">
+                65
+            </td>
+
+            <td class="desktop-column">
+                44
+            </td>
+
+            <td class="desktop-column">
+                72
+            </td>
+
+            <td class="desktop-column">
+                75
+            </td>
+
+            <td class="score">
+                65
+            </td>
+
+            <td>
+
+                <span class="
+                    quality-badge
+                    quality-good
+                ">
+                    100%
+                </span>
+
+            </td>
+
+            <td>
+
+                <span class="
+                    rating-badge
+                    buy
+                ">
+                    BUY
+                </span>
+
+            </td>
+
+        </tr>
+        
+        <tr>
+
+            <td>
+                15
+            </td>
+
+            <td>
+
+                <div class="stock-name">
+                    Hongkong Land
+                </div>
+
+                <div class="ticker">
+                    H78.SI
+                </div>
+
+                <div class="sector">
+                    Property
+                </div>
+
+            </td>
+
+            <td>
+                S$7.65
+            </td>
+
+            <td class="positive">
+                +1.46%
+            </td>
+
+            <td class="desktop-column">
+                100
+            </td>
+
+            <td class="desktop-column">
+                41
+            </td>
+
+            <td class="desktop-column">
+                54
+            </td>
+
+            <td class="desktop-column">
+                65
+            </td>
+
+            <td class="score">
+                65
+            </td>
+
+            <td>
+
+                <span class="
+                    quality-badge
+                    quality-good
+                ">
+                    85%
+                </span>
+
+            </td>
+
+            <td>
+
+                <span class="
+                    rating-badge
+                    buy
+                ">
+                    BUY
+                </span>
+
+            </td>
+
+        </tr>
+        
+        <tr>
+
+            <td>
+                16
+            </td>
+
+            <td>
+
+                <div class="stock-name">
+                    Mapletree Pan Asia Commercial Trust
+                </div>
+
+                <div class="ticker">
+                    N2IU.SI
+                </div>
+
+                <div class="sector">
+                    REIT
+                </div>
+
+            </td>
+
+            <td>
+                S$1.34
+            </td>
+
+            <td class="positive">
+                +0.75%
+            </td>
+
+            <td class="desktop-column">
+                58
+            </td>
+
+            <td class="desktop-column">
+                40
+            </td>
+
+            <td class="desktop-column">
+                64
+            </td>
 
             <td class="desktop-column">
                 82
             </td>
 
-
             <td class="score">
-                59
+                60
             </td>
 
+            <td>
+
+                <span class="
+                    quality-badge
+                    quality-good
+                ">
+                    85%
+                </span>
+
+            </td>
 
             <td>
 
@@ -5472,26 +5644,685 @@ td {
                     rating-badge
                     hold
                 ">
-
                     HOLD
-
                 </span>
 
             </td>
 
+        </tr>
+        
+        <tr>
+
+            <td>
+                17
+            </td>
+
+            <td>
+
+                <div class="stock-name">
+                    Mapletree Industrial Trust
+                </div>
+
+                <div class="ticker">
+                    ME8U.SI
+                </div>
+
+                <div class="sector">
+                    REIT
+                </div>
+
+            </td>
+
+            <td>
+                S$1.94
+            </td>
+
+            <td class="positive">
+                +1.04%
+            </td>
+
+            <td class="desktop-column">
+                65
+            </td>
+
+            <td class="desktop-column">
+                30
+            </td>
+
+            <td class="desktop-column">
+                64
+            </td>
+
+            <td class="desktop-column">
+                82
+            </td>
+
+            <td class="score">
+                60
+            </td>
+
+            <td>
+
+                <span class="
+                    quality-badge
+                    quality-good
+                ">
+                    85%
+                </span>
+
+            </td>
+
+            <td>
+
+                <span class="
+                    rating-badge
+                    hold
+                ">
+                    HOLD
+                </span>
+
+            </td>
 
         </tr>
+        
+        <tr>
 
+            <td>
+                18
+            </td>
+
+            <td>
+
+                <div class="stock-name">
+                    ComfortDelGro
+                </div>
+
+                <div class="ticker">
+                    C52.SI
+                </div>
+
+                <div class="sector">
+                    Transport
+                </div>
+
+            </td>
+
+            <td>
+                S$1.34
+            </td>
+
+            <td class="positive">
+                +0.00%
+            </td>
+
+            <td class="desktop-column">
+                65
+            </td>
+
+            <td class="desktop-column">
+                34
+            </td>
+
+            <td class="desktop-column">
+                59
+            </td>
+
+            <td class="desktop-column">
+                82
+            </td>
+
+            <td class="score">
+                59
+            </td>
+
+            <td>
+
+                <span class="
+                    quality-badge
+                    quality-good
+                ">
+                    100%
+                </span>
+
+            </td>
+
+            <td>
+
+                <span class="
+                    rating-badge
+                    hold
+                ">
+                    HOLD
+                </span>
+
+            </td>
+
+        </tr>
+        
+        <tr>
+
+            <td>
+                19
+            </td>
+
+            <td>
+
+                <div class="stock-name">
+                    UOL Group
+                </div>
+
+                <div class="ticker">
+                    U14.SI
+                </div>
+
+                <div class="sector">
+                    Property
+                </div>
+
+            </td>
+
+            <td>
+                S$9.60
+            </td>
+
+            <td class="negative">
+                -0.83%
+            </td>
+
+            <td class="desktop-column">
+                40
+            </td>
+
+            <td class="desktop-column">
+                34
+            </td>
+
+            <td class="desktop-column">
+                75
+            </td>
+
+            <td class="desktop-column">
+                82
+            </td>
+
+            <td class="score">
+                59
+            </td>
+
+            <td>
+
+                <span class="
+                    quality-badge
+                    quality-good
+                ">
+                    100%
+                </span>
+
+            </td>
+
+            <td>
+
+                <span class="
+                    rating-badge
+                    hold
+                ">
+                    HOLD
+                </span>
+
+            </td>
+
+        </tr>
+        
+        <tr>
+
+            <td>
+                20
+            </td>
+
+            <td>
+
+                <div class="stock-name">
+                    Genting Singapore
+                </div>
+
+                <div class="ticker">
+                    G13.SI
+                </div>
+
+                <div class="sector">
+                    Consumer / Leisure
+                </div>
+
+            </td>
+
+            <td>
+                S$0.63
+            </td>
+
+            <td class="positive">
+                +0.00%
+            </td>
+
+            <td class="desktop-column">
+                65
+            </td>
+
+            <td class="desktop-column">
+                30
+            </td>
+
+            <td class="desktop-column">
+                62
+            </td>
+
+            <td class="desktop-column">
+                82
+            </td>
+
+            <td class="score">
+                59
+            </td>
+
+            <td>
+
+                <span class="
+                    quality-badge
+                    quality-good
+                ">
+                    100%
+                </span>
+
+            </td>
+
+            <td>
+
+                <span class="
+                    rating-badge
+                    hold
+                ">
+                    HOLD
+                </span>
+
+            </td>
+
+        </tr>
+        
+        <tr>
+
+            <td>
+                21
+            </td>
+
+            <td>
+
+                <div class="stock-name">
+                    CapitaLand Ascendas REIT
+                </div>
+
+                <div class="ticker">
+                    A17U.SI
+                </div>
+
+                <div class="sector">
+                    REIT
+                </div>
+
+            </td>
+
+            <td>
+                S$2.51
+            </td>
+
+            <td class="positive">
+                +1.21%
+            </td>
+
+            <td class="desktop-column">
+                50
+            </td>
+
+            <td class="desktop-column">
+                35
+            </td>
+
+            <td class="desktop-column">
+                59
+            </td>
+
+            <td class="desktop-column">
+                82
+            </td>
+
+            <td class="score">
+                55
+            </td>
+
+            <td>
+
+                <span class="
+                    quality-badge
+                    quality-good
+                ">
+                    100%
+                </span>
+
+            </td>
+
+            <td>
+
+                <span class="
+                    rating-badge
+                    hold
+                ">
+                    HOLD
+                </span>
+
+            </td>
+
+        </tr>
+        
+        <tr>
+
+            <td>
+                22
+            </td>
+
+            <td>
+
+                <div class="stock-name">
+                    Jardine Matheson
+                </div>
+
+                <div class="ticker">
+                    J36.SI
+                </div>
+
+                <div class="sector">
+                    Conglomerate
+                </div>
+
+            </td>
+
+            <td>
+                S$63.23
+            </td>
+
+            <td class="positive">
+                +1.57%
+            </td>
+
+            <td class="desktop-column">
+                45
+            </td>
+
+            <td class="desktop-column">
+                28
+            </td>
+
+            <td class="desktop-column">
+                59
+            </td>
+
+            <td class="desktop-column">
+                88
+            </td>
+
+            <td class="score">
+                54
+            </td>
+
+            <td>
+
+                <span class="
+                    quality-badge
+                    quality-good
+                ">
+                    85%
+                </span>
+
+            </td>
+
+            <td>
+
+                <span class="
+                    rating-badge
+                    hold
+                ">
+                    HOLD
+                </span>
+
+            </td>
+
+        </tr>
+        
+        <tr>
+
+            <td>
+                23
+            </td>
+
+            <td>
+
+                <div class="stock-name">
+                    Seatrium
+                </div>
+
+                <div class="ticker">
+                    5E2.SI
+                </div>
+
+                <div class="sector">
+                    Industrials
+                </div>
+
+            </td>
+
+            <td>
+                S$1.99
+            </td>
+
+            <td class="negative">
+                -0.50%
+            </td>
+
+            <td class="desktop-column">
+                45
+            </td>
+
+            <td class="desktop-column">
+                20
+            </td>
+
+            <td class="desktop-column">
+                61
+            </td>
+
+            <td class="desktop-column">
+                82
+            </td>
+
+            <td class="score">
+                52
+            </td>
+
+            <td>
+
+                <span class="
+                    quality-badge
+                    quality-good
+                ">
+                    100%
+                </span>
+
+            </td>
+
+            <td>
+
+                <span class="
+                    rating-badge
+                    hold
+                ">
+                    HOLD
+                </span>
+
+            </td>
+
+        </tr>
+        
+        <tr>
+
+            <td>
+                24
+            </td>
+
+            <td>
+
+                <div class="stock-name">
+                    Mapletree Logistics Trust
+                </div>
+
+                <div class="ticker">
+                    M44U.SI
+                </div>
+
+                <div class="sector">
+                    REIT
+                </div>
+
+            </td>
+
+            <td>
+                S$1.21
+            </td>
+
+            <td class="positive">
+                +0.00%
+            </td>
+
+            <td class="desktop-column">
+                35
+            </td>
+
+            <td class="desktop-column">
+                35
+            </td>
+
+            <td class="desktop-column">
+                62
+            </td>
+
+            <td class="desktop-column">
+                75
+            </td>
+
+            <td class="score">
+                52
+            </td>
+
+            <td>
+
+                <span class="
+                    quality-badge
+                    quality-good
+                ">
+                    85%
+                </span>
+
+            </td>
+
+            <td>
+
+                <span class="
+                    rating-badge
+                    hold
+                ">
+                    HOLD
+                </span>
+
+            </td>
+
+        </tr>
+        
+        <tr>
+
+            <td>
+                25
+            </td>
+
+            <td>
+
+                <div class="stock-name">
+                    Jardine Cycle &amp; Carriage
+                </div>
+
+                <div class="ticker">
+                    C07.SI
+                </div>
+
+                <div class="sector">
+                    Consumer
+                </div>
+
+            </td>
+
+            <td>
+                S$27.12
+            </td>
+
+            <td class="negative">
+                -0.15%
+            </td>
+
+            <td class="desktop-column">
+                45
+            </td>
+
+            <td class="desktop-column">
+                12
+            </td>
+
+            <td class="desktop-column">
+                63
+            </td>
+
+            <td class="desktop-column">
+                88
+            </td>
+
+            <td class="score">
+                52
+            </td>
+
+            <td>
+
+                <span class="
+                    quality-badge
+                    quality-good
+                ">
+                    100%
+                </span>
+
+            </td>
+
+            <td>
+
+                <span class="
+                    rating-badge
+                    hold
+                ">
+                    HOLD
+                </span>
+
+            </td>
+
+        </tr>
         
 
             </tbody>
 
-
         </table>
 
-
     </div>
-
 
 </div>
 
@@ -5502,17 +6333,14 @@ td {
 
     <br>
 
-    Ratings are research indicators
-    and are not financial advice.
+    Data-quality indicators show how much of the
+    fundamental scoring model was supported by available data.
 
 </div>
 
 
 </div>
-
 
 </body>
 
-
 </html>
-
