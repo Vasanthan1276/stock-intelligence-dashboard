@@ -117,6 +117,17 @@ body {
         700;
 }
 
+.model-version {
+    margin-top:
+        6px;
+
+    color:
+        #607c9f;
+
+    font-size:
+        10px;
+}
+
 .card {
     background:
         #111e31;
@@ -464,6 +475,17 @@ body {
         28px;
 }
 
+.watch-model {
+    color:
+        #5e7999;
+
+    font-size:
+        9px;
+
+    margin-top:
+        4px;
+}
+
 .watch-score {
     font-size:
         24px;
@@ -620,6 +642,9 @@ body {
 
     font-size:
         13px;
+
+    line-height:
+        1.5;
 }
 
 .opportunity-grid {
@@ -1172,6 +1197,13 @@ td {
 
         </div>
 
+        <div class="model-version">
+
+            Scoring methodology:
+            v2-sector-specific
+
+        </div>
+
     </div>
 
 
@@ -1181,7 +1213,7 @@ td {
 
         <br>
 
-        19 July 2026, 12:14 SGT
+        19 July 2026, 12:28 SGT
 
     </div>
 
@@ -1199,17 +1231,11 @@ td {
             placeholder="
                 Search ticker or company...
             "
-            aria-label="
-                Search ticker or company
-            "
         >
 
 
         <select
             id="marketFilter"
-            aria-label="
-                Filter by market
-            "
         >
 
             <option value="All">
@@ -1229,9 +1255,6 @@ td {
 
         <select
             id="sectorFilter"
-            aria-label="
-                Filter by sector
-            "
         >
 
             <option value="All">
@@ -1380,6 +1403,10 @@ td {
                 Micron Technology
             </div>
 
+            <div class="watch-model">
+                Semiconductor
+            </div>
+
             <div class="watch-score">
                 78/100
             </div>
@@ -1409,6 +1436,10 @@ td {
 
             <div class="watch-name">
                 NVIDIA
+            </div>
+
+            <div class="watch-model">
+                Semiconductor
             </div>
 
             <div class="watch-score">
@@ -1442,6 +1473,10 @@ td {
                 Advanced Micro Devices
             </div>
 
+            <div class="watch-model">
+                Semiconductor
+            </div>
+
             <div class="watch-score">
                 71/100
             </div>
@@ -1471,6 +1506,10 @@ td {
 
             <div class="watch-name">
                 JPMorgan Chase
+            </div>
+
+            <div class="watch-model">
+                General Company
             </div>
 
             <div class="watch-score">
@@ -1504,14 +1543,18 @@ td {
                 DBS Group
             </div>
 
+            <div class="watch-model">
+                Bank
+            </div>
+
             <div class="watch-score">
-                88/100
+                76/100
             </div>
 
             <div class="watch-meta">
 
                 <span>
-                    Strong Buy
+                    Buy
                 </span>
 
                 <span>
@@ -1535,14 +1578,18 @@ td {
                 UOB
             </div>
 
+            <div class="watch-model">
+                Bank
+            </div>
+
             <div class="watch-score">
-                81/100
+                77/100
             </div>
 
             <div class="watch-meta">
 
                 <span>
-                    Strong Buy
+                    Buy
                 </span>
 
                 <span>
@@ -1570,9 +1617,9 @@ td {
 
     <div class="section-subtitle">
 
-        Highlights the largest score movements,
-        component changes and rating changes
-        since the last saved dashboard run.
+        Comparisons are only made against
+        a previous scan using the same
+        scoring methodology version.
 
     </div>
 
@@ -1580,405 +1627,20 @@ td {
     <div class="changes-grid">
 
         
-        <a
-            class="change-card"
-            href="stocks/a17u-si/"
-        >
+        <div class="empty-state">
 
-            <div class="change-top">
+            The scoring methodology has changed
+            or score history is starting fresh.
 
-                <div>
+            <br><br>
 
-                    <div class="change-ticker">
-                        A17U.SI
-                    </div>
+            This run is being used as the new baseline.
 
-                    <div class="change-name">
-                        CapitaLand Ascendas REIT
-                    </div>
+            The next successful dashboard update will
+            show genuine changes under the same
+            scoring methodology.
 
-                </div>
-
-
-                <div class="
-                    change-score
-                    positive
-                ">
-
-                    ↑
-
-                    +23
-
-                </div>
-
-            </div>
-
-
-            <div class="change-summary">
-                Overall 55 → 78 (+23)
-            </div>
-
-
-            <div class="change-rating">Rating: HOLD → Buy</div>
-
-
-            <div class="change-components">
-
-                Fundamentals ↑ +25 · Valuation ↑ +10
-
-            </div>
-
-        </a>
-        
-        <a
-            class="change-card"
-            href="stocks/m44u-si/"
-        >
-
-            <div class="change-top">
-
-                <div>
-
-                    <div class="change-ticker">
-                        M44U.SI
-                    </div>
-
-                    <div class="change-name">
-                        Mapletree Logistics Trust
-                    </div>
-
-                </div>
-
-
-                <div class="
-                    change-score
-                    positive
-                ">
-
-                    ↑
-
-                    +22
-
-                </div>
-
-            </div>
-
-
-            <div class="change-summary">
-                Overall 52 → 74 (+22)
-            </div>
-
-
-            <div class="change-rating">Rating: HOLD → Buy</div>
-
-
-            <div class="change-components">
-
-                Technical ↓ -7 · Fundamentals ↑ +18 · Valuation ↑ +17
-
-            </div>
-
-        </a>
-        
-        <a
-            class="change-card"
-            href="stocks/n2iu-si/"
-        >
-
-            <div class="change-top">
-
-                <div>
-
-                    <div class="change-ticker">
-                        N2IU.SI
-                    </div>
-
-                    <div class="change-name">
-                        Mapletree Pan Asia Commercial Trust
-                    </div>
-
-                </div>
-
-
-                <div class="
-                    change-score
-                    positive
-                ">
-
-                    ↑
-
-                    +20
-
-                </div>
-
-            </div>
-
-
-            <div class="change-summary">
-                Overall 60 → 80 (+20)
-            </div>
-
-
-            <div class="change-rating">Rating: HOLD → Strong Buy</div>
-
-
-            <div class="change-components">
-
-                Fundamentals ↑ +18 · Valuation ↑ +14
-
-            </div>
-
-        </a>
-        
-        <a
-            class="change-card"
-            href="stocks/me8u-si/"
-        >
-
-            <div class="change-top">
-
-                <div>
-
-                    <div class="change-ticker">
-                        ME8U.SI
-                    </div>
-
-                    <div class="change-name">
-                        Mapletree Industrial Trust
-                    </div>
-
-                </div>
-
-
-                <div class="
-                    change-score
-                    positive
-                ">
-
-                    ↑
-
-                    +19
-
-                </div>
-
-            </div>
-
-
-            <div class="change-summary">
-                Overall 60 → 79 (+19)
-            </div>
-
-
-            <div class="change-rating">Rating: HOLD → Buy</div>
-
-
-            <div class="change-components">
-
-                Fundamentals ↑ +19 · Valuation ↑ +10
-
-            </div>
-
-        </a>
-        
-        <a
-            class="change-card"
-            href="stocks/j69u-si/"
-        >
-
-            <div class="change-top">
-
-                <div>
-
-                    <div class="change-ticker">
-                        J69U.SI
-                    </div>
-
-                    <div class="change-name">
-                        Frasers Centrepoint Trust
-                    </div>
-
-                </div>
-
-
-                <div class="
-                    change-score
-                    positive
-                ">
-
-                    ↑
-
-                    +18
-
-                </div>
-
-            </div>
-
-
-            <div class="change-summary">
-                Overall 65 → 83 (+18)
-            </div>
-
-
-            <div class="change-rating">Rating: BUY → Strong Buy</div>
-
-
-            <div class="change-components">
-
-                Fundamentals ↑ +20 · Valuation ↑ +13
-
-            </div>
-
-        </a>
-        
-        <a
-            class="change-card"
-            href="stocks/d05-si/"
-        >
-
-            <div class="change-top">
-
-                <div>
-
-                    <div class="change-ticker">
-                        D05.SI
-                    </div>
-
-                    <div class="change-name">
-                        DBS Group
-                    </div>
-
-                </div>
-
-
-                <div class="
-                    change-score
-                    positive
-                ">
-
-                    ↑
-
-                    +13
-
-                </div>
-
-            </div>
-
-
-            <div class="change-summary">
-                Overall 75 → 88 (+13)
-            </div>
-
-
-            <div class="change-rating">Rating: BUY → Strong Buy</div>
-
-
-            <div class="change-components">
-
-                Fundamentals ↑ +28 · Valuation ↑ +10
-
-            </div>
-
-        </a>
-        
-        <a
-            class="change-card"
-            href="stocks/c38u-si/"
-        >
-
-            <div class="change-top">
-
-                <div>
-
-                    <div class="change-ticker">
-                        C38U.SI
-                    </div>
-
-                    <div class="change-name">
-                        CapitaLand Integrated Commercial Trust
-                    </div>
-
-                </div>
-
-
-                <div class="
-                    change-score
-                    positive
-                ">
-
-                    ↑
-
-                    +13
-
-                </div>
-
-            </div>
-
-
-            <div class="change-summary">
-                Overall 67 → 80 (+13)
-            </div>
-
-
-            <div class="change-rating">Rating: BUY → Strong Buy</div>
-
-
-            <div class="change-components">
-
-                Fundamentals ↑ +22 · Valuation ↑ +13
-
-            </div>
-
-        </a>
-        
-        <a
-            class="change-card"
-            href="stocks/o39-si/"
-        >
-
-            <div class="change-top">
-
-                <div>
-
-                    <div class="change-ticker">
-                        O39.SI
-                    </div>
-
-                    <div class="change-name">
-                        OCBC
-                    </div>
-
-                </div>
-
-
-                <div class="
-                    change-score
-                    positive
-                ">
-
-                    ↑
-
-                    +12
-
-                </div>
-
-            </div>
-
-
-            <div class="change-summary">
-                Overall 75 → 87 (+12)
-            </div>
-
-
-            <div class="change-rating">Rating: BUY → Strong Buy</div>
-
-
-            <div class="change-components">
-
-                Fundamentals ↑ +28 · Valuation ↑ +9
-
-            </div>
-
-        </a>
+        </div>
         
 
     </div>
@@ -1996,13 +1658,13 @@ td {
     <span
         class="info-wrap"
         tabindex="0"
-        aria-label="The combined dashboard score. It uses Technical 25%, Momentum 20%, Fundamentals 40% and Valuation 15%."
+        aria-label="The combined dashboard score. The weighting depends on the scoring model used for the company."
     >
 
         ⓘ
 
         <span class="tooltip">
-            The combined dashboard score. It uses Technical 25%, Momentum 20%, Fundamentals 40% and Valuation 15%.
+            The combined dashboard score. The weighting depends on the scoring model used for the company.
         </span>
 
     </span>
@@ -2013,8 +1675,8 @@ td {
     <div class="section-subtitle">
 
         Highest-ranked US stocks using
-        the dashboard's combined
-        quantitative score.
+        the dashboard's sector-specific
+        quantitative scoring models.
 
     </div>
 
@@ -2029,17 +1691,11 @@ td {
 
             href="stocks/gs/"
 
-            data-market="
-                US
-            "
+            data-market="US"
 
-            data-sector="
-                Financials
-            "
+            data-sector="Financials"
 
-            data-search="
-                gs goldman sachs
-            "
+            data-search="gs goldman sachs"
         >
 
             <div class="opportunity-top">
@@ -2065,7 +1721,9 @@ td {
                     rating-badge
                     strong-buy
                 ">
+
                     Strong Buy
+
                 </div>
 
             </div>
@@ -2164,17 +1822,11 @@ td {
 
             href="stocks/jpm/"
 
-            data-market="
-                US
-            "
+            data-market="US"
 
-            data-sector="
-                Financials
-            "
+            data-sector="Financials"
 
-            data-search="
-                jpm jpmorgan chase
-            "
+            data-search="jpm jpmorgan chase"
         >
 
             <div class="opportunity-top">
@@ -2200,7 +1852,9 @@ td {
                     rating-badge
                     strong-buy
                 ">
+
                     Strong Buy
+
                 </div>
 
             </div>
@@ -2299,17 +1953,11 @@ td {
 
             href="stocks/bac/"
 
-            data-market="
-                US
-            "
+            data-market="US"
 
-            data-sector="
-                Financials
-            "
+            data-sector="Financials"
 
-            data-search="
-                bac bank of america
-            "
+            data-search="bac bank of america"
         >
 
             <div class="opportunity-top">
@@ -2335,7 +1983,9 @@ td {
                     rating-badge
                     strong-buy
                 ">
+
                     Strong Buy
+
                 </div>
 
             </div>
@@ -2362,7 +2012,7 @@ td {
                 </div>
 
                 <div>
-                    84/100
+                    82/100
                 </div>
 
             </div>
@@ -2432,154 +2082,13 @@ td {
                 filterable-card
             "
 
-            href="stocks/v/"
-
-            data-market="
-                US
-            "
-
-            data-sector="
-                Financials
-            "
-
-            data-search="
-                v visa
-            "
-        >
-
-            <div class="opportunity-top">
-
-                <div>
-
-                    <div class="opportunity-ticker">
-                        V
-                    </div>
-
-                    <div class="opportunity-name">
-                        Visa
-                    </div>
-
-                    <div class="sector">
-                        Financials
-                    </div>
-
-                </div>
-
-
-                <div class="
-                    rating-badge
-                    strong-buy
-                ">
-                    Strong Buy
-                </div>
-
-            </div>
-
-
-            <div class="opportunity-price">
-
-                $358.56
-
-            </div>
-
-
-            <div class="negative">
-
-                -1.80%
-
-            </div>
-
-
-            <div class="score-row">
-
-                <div>
-                    Overall
-                </div>
-
-                <div>
-                    83/100
-                </div>
-
-            </div>
-
-
-            <div class="score-row">
-
-                <div>
-                    Technical
-                </div>
-
-                <div>
-                    93
-                </div>
-
-            </div>
-
-
-            <div class="score-row">
-
-                <div>
-                    Momentum
-                </div>
-
-                <div>
-                    73
-                </div>
-
-            </div>
-
-
-            <div class="score-row">
-
-                <div>
-                    Fundamentals
-                </div>
-
-                <div>
-                    86
-                </div>
-
-            </div>
-
-
-            <div class="quality-row">
-
-                <span>
-                    Data quality
-                </span>
-
-                <span class="
-                    quality-badge
-                    quality-good
-                ">
-
-                    High
-
-                </span>
-
-            </div>
-
-        </a>
-        
-        <a
-            class="
-                opportunity-card
-                filterable-card
-            "
-
             href="stocks/nvda/"
 
-            data-market="
-                US
-            "
+            data-market="US"
 
-            data-sector="
-                Semiconductors
-            "
+            data-sector="Semiconductors"
 
-            data-search="
-                nvda nvidia
-            "
+            data-search="nvda nvidia"
         >
 
             <div class="opportunity-top">
@@ -2605,7 +2114,9 @@ td {
                     rating-badge
                     strong-buy
                 ">
+
                     Strong Buy
+
                 </div>
 
             </div>
@@ -2696,6 +2207,137 @@ td {
 
         </a>
         
+        <a
+            class="
+                opportunity-card
+                filterable-card
+            "
+
+            href="stocks/blk/"
+
+            data-market="US"
+
+            data-sector="Financials"
+
+            data-search="blk blackrock"
+        >
+
+            <div class="opportunity-top">
+
+                <div>
+
+                    <div class="opportunity-ticker">
+                        BLK
+                    </div>
+
+                    <div class="opportunity-name">
+                        BlackRock
+                    </div>
+
+                    <div class="sector">
+                        Financials
+                    </div>
+
+                </div>
+
+
+                <div class="
+                    rating-badge
+                    strong-buy
+                ">
+
+                    Strong Buy
+
+                </div>
+
+            </div>
+
+
+            <div class="opportunity-price">
+
+                $1,072.20
+
+            </div>
+
+
+            <div class="negative">
+
+                -1.37%
+
+            </div>
+
+
+            <div class="score-row">
+
+                <div>
+                    Overall
+                </div>
+
+                <div>
+                    81/100
+                </div>
+
+            </div>
+
+
+            <div class="score-row">
+
+                <div>
+                    Technical
+                </div>
+
+                <div>
+                    83
+                </div>
+
+            </div>
+
+
+            <div class="score-row">
+
+                <div>
+                    Momentum
+                </div>
+
+                <div>
+                    55
+                </div>
+
+            </div>
+
+
+            <div class="score-row">
+
+                <div>
+                    Fundamentals
+                </div>
+
+                <div>
+                    92
+                </div>
+
+            </div>
+
+
+            <div class="quality-row">
+
+                <span>
+                    Data quality
+                </span>
+
+                <span class="
+                    quality-badge
+                    quality-good
+                ">
+
+                    High
+
+                </span>
+
+            </div>
+
+        </a>
+        
 
     </div>
 
@@ -2712,13 +2354,13 @@ td {
     <span
         class="info-wrap"
         tabindex="0"
-        aria-label="The combined dashboard score. It uses Technical 25%, Momentum 20%, Fundamentals 40% and Valuation 15%."
+        aria-label="The combined dashboard score. The weighting depends on the scoring model used for the company."
     >
 
         ⓘ
 
         <span class="tooltip">
-            The combined dashboard score. It uses Technical 25%, Momentum 20%, Fundamentals 40% and Valuation 15%.
+            The combined dashboard score. The weighting depends on the scoring model used for the company.
         </span>
 
     </span>
@@ -2729,8 +2371,8 @@ td {
     <div class="section-subtitle">
 
         Highest-ranked SGX stocks using
-        the same quantitative scoring
-        methodology.
+        sector-specific quantitative
+        scoring models.
 
     </div>
 
@@ -2743,154 +2385,13 @@ td {
                 filterable-card
             "
 
-            href="stocks/d05-si/"
-
-            data-market="
-                Singapore
-            "
-
-            data-sector="
-                Banks
-            "
-
-            data-search="
-                d05.si dbs group
-            "
-        >
-
-            <div class="opportunity-top">
-
-                <div>
-
-                    <div class="opportunity-ticker">
-                        D05.SI
-                    </div>
-
-                    <div class="opportunity-name">
-                        DBS Group
-                    </div>
-
-                    <div class="sector">
-                        Banks
-                    </div>
-
-                </div>
-
-
-                <div class="
-                    rating-badge
-                    strong-buy
-                ">
-                    Strong Buy
-                </div>
-
-            </div>
-
-
-            <div class="opportunity-price">
-
-                S$71.96
-
-            </div>
-
-
-            <div class="negative">
-
-                -0.72%
-
-            </div>
-
-
-            <div class="score-row">
-
-                <div>
-                    Overall
-                </div>
-
-                <div>
-                    88/100
-                </div>
-
-            </div>
-
-
-            <div class="score-row">
-
-                <div>
-                    Technical
-                </div>
-
-                <div>
-                    85
-                </div>
-
-            </div>
-
-
-            <div class="score-row">
-
-                <div>
-                    Momentum
-                </div>
-
-                <div>
-                    90
-                </div>
-
-            </div>
-
-
-            <div class="score-row">
-
-                <div>
-                    Fundamentals
-                </div>
-
-                <div>
-                    88
-                </div>
-
-            </div>
-
-
-            <div class="quality-row">
-
-                <span>
-                    Data quality
-                </span>
-
-                <span class="
-                    quality-badge
-                    quality-low
-                ">
-
-                    Limited
-
-                </span>
-
-            </div>
-
-        </a>
-        
-        <a
-            class="
-                opportunity-card
-                filterable-card
-            "
-
             href="stocks/o39-si/"
 
-            data-market="
-                Singapore
-            "
+            data-market="Singapore"
 
-            data-sector="
-                Banks
-            "
+            data-sector="Banks"
 
-            data-search="
-                o39.si ocbc
-            "
+            data-search="o39.si ocbc"
         >
 
             <div class="opportunity-top">
@@ -2914,9 +2415,11 @@ td {
 
                 <div class="
                     rating-badge
-                    strong-buy
+                    buy
                 ">
-                    Strong Buy
+
+                    Buy
+
                 </div>
 
             </div>
@@ -2943,7 +2446,7 @@ td {
                 </div>
 
                 <div>
-                    87/100
+                    79/100
                 </div>
 
             </div>
@@ -2982,7 +2485,7 @@ td {
                 </div>
 
                 <div>
-                    88
+                    79
                 </div>
 
             </div>
@@ -3013,19 +2516,13 @@ td {
                 filterable-card
             "
 
-            href="stocks/ajbu-si/"
+            href="stocks/f34-si/"
 
-            data-market="
-                Singapore
-            "
+            data-market="Singapore"
 
-            data-sector="
-                REIT
-            "
+            data-sector="Consumer"
 
-            data-search="
-                ajbu.si keppel dc reit
-            "
+            data-search="f34.si wilmar international"
         >
 
             <div class="opportunity-top">
@@ -3033,15 +2530,15 @@ td {
                 <div>
 
                     <div class="opportunity-ticker">
-                        AJBU.SI
+                        F34.SI
                     </div>
 
                     <div class="opportunity-name">
-                        Keppel DC REIT
+                        Wilmar International
                     </div>
 
                     <div class="sector">
-                        REIT
+                        Consumer
                     </div>
 
                 </div>
@@ -3049,9 +2546,11 @@ td {
 
                 <div class="
                     rating-badge
-                    strong-buy
+                    buy
                 ">
-                    Strong Buy
+
+                    Buy
+
                 </div>
 
             </div>
@@ -3059,14 +2558,14 @@ td {
 
             <div class="opportunity-price">
 
-                S$2.32
+                S$3.87
 
             </div>
 
 
-            <div class="positive">
+            <div class="negative">
 
-                +0.00%
+                -0.77%
 
             </div>
 
@@ -3078,7 +2577,7 @@ td {
                 </div>
 
                 <div>
-                    83/100
+                    79/100
                 </div>
 
             </div>
@@ -3091,7 +2590,7 @@ td {
                 </div>
 
                 <div>
-                    83
+                    93
                 </div>
 
             </div>
@@ -3104,7 +2603,7 @@ td {
                 </div>
 
                 <div>
-                    61
+                    76
                 </div>
 
             </div>
@@ -3117,142 +2616,7 @@ td {
                 </div>
 
                 <div>
-                    85
-                </div>
-
-            </div>
-
-
-            <div class="quality-row">
-
-                <span>
-                    Data quality
-                </span>
-
-                <span class="
-                    quality-badge
-                    quality-good
-                ">
-
-                    High
-
-                </span>
-
-            </div>
-
-        </a>
-        
-        <a
-            class="
-                opportunity-card
-                filterable-card
-            "
-
-            href="stocks/j69u-si/"
-
-            data-market="
-                Singapore
-            "
-
-            data-sector="
-                REIT
-            "
-
-            data-search="
-                j69u.si frasers centrepoint trust
-            "
-        >
-
-            <div class="opportunity-top">
-
-                <div>
-
-                    <div class="opportunity-ticker">
-                        J69U.SI
-                    </div>
-
-                    <div class="opportunity-name">
-                        Frasers Centrepoint Trust
-                    </div>
-
-                    <div class="sector">
-                        REIT
-                    </div>
-
-                </div>
-
-
-                <div class="
-                    rating-badge
-                    strong-buy
-                ">
-                    Strong Buy
-                </div>
-
-            </div>
-
-
-            <div class="opportunity-price">
-
-                S$2.26
-
-            </div>
-
-
-            <div class="positive">
-
-                +0.44%
-
-            </div>
-
-
-            <div class="score-row">
-
-                <div>
-                    Overall
-                </div>
-
-                <div>
-                    83/100
-                </div>
-
-            </div>
-
-
-            <div class="score-row">
-
-                <div>
-                    Technical
-                </div>
-
-                <div>
-                    65
-                </div>
-
-            </div>
-
-
-            <div class="score-row">
-
-                <div>
-                    Momentum
-                </div>
-
-                <div>
-                    44
-                </div>
-
-            </div>
-
-
-            <div class="score-row">
-
-                <div>
-                    Fundamentals
-                </div>
-
-                <div>
-                    92
+                    63
                 </div>
 
             </div>
@@ -3285,17 +2649,11 @@ td {
 
             href="stocks/u11-si/"
 
-            data-market="
-                Singapore
-            "
+            data-market="Singapore"
 
-            data-sector="
-                Banks
-            "
+            data-sector="Banks"
 
-            data-search="
-                u11.si uob
-            "
+            data-search="u11.si uob"
         >
 
             <div class="opportunity-top">
@@ -3319,9 +2677,11 @@ td {
 
                 <div class="
                     rating-badge
-                    strong-buy
+                    buy
                 ">
-                    Strong Buy
+
+                    Buy
+
                 </div>
 
             </div>
@@ -3348,7 +2708,7 @@ td {
                 </div>
 
                 <div>
-                    81/100
+                    77/100
                 </div>
 
             </div>
@@ -3387,7 +2747,7 @@ td {
                 </div>
 
                 <div>
-                    65
+                    64
                 </div>
 
             </div>
@@ -3412,6 +2772,268 @@ td {
 
         </a>
         
+        <a
+            class="
+                opportunity-card
+                filterable-card
+            "
+
+            href="stocks/d05-si/"
+
+            data-market="Singapore"
+
+            data-sector="Banks"
+
+            data-search="d05.si dbs group"
+        >
+
+            <div class="opportunity-top">
+
+                <div>
+
+                    <div class="opportunity-ticker">
+                        D05.SI
+                    </div>
+
+                    <div class="opportunity-name">
+                        DBS Group
+                    </div>
+
+                    <div class="sector">
+                        Banks
+                    </div>
+
+                </div>
+
+
+                <div class="
+                    rating-badge
+                    buy
+                ">
+
+                    Buy
+
+                </div>
+
+            </div>
+
+
+            <div class="opportunity-price">
+
+                S$71.96
+
+            </div>
+
+
+            <div class="negative">
+
+                -0.72%
+
+            </div>
+
+
+            <div class="score-row">
+
+                <div>
+                    Overall
+                </div>
+
+                <div>
+                    76/100
+                </div>
+
+            </div>
+
+
+            <div class="score-row">
+
+                <div>
+                    Technical
+                </div>
+
+                <div>
+                    85
+                </div>
+
+            </div>
+
+
+            <div class="score-row">
+
+                <div>
+                    Momentum
+                </div>
+
+                <div>
+                    90
+                </div>
+
+            </div>
+
+
+            <div class="score-row">
+
+                <div>
+                    Fundamentals
+                </div>
+
+                <div>
+                    79
+                </div>
+
+            </div>
+
+
+            <div class="quality-row">
+
+                <span>
+                    Data quality
+                </span>
+
+                <span class="
+                    quality-badge
+                    quality-low
+                ">
+
+                    Limited
+
+                </span>
+
+            </div>
+
+        </a>
+        
+        <a
+            class="
+                opportunity-card
+                filterable-card
+            "
+
+            href="stocks/s58-si/"
+
+            data-market="Singapore"
+
+            data-sector="Transport"
+
+            data-search="s58.si sats"
+        >
+
+            <div class="opportunity-top">
+
+                <div>
+
+                    <div class="opportunity-ticker">
+                        S58.SI
+                    </div>
+
+                    <div class="opportunity-name">
+                        SATS
+                    </div>
+
+                    <div class="sector">
+                        Transport
+                    </div>
+
+                </div>
+
+
+                <div class="
+                    rating-badge
+                    buy
+                ">
+
+                    Buy
+
+                </div>
+
+            </div>
+
+
+            <div class="opportunity-price">
+
+                S$4.63
+
+            </div>
+
+
+            <div class="positive">
+
+                +0.87%
+
+            </div>
+
+
+            <div class="score-row">
+
+                <div>
+                    Overall
+                </div>
+
+                <div>
+                    75/100
+                </div>
+
+            </div>
+
+
+            <div class="score-row">
+
+                <div>
+                    Technical
+                </div>
+
+                <div>
+                    85
+                </div>
+
+            </div>
+
+
+            <div class="score-row">
+
+                <div>
+                    Momentum
+                </div>
+
+                <div>
+                    85
+                </div>
+
+            </div>
+
+
+            <div class="score-row">
+
+                <div>
+                    Fundamentals
+                </div>
+
+                <div>
+                    64
+                </div>
+
+            </div>
+
+
+            <div class="quality-row">
+
+                <span>
+                    Data quality
+                </span>
+
+                <span class="
+                    quality-badge
+                    quality-good
+                ">
+
+                    High
+
+                </span>
+
+            </div>
+
+        </a>
+        
 
     </div>
 
@@ -3426,11 +3048,9 @@ td {
 
     <div class="section-subtitle">
 
-        Alternative ways of finding potential
-        opportunities.
-
-        These screens may rank stocks differently
-        from the main Overall Score.
+        Alternative ways of identifying
+        potential opportunities beyond
+        the Overall Score.
 
     </div>
 
@@ -3448,13 +3068,13 @@ td {
     <span
         class="info-wrap"
         tabindex="0"
-        aria-label="Stocks with RSI below 35. This indicates weak recent price momentum, but does not guarantee that the stock will rebound."
+        aria-label="Stocks with RSI below 35. This indicates weak recent price momentum, but does not guarantee a rebound."
     >
 
         ⓘ
 
         <span class="tooltip">
-            Stocks with RSI below 35. This indicates weak recent price momentum, but does not guarantee that the stock will rebound.
+            Stocks with RSI below 35. This indicates weak recent price momentum, but does not guarantee a rebound.
         </span>
 
     </span>
@@ -3465,8 +3085,8 @@ td {
             <div class="screen-description">
 
                 Stocks with RSI below 35
-                that have experienced unusually
-                weak recent price momentum.
+                that have experienced weak
+                recent price momentum.
 
             </div>
 
@@ -3680,7 +3300,7 @@ td {
                 </div>
 
                 <div class="mini-secondary">
-                    Overall 74/100
+                    Overall 60/100
                 </div>
 
             </div>
@@ -3718,8 +3338,8 @@ td {
             <div class="screen-description">
 
                 Strong recent price performers
-                that also meet minimum fundamental
-                and data-quality requirements.
+                with adequate fundamental and
+                data-quality scores.
 
             </div>
 
@@ -3970,9 +3590,9 @@ td {
 
             <div class="screen-description">
 
-                Stocks combining relatively
-                attractive valuation with
-                stronger underlying fundamentals.
+                Stocks combining stronger
+                fundamentals with attractive
+                valuation scores.
 
             </div>
 
@@ -4007,42 +3627,6 @@ td {
 
                 <div class="mini-secondary">
                     Valuation 84 · Fundamentals 95
-                </div>
-
-            </div>
-
-        </a>
-        
-        <a
-            class="mini-row"
-            href="stocks/j69u-si/"
-        >
-
-            <div>
-
-                <div class="mini-ticker">
-                    J69U.SI
-                </div>
-
-                <div class="mini-name">
-                    Frasers Centrepoint Trust
-                </div>
-
-                <div class="sector">
-                    REIT
-                </div>
-
-            </div>
-
-
-            <div class="mini-right">
-
-                <div class="mini-score">
-                    Value Opportunity 90/100
-                </div>
-
-                <div class="mini-secondary">
-                    Valuation 88 · Fundamentals 92
                 </div>
 
             </div>
@@ -4087,42 +3671,6 @@ td {
         
         <a
             class="mini-row"
-            href="stocks/n2iu-si/"
-        >
-
-            <div>
-
-                <div class="mini-ticker">
-                    N2IU.SI
-                </div>
-
-                <div class="mini-name">
-                    Mapletree Pan Asia Commercial Trust
-                </div>
-
-                <div class="sector">
-                    REIT
-                </div>
-
-            </div>
-
-
-            <div class="mini-right">
-
-                <div class="mini-score">
-                    Value Opportunity 89/100
-                </div>
-
-                <div class="mini-secondary">
-                    Valuation 96 · Fundamentals 82
-                </div>
-
-            </div>
-
-        </a>
-        
-        <a
-            class="mini-row"
             href="stocks/tsm/"
         >
 
@@ -4159,21 +3707,21 @@ td {
         
         <a
             class="mini-row"
-            href="stocks/me8u-si/"
+            href="stocks/nvda/"
         >
 
             <div>
 
                 <div class="mini-ticker">
-                    ME8U.SI
+                    NVDA
                 </div>
 
                 <div class="mini-name">
-                    Mapletree Industrial Trust
+                    NVIDIA
                 </div>
 
                 <div class="sector">
-                    REIT
+                    Semiconductors
                 </div>
 
             </div>
@@ -4182,11 +3730,83 @@ td {
             <div class="mini-right">
 
                 <div class="mini-score">
-                    Value Opportunity 88/100
+                    Value Opportunity 86/100
                 </div>
 
                 <div class="mini-secondary">
-                    Valuation 92 · Fundamentals 83
+                    Valuation 76 · Fundamentals 95
+                </div>
+
+            </div>
+
+        </a>
+        
+        <a
+            class="mini-row"
+            href="stocks/blk/"
+        >
+
+            <div>
+
+                <div class="mini-ticker">
+                    BLK
+                </div>
+
+                <div class="mini-name">
+                    BlackRock
+                </div>
+
+                <div class="sector">
+                    Financials
+                </div>
+
+            </div>
+
+
+            <div class="mini-right">
+
+                <div class="mini-score">
+                    Value Opportunity 86/100
+                </div>
+
+                <div class="mini-secondary">
+                    Valuation 81 · Fundamentals 92
+                </div>
+
+            </div>
+
+        </a>
+        
+        <a
+            class="mini-row"
+            href="stocks/c07-si/"
+        >
+
+            <div>
+
+                <div class="mini-ticker">
+                    C07.SI
+                </div>
+
+                <div class="mini-name">
+                    Jardine Cycle &amp; Carriage
+                </div>
+
+                <div class="sector">
+                    Consumer
+                </div>
+
+            </div>
+
+
+            <div class="mini-right">
+
+                <div class="mini-score">
+                    Value Opportunity 86/100
+                </div>
+
+                <div class="mini-secondary">
+                    Valuation 100 · Fundamentals 71
                 </div>
 
             </div>
@@ -4207,13 +3827,13 @@ td {
     <span
         class="info-wrap"
         tabindex="0"
-        aria-label="Rewards stocks that perform consistently across Technical, Momentum, Fundamentals and Valuation while penalising large score differences."
+        aria-label="Rewards stocks that perform consistently across Technical, Momentum, Fundamentals and Valuation."
     >
 
         ⓘ
 
         <span class="tooltip">
-            Rewards stocks that perform consistently across Technical, Momentum, Fundamentals and Valuation while penalising large score differences.
+            Rewards stocks that perform consistently across Technical, Momentum, Fundamentals and Valuation.
         </span>
 
     </span>
@@ -4230,42 +3850,6 @@ td {
             </div>
 
             
-        <a
-            class="mini-row"
-            href="stocks/bac/"
-        >
-
-            <div>
-
-                <div class="mini-ticker">
-                    BAC
-                </div>
-
-                <div class="mini-name">
-                    Bank of America
-                </div>
-
-                <div class="sector">
-                    Financials
-                </div>
-
-            </div>
-
-
-            <div class="mini-right">
-
-                <div class="mini-score">
-                    Balance 83/100
-                </div>
-
-                <div class="mini-secondary">
-                    Overall 84 · Data 80%
-                </div>
-
-            </div>
-
-        </a>
-        
         <a
             class="mini-row"
             href="stocks/gs/"
@@ -4291,7 +3875,7 @@ td {
             <div class="mini-right">
 
                 <div class="mini-score">
-                    Balance 82/100
+                    Balance 81/100
                 </div>
 
                 <div class="mini-secondary">
@@ -4340,53 +3924,17 @@ td {
         
         <a
             class="mini-row"
-            href="stocks/u11-si/"
+            href="stocks/bac/"
         >
 
             <div>
 
                 <div class="mini-ticker">
-                    U11.SI
+                    BAC
                 </div>
 
                 <div class="mini-name">
-                    UOB
-                </div>
-
-                <div class="sector">
-                    Banks
-                </div>
-
-            </div>
-
-
-            <div class="mini-right">
-
-                <div class="mini-score">
-                    Balance 80/100
-                </div>
-
-                <div class="mini-secondary">
-                    Overall 81 · Data 65%
-                </div>
-
-            </div>
-
-        </a>
-        
-        <a
-            class="mini-row"
-            href="stocks/v/"
-        >
-
-            <div>
-
-                <div class="mini-ticker">
-                    V
-                </div>
-
-                <div class="mini-name">
-                    Visa
+                    Bank of America
                 </div>
 
                 <div class="sector">
@@ -4399,11 +3947,11 @@ td {
             <div class="mini-right">
 
                 <div class="mini-score">
-                    Balance 77/100
+                    Balance 81/100
                 </div>
 
                 <div class="mini-secondary">
-                    Overall 83 · Data 100%
+                    Overall 82 · Data 80%
                 </div>
 
             </div>
@@ -4446,6 +3994,78 @@ td {
 
         </a>
         
+        <a
+            class="mini-row"
+            href="stocks/u11-si/"
+        >
+
+            <div>
+
+                <div class="mini-ticker">
+                    U11.SI
+                </div>
+
+                <div class="mini-name">
+                    UOB
+                </div>
+
+                <div class="sector">
+                    Banks
+                </div>
+
+            </div>
+
+
+            <div class="mini-right">
+
+                <div class="mini-score">
+                    Balance 77/100
+                </div>
+
+                <div class="mini-secondary">
+                    Overall 77 · Data 65%
+                </div>
+
+            </div>
+
+        </a>
+        
+        <a
+            class="mini-row"
+            href="stocks/nvda/"
+        >
+
+            <div>
+
+                <div class="mini-ticker">
+                    NVDA
+                </div>
+
+                <div class="mini-name">
+                    NVIDIA
+                </div>
+
+                <div class="sector">
+                    Semiconductors
+                </div>
+
+            </div>
+
+
+            <div class="mini-right">
+
+                <div class="mini-score">
+                    Balance 73/100
+                </div>
+
+                <div class="mini-secondary">
+                    Overall 81 · Data 100%
+                </div>
+
+            </div>
+
+        </a>
+        
 
         </div>
 
@@ -4459,13 +4079,6 @@ td {
 
     <div class="section-title">
         US Stock Rankings
-    </div>
-
-    <div class="section-subtitle">
-
-        Search and filters above apply to
-        this table and the Singapore table below.
-
     </div>
 
 
@@ -4499,13 +4112,13 @@ td {
     <span
         class="info-wrap"
         tabindex="0"
-        aria-label="Measures the stock&#x27;s current price trend using moving averages, RSI and MACD. A higher score indicates stronger technical conditions."
+        aria-label="Measures the stock&#x27;s current price trend using moving averages, RSI and MACD."
     >
 
         ⓘ
 
         <span class="tooltip">
-            Measures the stock&#x27;s current price trend using moving averages, RSI and MACD. A higher score indicates stronger technical conditions.
+            Measures the stock&#x27;s current price trend using moving averages, RSI and MACD.
         </span>
 
     </span>
@@ -4543,13 +4156,13 @@ td {
     <span
         class="info-wrap"
         tabindex="0"
-        aria-label="Measures available business strength using revenue growth, earnings growth, margins, return on equity, debt and liquidity."
+        aria-label="Measures business strength using metrics selected for the company&#x27;s scoring model."
     >
 
         ⓘ
 
         <span class="tooltip">
-            Measures available business strength using revenue growth, earnings growth, margins, return on equity, debt and liquidity.
+            Measures business strength using metrics selected for the company&#x27;s scoring model.
         </span>
 
     </span>
@@ -4565,13 +4178,13 @@ td {
     <span
         class="info-wrap"
         tabindex="0"
-        aria-label="Measures how attractively the stock appears priced using available valuation indicators such as forward P/E and price-to-book."
+        aria-label="Measures how attractively the stock appears priced using valuation indicators appropriate to the scoring model."
     >
 
         ⓘ
 
         <span class="tooltip">
-            Measures how attractively the stock appears priced using available valuation indicators such as forward P/E and price-to-book.
+            Measures how attractively the stock appears priced using valuation indicators appropriate to the scoring model.
         </span>
 
     </span>
@@ -4587,13 +4200,13 @@ td {
     <span
         class="info-wrap"
         tabindex="0"
-        aria-label="The combined dashboard score. It uses Technical 25%, Momentum 20%, Fundamentals 40% and Valuation 15%."
+        aria-label="The combined dashboard score. The weighting depends on the scoring model used for the company."
     >
 
         ⓘ
 
         <span class="tooltip">
-            The combined dashboard score. It uses Technical 25%, Momentum 20%, Fundamentals 40% and Valuation 15%.
+            The combined dashboard score. The weighting depends on the scoring model used for the company.
         </span>
 
     </span>
@@ -4609,13 +4222,13 @@ td {
     <span
         class="info-wrap"
         tabindex="0"
-        aria-label="Shows how much of the fundamental scoring model had usable data. Lower data quality means the score should be interpreted more cautiously."
+        aria-label="Shows how much of the fundamental scoring model had usable data."
     >
 
         ⓘ
 
         <span class="tooltip">
-            Shows how much of the fundamental scoring model had usable data. Lower data quality means the score should be interpreted more cautiously.
+            Shows how much of the fundamental scoring model had usable data.
         </span>
 
     </span>
@@ -4631,13 +4244,13 @@ td {
     <span
         class="info-wrap"
         tabindex="0"
-        aria-label="An automated quantitative rating generated by V Stock Intelligence. It is not an analyst recommendation and is not financial advice."
+        aria-label="An automated quantitative rating generated by V Stock Intelligence. It is not an analyst recommendation or financial advice."
     >
 
         ⓘ
 
         <span class="tooltip">
-            An automated quantitative rating generated by V Stock Intelligence. It is not an analyst recommendation and is not financial advice.
+            An automated quantitative rating generated by V Stock Intelligence. It is not an analyst recommendation or financial advice.
         </span>
 
     </span>
@@ -4656,17 +4269,11 @@ td {
         <tr
             class="filterable-row"
 
-            data-market="
-                US
-            "
+            data-market="US"
 
-            data-sector="
-                Financials
-            "
+            data-sector="Financials"
 
-            data-search="
-                gs goldman sachs
-            "
+            data-search="gs goldman sachs"
         >
 
             <td>
@@ -4728,7 +4335,7 @@ td {
 
 
             <td class="desktop-column">
-                85
+                81
             </td>
 
 
@@ -4769,17 +4376,11 @@ td {
         <tr
             class="filterable-row"
 
-            data-market="
-                US
-            "
+            data-market="US"
 
-            data-sector="
-                Financials
-            "
+            data-sector="Financials"
 
-            data-search="
-                jpm jpmorgan chase
-            "
+            data-search="jpm jpmorgan chase"
         >
 
             <td>
@@ -4882,17 +4483,11 @@ td {
         <tr
             class="filterable-row"
 
-            data-market="
-                US
-            "
+            data-market="US"
 
-            data-sector="
-                Financials
-            "
+            data-sector="Financials"
 
-            data-search="
-                bac bank of america
-            "
+            data-search="bac bank of america"
         >
 
             <td>
@@ -4954,12 +4549,12 @@ td {
 
 
             <td class="desktop-column">
-                100
+                90
             </td>
 
 
             <td class="score">
-                84
+                82
             </td>
 
 
@@ -4995,134 +4590,15 @@ td {
         <tr
             class="filterable-row"
 
-            data-market="
-                US
-            "
+            data-market="US"
 
-            data-sector="
-                Financials
-            "
+            data-sector="Semiconductors"
 
-            data-search="
-                v visa
-            "
+            data-search="nvda nvidia"
         >
 
             <td>
                 4
-            </td>
-
-
-            <td>
-
-                <a
-                    class="stock-link"
-                    href="stocks/v/"
-                >
-
-                    <div class="stock-name">
-                        Visa
-                    </div>
-
-                    <div class="ticker">
-                        V
-                    </div>
-
-                    <div class="sector">
-                        Financials
-                    </div>
-
-                </a>
-
-            </td>
-
-
-            <td>
-
-                $358.56
-
-            </td>
-
-
-            <td class="negative">
-
-                -1.80%
-
-            </td>
-
-
-            <td class="desktop-column">
-                93
-            </td>
-
-
-            <td class="desktop-column">
-                73
-            </td>
-
-
-            <td class="desktop-column">
-                86
-            </td>
-
-
-            <td class="desktop-column">
-                70
-            </td>
-
-
-            <td class="score">
-                83
-            </td>
-
-
-            <td>
-
-                <span class="
-                    quality-badge
-                    quality-good
-                ">
-
-                    100%
-
-                </span>
-
-            </td>
-
-
-            <td>
-
-                <span class="
-                    rating-badge
-                    strong-buy
-                ">
-
-                    Strong Buy
-
-                </span>
-
-            </td>
-
-        </tr>
-        
-        <tr
-            class="filterable-row"
-
-            data-market="
-                US
-            "
-
-            data-sector="
-                Semiconductors
-            "
-
-            data-search="
-                nvda nvidia
-            "
-        >
-
-            <td>
-                5
             </td>
 
 
@@ -5221,21 +4697,15 @@ td {
         <tr
             class="filterable-row"
 
-            data-market="
-                US
-            "
+            data-market="US"
 
-            data-sector="
-                Financials
-            "
+            data-sector="Financials"
 
-            data-search="
-                blk blackrock
-            "
+            data-search="blk blackrock"
         >
 
             <td>
-                6
+                5
             </td>
 
 
@@ -5334,21 +4804,15 @@ td {
         <tr
             class="filterable-row"
 
-            data-market="
-                US
-            "
+            data-market="US"
 
-            data-sector="
-                Communication Services
-            "
+            data-sector="Communication Services"
 
-            data-search="
-                meta meta platforms
-            "
+            data-search="meta meta platforms"
         >
 
             <td>
-                7
+                6
             </td>
 
 
@@ -5447,17 +4911,118 @@ td {
         <tr
             class="filterable-row"
 
-            data-market="
-                US
-            "
+            data-market="US"
 
-            data-sector="
-                Semiconductors
-            "
+            data-sector="Financials"
 
-            data-search="
-                mu micron technology
-            "
+            data-search="v visa"
+        >
+
+            <td>
+                7
+            </td>
+
+
+            <td>
+
+                <a
+                    class="stock-link"
+                    href="stocks/v/"
+                >
+
+                    <div class="stock-name">
+                        Visa
+                    </div>
+
+                    <div class="ticker">
+                        V
+                    </div>
+
+                    <div class="sector">
+                        Financials
+                    </div>
+
+                </a>
+
+            </td>
+
+
+            <td>
+
+                $358.56
+
+            </td>
+
+
+            <td class="negative">
+
+                -1.80%
+
+            </td>
+
+
+            <td class="desktop-column">
+                93
+            </td>
+
+
+            <td class="desktop-column">
+                73
+            </td>
+
+
+            <td class="desktop-column">
+                86
+            </td>
+
+
+            <td class="desktop-column">
+                52
+            </td>
+
+
+            <td class="score">
+                80
+            </td>
+
+
+            <td>
+
+                <span class="
+                    quality-badge
+                    quality-good
+                ">
+
+                    100%
+
+                </span>
+
+            </td>
+
+
+            <td>
+
+                <span class="
+                    rating-badge
+                    strong-buy
+                ">
+
+                    Strong Buy
+
+                </span>
+
+            </td>
+
+        </tr>
+        
+        <tr
+            class="filterable-row"
+
+            data-market="US"
+
+            data-sector="Semiconductors"
+
+            data-search="mu micron technology"
         >
 
             <td>
@@ -5560,17 +5125,11 @@ td {
         <tr
             class="filterable-row"
 
-            data-market="
-                US
-            "
+            data-market="US"
 
-            data-sector="
-                Technology
-            "
+            data-sector="Technology"
 
-            data-search="
-                aapl apple
-            "
+            data-search="aapl apple"
         >
 
             <td>
@@ -5673,17 +5232,11 @@ td {
         <tr
             class="filterable-row"
 
-            data-market="
-                US
-            "
+            data-market="US"
 
-            data-sector="
-                Semiconductor Equipment
-            "
+            data-sector="Semiconductor Equipment"
 
-            data-search="
-                asml asml
-            "
+            data-search="asml asml"
         >
 
             <td>
@@ -5786,17 +5339,11 @@ td {
         <tr
             class="filterable-row"
 
-            data-market="
-                US
-            "
+            data-market="US"
 
-            data-sector="
-                Financials
-            "
+            data-sector="Financials"
 
-            data-search="
-                ms morgan stanley
-            "
+            data-search="ms morgan stanley"
         >
 
             <td>
@@ -5899,17 +5446,11 @@ td {
         <tr
             class="filterable-row"
 
-            data-market="
-                US
-            "
+            data-market="US"
 
-            data-sector="
-                Healthcare
-            "
+            data-sector="Healthcare"
 
-            data-search="
-                mrk merck
-            "
+            data-search="mrk merck"
         >
 
             <td>
@@ -6012,17 +5553,11 @@ td {
         <tr
             class="filterable-row"
 
-            data-market="
-                US
-            "
+            data-market="US"
 
-            data-sector="
-                Semiconductor Equipment
-            "
+            data-sector="Semiconductor Equipment"
 
-            data-search="
-                amat applied materials
-            "
+            data-search="amat applied materials"
         >
 
             <td>
@@ -6125,17 +5660,11 @@ td {
         <tr
             class="filterable-row"
 
-            data-market="
-                US
-            "
+            data-market="US"
 
-            data-sector="
-                Semiconductors
-            "
+            data-sector="Semiconductors"
 
-            data-search="
-                tsm tsmc
-            "
+            data-search="tsm tsmc"
         >
 
             <td>
@@ -6238,17 +5767,11 @@ td {
         <tr
             class="filterable-row"
 
-            data-market="
-                US
-            "
+            data-market="US"
 
-            data-sector="
-                Healthcare
-            "
+            data-sector="Healthcare"
 
-            data-search="
-                lly eli lilly
-            "
+            data-search="lly eli lilly"
         >
 
             <td>
@@ -6351,17 +5874,11 @@ td {
         <tr
             class="filterable-row"
 
-            data-market="
-                US
-            "
+            data-market="US"
 
-            data-sector="
-                Financials
-            "
+            data-sector="Financials"
 
-            data-search="
-                axp american express
-            "
+            data-search="axp american express"
         >
 
             <td>
@@ -6464,17 +5981,11 @@ td {
         <tr
             class="filterable-row"
 
-            data-market="
-                US
-            "
+            data-market="US"
 
-            data-sector="
-                Healthcare
-            "
+            data-sector="Healthcare"
 
-            data-search="
-                unh unitedhealth
-            "
+            data-search="unh unitedhealth"
         >
 
             <td>
@@ -6577,17 +6088,11 @@ td {
         <tr
             class="filterable-row"
 
-            data-market="
-                US
-            "
+            data-market="US"
 
-            data-sector="
-                Semiconductors
-            "
+            data-sector="Semiconductors"
 
-            data-search="
-                txn texas instruments
-            "
+            data-search="txn texas instruments"
         >
 
             <td>
@@ -6690,247 +6195,15 @@ td {
         <tr
             class="filterable-row"
 
-            data-market="
-                US
-            "
+            data-market="US"
 
-            data-sector="
-                Financials
-            "
+            data-sector="Energy"
 
-            data-search="
-                ma mastercard
-            "
+            data-search="cvx chevron"
         >
 
             <td>
                 19
-            </td>
-
-
-            <td>
-
-                <a
-                    class="stock-link"
-                    href="stocks/ma/"
-                >
-
-                    <div class="stock-name">
-                        Mastercard
-                    </div>
-
-                    <div class="ticker">
-                        MA
-                    </div>
-
-                    <div class="sector">
-                        Financials
-                    </div>
-
-                </a>
-
-            </td>
-
-
-            <td>
-
-                $543.60
-
-            </td>
-
-
-            <td class="negative">
-
-                -1.44%
-
-            </td>
-
-
-            <td class="desktop-column">
-                83
-            </td>
-
-
-            <td class="desktop-column">
-                58
-            </td>
-
-
-            <td class="desktop-column">
-                76
-            </td>
-
-
-            <td class="desktop-column">
-                70
-            </td>
-
-
-            <td class="score">
-                73
-            </td>
-
-
-            <td>
-
-                <span class="
-                    quality-badge
-                    quality-good
-                ">
-
-                    100%
-
-                </span>
-
-            </td>
-
-
-            <td>
-
-                <span class="
-                    rating-badge
-                    buy
-                ">
-
-                    Buy
-
-                </span>
-
-            </td>
-
-        </tr>
-        
-        <tr
-            class="filterable-row"
-
-            data-market="
-                US
-            "
-
-            data-sector="
-                Energy
-            "
-
-            data-search="
-                xom exxon mobil
-            "
-        >
-
-            <td>
-                20
-            </td>
-
-
-            <td>
-
-                <a
-                    class="stock-link"
-                    href="stocks/xom/"
-                >
-
-                    <div class="stock-name">
-                        Exxon Mobil
-                    </div>
-
-                    <div class="ticker">
-                        XOM
-                    </div>
-
-                    <div class="sector">
-                        Energy
-                    </div>
-
-                </a>
-
-            </td>
-
-
-            <td>
-
-                $147.36
-
-            </td>
-
-
-            <td class="positive">
-
-                +0.97%
-
-            </td>
-
-
-            <td class="desktop-column">
-                93
-            </td>
-
-
-            <td class="desktop-column">
-                67
-            </td>
-
-
-            <td class="desktop-column">
-                58
-            </td>
-
-
-            <td class="desktop-column">
-                85
-            </td>
-
-
-            <td class="score">
-                73
-            </td>
-
-
-            <td>
-
-                <span class="
-                    quality-badge
-                    quality-good
-                ">
-
-                    100%
-
-                </span>
-
-            </td>
-
-
-            <td>
-
-                <span class="
-                    rating-badge
-                    buy
-                ">
-
-                    Buy
-
-                </span>
-
-            </td>
-
-        </tr>
-        
-        <tr
-            class="filterable-row"
-
-            data-market="
-                US
-            "
-
-            data-sector="
-                Energy
-            "
-
-            data-search="
-                cvx chevron
-            "
-        >
-
-            <td>
-                21
             </td>
 
 
@@ -7029,21 +6302,15 @@ td {
         <tr
             class="filterable-row"
 
-            data-market="
-                US
-            "
+            data-market="US"
 
-            data-sector="
-                Semiconductors
-            "
+            data-sector="Semiconductors"
 
-            data-search="
-                avgo broadcom
-            "
+            data-search="avgo broadcom"
         >
 
             <td>
-                22
+                20
             </td>
 
 
@@ -7142,21 +6409,15 @@ td {
         <tr
             class="filterable-row"
 
-            data-market="
-                US
-            "
+            data-market="US"
 
-            data-sector="
-                Healthcare
-            "
+            data-sector="Healthcare"
 
-            data-search="
-                abbv abbvie
-            "
+            data-search="abbv abbvie"
         >
 
             <td>
-                23
+                21
             </td>
 
 
@@ -7255,21 +6516,15 @@ td {
         <tr
             class="filterable-row"
 
-            data-market="
-                US
-            "
+            data-market="US"
 
-            data-sector="
-                Healthcare
-            "
+            data-sector="Healthcare"
 
-            data-search="
-                tmo thermo fisher scientific
-            "
+            data-search="tmo thermo fisher scientific"
         >
 
             <td>
-                24
+                22
             </td>
 
 
@@ -7368,21 +6623,122 @@ td {
         <tr
             class="filterable-row"
 
-            data-market="
-                US
-            "
+            data-market="US"
 
-            data-sector="
-                Energy
-            "
+            data-sector="Energy"
 
-            data-search="
-                cop conocophillips
-            "
+            data-search="xom exxon mobil"
         >
 
             <td>
-                25
+                23
+            </td>
+
+
+            <td>
+
+                <a
+                    class="stock-link"
+                    href="stocks/xom/"
+                >
+
+                    <div class="stock-name">
+                        Exxon Mobil
+                    </div>
+
+                    <div class="ticker">
+                        XOM
+                    </div>
+
+                    <div class="sector">
+                        Energy
+                    </div>
+
+                </a>
+
+            </td>
+
+
+            <td>
+
+                $147.36
+
+            </td>
+
+
+            <td class="positive">
+
+                +0.97%
+
+            </td>
+
+
+            <td class="desktop-column">
+                93
+            </td>
+
+
+            <td class="desktop-column">
+                67
+            </td>
+
+
+            <td class="desktop-column">
+                58
+            </td>
+
+
+            <td class="desktop-column">
+                81
+            </td>
+
+
+            <td class="score">
+                72
+            </td>
+
+
+            <td>
+
+                <span class="
+                    quality-badge
+                    quality-good
+                ">
+
+                    100%
+
+                </span>
+
+            </td>
+
+
+            <td>
+
+                <span class="
+                    rating-badge
+                    buy
+                ">
+
+                    Buy
+
+                </span>
+
+            </td>
+
+        </tr>
+        
+        <tr
+            class="filterable-row"
+
+            data-market="US"
+
+            data-sector="Energy"
+
+            data-search="cop conocophillips"
+        >
+
+            <td>
+                24
             </td>
 
 
@@ -7481,21 +6837,15 @@ td {
         <tr
             class="filterable-row"
 
-            data-market="
-                US
-            "
+            data-market="US"
 
-            data-sector="
-                Semiconductors
-            "
+            data-sector="Semiconductors"
 
-            data-search="
-                amd advanced micro devices
-            "
+            data-search="amd advanced micro devices"
         >
 
             <td>
-                26
+                25
             </td>
 
 
@@ -7594,17 +6944,118 @@ td {
         <tr
             class="filterable-row"
 
-            data-market="
-                US
-            "
+            data-market="US"
 
-            data-sector="
-                Healthcare
-            "
+            data-sector="Financials"
 
-            data-search="
-                jnj johnson &amp; johnson
-            "
+            data-search="ma mastercard"
+        >
+
+            <td>
+                26
+            </td>
+
+
+            <td>
+
+                <a
+                    class="stock-link"
+                    href="stocks/ma/"
+                >
+
+                    <div class="stock-name">
+                        Mastercard
+                    </div>
+
+                    <div class="ticker">
+                        MA
+                    </div>
+
+                    <div class="sector">
+                        Financials
+                    </div>
+
+                </a>
+
+            </td>
+
+
+            <td>
+
+                $543.60
+
+            </td>
+
+
+            <td class="negative">
+
+                -1.44%
+
+            </td>
+
+
+            <td class="desktop-column">
+                83
+            </td>
+
+
+            <td class="desktop-column">
+                58
+            </td>
+
+
+            <td class="desktop-column">
+                76
+            </td>
+
+
+            <td class="desktop-column">
+                52
+            </td>
+
+
+            <td class="score">
+                71
+            </td>
+
+
+            <td>
+
+                <span class="
+                    quality-badge
+                    quality-good
+                ">
+
+                    100%
+
+                </span>
+
+            </td>
+
+
+            <td>
+
+                <span class="
+                    rating-badge
+                    buy
+                ">
+
+                    Buy
+
+                </span>
+
+            </td>
+
+        </tr>
+        
+        <tr
+            class="filterable-row"
+
+            data-market="US"
+
+            data-sector="Healthcare"
+
+            data-search="jnj johnson &amp; johnson"
         >
 
             <td>
@@ -7707,17 +7158,11 @@ td {
         <tr
             class="filterable-row"
 
-            data-market="
-                US
-            "
+            data-market="US"
 
-            data-sector="
-                Consumer / Technology
-            "
+            data-sector="Consumer / Technology"
 
-            data-search="
-                amzn amazon
-            "
+            data-search="amzn amazon"
         >
 
             <td>
@@ -7820,17 +7265,11 @@ td {
         <tr
             class="filterable-row"
 
-            data-market="
-                US
-            "
+            data-market="US"
 
-            data-sector="
-                Consumer Staples
-            "
+            data-sector="Consumer Staples"
 
-            data-search="
-                ko coca-cola
-            "
+            data-search="ko coca-cola"
         >
 
             <td>
@@ -7933,17 +7372,11 @@ td {
         <tr
             class="filterable-row"
 
-            data-market="
-                US
-            "
+            data-market="US"
 
-            data-sector="
-                Semiconductor Equipment
-            "
+            data-sector="Semiconductor Equipment"
 
-            data-search="
-                lrcx lam research
-            "
+            data-search="lrcx lam research"
         >
 
             <td>
@@ -8046,17 +7479,11 @@ td {
         <tr
             class="filterable-row"
 
-            data-market="
-                US
-            "
+            data-market="US"
 
-            data-sector="
-                Semiconductors
-            "
+            data-sector="Semiconductors"
 
-            data-search="
-                qcom qualcomm
-            "
+            data-search="qcom qualcomm"
         >
 
             <td>
@@ -8159,17 +7586,11 @@ td {
         <tr
             class="filterable-row"
 
-            data-market="
-                US
-            "
+            data-market="US"
 
-            data-sector="
-                Communication Services
-            "
+            data-sector="Communication Services"
 
-            data-search="
-                googl alphabet
-            "
+            data-search="googl alphabet"
         >
 
             <td>
@@ -8272,17 +7693,11 @@ td {
         <tr
             class="filterable-row"
 
-            data-market="
-                US
-            "
+            data-market="US"
 
-            data-sector="
-                Semiconductor Equipment
-            "
+            data-sector="Semiconductor Equipment"
 
-            data-search="
-                klac kla
-            "
+            data-search="klac kla"
         >
 
             <td>
@@ -8385,17 +7800,11 @@ td {
         <tr
             class="filterable-row"
 
-            data-market="
-                US
-            "
+            data-market="US"
 
-            data-sector="
-                Consumer
-            "
+            data-sector="Consumer"
 
-            data-search="
-                sbux starbucks
-            "
+            data-search="sbux starbucks"
         >
 
             <td>
@@ -8498,17 +7907,11 @@ td {
         <tr
             class="filterable-row"
 
-            data-market="
-                US
-            "
+            data-market="US"
 
-            data-sector="
-                Consumer Staples
-            "
+            data-sector="Consumer Staples"
 
-            data-search="
-                pg procter &amp; gamble
-            "
+            data-search="pg procter &amp; gamble"
         >
 
             <td>
@@ -8611,17 +8014,11 @@ td {
         <tr
             class="filterable-row"
 
-            data-market="
-                US
-            "
+            data-market="US"
 
-            data-sector="
-                Industrials
-            "
+            data-sector="Industrials"
 
-            data-search="
-                ups ups
-            "
+            data-search="ups ups"
         >
 
             <td>
@@ -8724,17 +8121,11 @@ td {
         <tr
             class="filterable-row"
 
-            data-market="
-                US
-            "
+            data-market="US"
 
-            data-sector="
-                Industrials
-            "
+            data-sector="Industrials"
 
-            data-search="
-                rtx rtx
-            "
+            data-search="rtx rtx"
         >
 
             <td>
@@ -8837,17 +8228,11 @@ td {
         <tr
             class="filterable-row"
 
-            data-market="
-                US
-            "
+            data-market="US"
 
-            data-sector="
-                Energy
-            "
+            data-sector="Energy"
 
-            data-search="
-                slb slb
-            "
+            data-search="slb slb"
         >
 
             <td>
@@ -8950,17 +8335,11 @@ td {
         <tr
             class="filterable-row"
 
-            data-market="
-                US
-            "
+            data-market="US"
 
-            data-sector="
-                Technology
-            "
+            data-sector="Technology"
 
-            data-search="
-                adbe adobe
-            "
+            data-search="adbe adobe"
         >
 
             <td>
@@ -9063,17 +8442,11 @@ td {
         <tr
             class="filterable-row"
 
-            data-market="
-                US
-            "
+            data-market="US"
 
-            data-sector="
-                Communication Services
-            "
+            data-sector="Communication Services"
 
-            data-search="
-                tmus t-mobile
-            "
+            data-search="tmus t-mobile"
         >
 
             <td>
@@ -9176,17 +8549,11 @@ td {
         <tr
             class="filterable-row"
 
-            data-market="
-                US
-            "
+            data-market="US"
 
-            data-sector="
-                Technology
-            "
+            data-sector="Technology"
 
-            data-search="
-                crm salesforce
-            "
+            data-search="crm salesforce"
         >
 
             <td>
@@ -9289,17 +8656,11 @@ td {
         <tr
             class="filterable-row"
 
-            data-market="
-                US
-            "
+            data-market="US"
 
-            data-sector="
-                Industrials
-            "
+            data-sector="Industrials"
 
-            data-search="
-                cat caterpillar
-            "
+            data-search="cat caterpillar"
         >
 
             <td>
@@ -9402,17 +8763,11 @@ td {
         <tr
             class="filterable-row"
 
-            data-market="
-                US
-            "
+            data-market="US"
 
-            data-sector="
-                Technology
-            "
+            data-sector="Technology"
 
-            data-search="
-                msft microsoft
-            "
+            data-search="msft microsoft"
         >
 
             <td>
@@ -9515,17 +8870,11 @@ td {
         <tr
             class="filterable-row"
 
-            data-market="
-                US
-            "
+            data-market="US"
 
-            data-sector="
-                Consumer
-            "
+            data-sector="Consumer"
 
-            data-search="
-                nke nike
-            "
+            data-search="nke nike"
         >
 
             <td>
@@ -9628,17 +8977,11 @@ td {
         <tr
             class="filterable-row"
 
-            data-market="
-                US
-            "
+            data-market="US"
 
-            data-sector="
-                Industrials
-            "
+            data-sector="Industrials"
 
-            data-search="
-                ge ge aerospace
-            "
+            data-search="ge ge aerospace"
         >
 
             <td>
@@ -9741,17 +9084,11 @@ td {
         <tr
             class="filterable-row"
 
-            data-market="
-                US
-            "
+            data-market="US"
 
-            data-sector="
-                Semiconductors
-            "
+            data-sector="Semiconductors"
 
-            data-search="
-                intc intel
-            "
+            data-search="intc intel"
         >
 
             <td>
@@ -9854,17 +9191,11 @@ td {
         <tr
             class="filterable-row"
 
-            data-market="
-                US
-            "
+            data-market="US"
 
-            data-sector="
-                Industrials
-            "
+            data-sector="Industrials"
 
-            data-search="
-                de deere
-            "
+            data-search="de deere"
         >
 
             <td>
@@ -9967,17 +9298,11 @@ td {
         <tr
             class="filterable-row"
 
-            data-market="
-                US
-            "
+            data-market="US"
 
-            data-sector="
-                Technology
-            "
+            data-sector="Technology"
 
-            data-search="
-                shop shopify
-            "
+            data-search="shop shopify"
         >
 
             <td>
@@ -10080,17 +9405,11 @@ td {
         <tr
             class="filterable-row"
 
-            data-market="
-                US
-            "
+            data-market="US"
 
-            data-sector="
-                Communication Services
-            "
+            data-sector="Communication Services"
 
-            data-search="
-                vz verizon
-            "
+            data-search="vz verizon"
         >
 
             <td>
@@ -10193,17 +9512,11 @@ td {
         <tr
             class="filterable-row"
 
-            data-market="
-                US
-            "
+            data-market="US"
 
-            data-sector="
-                Consumer
-            "
+            data-sector="Consumer"
 
-            data-search="
-                cost costco
-            "
+            data-search="cost costco"
         >
 
             <td>
@@ -10306,17 +9619,11 @@ td {
         <tr
             class="filterable-row"
 
-            data-market="
-                US
-            "
+            data-market="US"
 
-            data-sector="
-                Technology
-            "
+            data-sector="Technology"
 
-            data-search="
-                pltr palantir
-            "
+            data-search="pltr palantir"
         >
 
             <td>
@@ -10419,17 +9726,11 @@ td {
         <tr
             class="filterable-row"
 
-            data-market="
-                US
-            "
+            data-market="US"
 
-            data-sector="
-                Consumer
-            "
+            data-sector="Consumer"
 
-            data-search="
-                wmt walmart
-            "
+            data-search="wmt walmart"
         >
 
             <td>
@@ -10532,17 +9833,11 @@ td {
         <tr
             class="filterable-row"
 
-            data-market="
-                US
-            "
+            data-market="US"
 
-            data-sector="
-                Consumer
-            "
+            data-sector="Consumer"
 
-            data-search="
-                mcd mcdonald&#x27;s
-            "
+            data-search="mcd mcdonald&#x27;s"
         >
 
             <td>
@@ -10645,17 +9940,11 @@ td {
         <tr
             class="filterable-row"
 
-            data-market="
-                US
-            "
+            data-market="US"
 
-            data-sector="
-                Communication Services
-            "
+            data-sector="Communication Services"
 
-            data-search="
-                dis walt disney
-            "
+            data-search="dis walt disney"
         >
 
             <td>
@@ -10717,12 +10006,12 @@ td {
 
 
             <td class="desktop-column">
-                85
+                81
             </td>
 
 
             <td class="score">
-                50
+                49
             </td>
 
 
@@ -10744,10 +10033,10 @@ td {
 
                 <span class="
                     rating-badge
-                    hold
+                    watch
                 ">
 
-                    Hold
+                    Watch
 
                 </span>
 
@@ -10758,17 +10047,11 @@ td {
         <tr
             class="filterable-row"
 
-            data-market="
-                US
-            "
+            data-market="US"
 
-            data-sector="
-                Consumer
-            "
+            data-sector="Consumer"
 
-            data-search="
-                hd home depot
-            "
+            data-search="hd home depot"
         >
 
             <td>
@@ -10871,17 +10154,11 @@ td {
         <tr
             class="filterable-row"
 
-            data-market="
-                US
-            "
+            data-market="US"
 
-            data-sector="
-                Communication Services
-            "
+            data-sector="Communication Services"
 
-            data-search="
-                nflx netflix
-            "
+            data-search="nflx netflix"
         >
 
             <td>
@@ -10984,17 +10261,11 @@ td {
         <tr
             class="filterable-row"
 
-            data-market="
-                US
-            "
+            data-market="US"
 
-            data-sector="
-                Technology
-            "
+            data-sector="Technology"
 
-            data-search="
-                orcl oracle
-            "
+            data-search="orcl oracle"
         >
 
             <td>
@@ -11097,17 +10368,11 @@ td {
         <tr
             class="filterable-row"
 
-            data-market="
-                US
-            "
+            data-market="US"
 
-            data-sector="
-                Technology
-            "
+            data-sector="Technology"
 
-            data-search="
-                uber uber
-            "
+            data-search="uber uber"
         >
 
             <td>
@@ -11210,17 +10475,11 @@ td {
         <tr
             class="filterable-row"
 
-            data-market="
-                US
-            "
+            data-market="US"
 
-            data-sector="
-                Industrials
-            "
+            data-sector="Industrials"
 
-            data-search="
-                hon honeywell
-            "
+            data-search="hon honeywell"
         >
 
             <td>
@@ -11323,17 +10582,11 @@ td {
         <tr
             class="filterable-row"
 
-            data-market="
-                US
-            "
+            data-market="US"
 
-            data-sector="
-                Consumer / Technology
-            "
+            data-sector="Consumer / Technology"
 
-            data-search="
-                tsla tesla
-            "
+            data-search="tsla tesla"
         >
 
             <td>
@@ -11436,17 +10689,11 @@ td {
         <tr
             class="filterable-row"
 
-            data-market="
-                US
-            "
+            data-market="US"
 
-            data-sector="
-                Industrials
-            "
+            data-sector="Industrials"
 
-            data-search="
-                ba boeing
-            "
+            data-search="ba boeing"
         >
 
             <td>
@@ -11562,13 +10809,6 @@ td {
         Singapore Stock Rankings
     </div>
 
-    <div class="section-subtitle">
-
-        Search by ticker or company,
-        or filter by market and sector.
-
-    </div>
-
 
     <div class="table-wrapper">
 
@@ -11600,13 +10840,13 @@ td {
     <span
         class="info-wrap"
         tabindex="0"
-        aria-label="Measures the stock&#x27;s current price trend using moving averages, RSI and MACD. A higher score indicates stronger technical conditions."
+        aria-label="Measures the stock&#x27;s current price trend using moving averages, RSI and MACD."
     >
 
         ⓘ
 
         <span class="tooltip">
-            Measures the stock&#x27;s current price trend using moving averages, RSI and MACD. A higher score indicates stronger technical conditions.
+            Measures the stock&#x27;s current price trend using moving averages, RSI and MACD.
         </span>
 
     </span>
@@ -11644,13 +10884,13 @@ td {
     <span
         class="info-wrap"
         tabindex="0"
-        aria-label="Measures available business strength using revenue growth, earnings growth, margins, return on equity, debt and liquidity."
+        aria-label="Measures business strength using metrics selected for the company&#x27;s scoring model."
     >
 
         ⓘ
 
         <span class="tooltip">
-            Measures available business strength using revenue growth, earnings growth, margins, return on equity, debt and liquidity.
+            Measures business strength using metrics selected for the company&#x27;s scoring model.
         </span>
 
     </span>
@@ -11666,13 +10906,13 @@ td {
     <span
         class="info-wrap"
         tabindex="0"
-        aria-label="Measures how attractively the stock appears priced using available valuation indicators such as forward P/E and price-to-book."
+        aria-label="Measures how attractively the stock appears priced using valuation indicators appropriate to the scoring model."
     >
 
         ⓘ
 
         <span class="tooltip">
-            Measures how attractively the stock appears priced using available valuation indicators such as forward P/E and price-to-book.
+            Measures how attractively the stock appears priced using valuation indicators appropriate to the scoring model.
         </span>
 
     </span>
@@ -11688,13 +10928,13 @@ td {
     <span
         class="info-wrap"
         tabindex="0"
-        aria-label="The combined dashboard score. It uses Technical 25%, Momentum 20%, Fundamentals 40% and Valuation 15%."
+        aria-label="The combined dashboard score. The weighting depends on the scoring model used for the company."
     >
 
         ⓘ
 
         <span class="tooltip">
-            The combined dashboard score. It uses Technical 25%, Momentum 20%, Fundamentals 40% and Valuation 15%.
+            The combined dashboard score. The weighting depends on the scoring model used for the company.
         </span>
 
     </span>
@@ -11710,13 +10950,13 @@ td {
     <span
         class="info-wrap"
         tabindex="0"
-        aria-label="Shows how much of the fundamental scoring model had usable data. Lower data quality means the score should be interpreted more cautiously."
+        aria-label="Shows how much of the fundamental scoring model had usable data."
     >
 
         ⓘ
 
         <span class="tooltip">
-            Shows how much of the fundamental scoring model had usable data. Lower data quality means the score should be interpreted more cautiously.
+            Shows how much of the fundamental scoring model had usable data.
         </span>
 
     </span>
@@ -11732,13 +10972,13 @@ td {
     <span
         class="info-wrap"
         tabindex="0"
-        aria-label="An automated quantitative rating generated by V Stock Intelligence. It is not an analyst recommendation and is not financial advice."
+        aria-label="An automated quantitative rating generated by V Stock Intelligence. It is not an analyst recommendation or financial advice."
     >
 
         ⓘ
 
         <span class="tooltip">
-            An automated quantitative rating generated by V Stock Intelligence. It is not an analyst recommendation and is not financial advice.
+            An automated quantitative rating generated by V Stock Intelligence. It is not an analyst recommendation or financial advice.
         </span>
 
     </span>
@@ -11757,134 +10997,15 @@ td {
         <tr
             class="filterable-row"
 
-            data-market="
-                Singapore
-            "
+            data-market="Singapore"
 
-            data-sector="
-                Banks
-            "
+            data-sector="Banks"
 
-            data-search="
-                d05.si dbs group
-            "
+            data-search="o39.si ocbc"
         >
 
             <td>
                 1
-            </td>
-
-
-            <td>
-
-                <a
-                    class="stock-link"
-                    href="stocks/d05-si/"
-                >
-
-                    <div class="stock-name">
-                        DBS Group
-                    </div>
-
-                    <div class="ticker">
-                        D05.SI
-                    </div>
-
-                    <div class="sector">
-                        Banks
-                    </div>
-
-                </a>
-
-            </td>
-
-
-            <td>
-
-                S$71.96
-
-            </td>
-
-
-            <td class="negative">
-
-                -0.72%
-
-            </td>
-
-
-            <td class="desktop-column">
-                85
-            </td>
-
-
-            <td class="desktop-column">
-                90
-            </td>
-
-
-            <td class="desktop-column">
-                88
-            </td>
-
-
-            <td class="desktop-column">
-                90
-            </td>
-
-
-            <td class="score">
-                88
-            </td>
-
-
-            <td>
-
-                <span class="
-                    quality-badge
-                    quality-low
-                ">
-
-                    40%
-
-                </span>
-
-            </td>
-
-
-            <td>
-
-                <span class="
-                    rating-badge
-                    strong-buy
-                ">
-
-                    Strong Buy
-
-                </span>
-
-            </td>
-
-        </tr>
-        
-        <tr
-            class="filterable-row"
-
-            data-market="
-                Singapore
-            "
-
-            data-sector="
-                Banks
-            "
-
-            data-search="
-                o39.si ocbc
-            "
-        >
-
-            <td>
-                2
             </td>
 
 
@@ -11937,690 +11058,12 @@ td {
 
 
             <td class="desktop-column">
-                88
+                79
             </td>
 
 
             <td class="desktop-column">
-                84
-            </td>
-
-
-            <td class="score">
-                87
-            </td>
-
-
-            <td>
-
-                <span class="
-                    quality-badge
-                    quality-low
-                ">
-
-                    40%
-
-                </span>
-
-            </td>
-
-
-            <td>
-
-                <span class="
-                    rating-badge
-                    strong-buy
-                ">
-
-                    Strong Buy
-
-                </span>
-
-            </td>
-
-        </tr>
-        
-        <tr
-            class="filterable-row"
-
-            data-market="
-                Singapore
-            "
-
-            data-sector="
-                REIT
-            "
-
-            data-search="
-                ajbu.si keppel dc reit
-            "
-        >
-
-            <td>
-                3
-            </td>
-
-
-            <td>
-
-                <a
-                    class="stock-link"
-                    href="stocks/ajbu-si/"
-                >
-
-                    <div class="stock-name">
-                        Keppel DC REIT
-                    </div>
-
-                    <div class="ticker">
-                        AJBU.SI
-                    </div>
-
-                    <div class="sector">
-                        REIT
-                    </div>
-
-                </a>
-
-            </td>
-
-
-            <td>
-
-                S$2.32
-
-            </td>
-
-
-            <td class="positive">
-
-                +0.00%
-
-            </td>
-
-
-            <td class="desktop-column">
-                83
-            </td>
-
-
-            <td class="desktop-column">
-                61
-            </td>
-
-
-            <td class="desktop-column">
-                85
-            </td>
-
-
-            <td class="desktop-column">
-                88
-            </td>
-
-
-            <td class="score">
-                83
-            </td>
-
-
-            <td>
-
-                <span class="
-                    quality-badge
-                    quality-good
-                ">
-
-                    95%
-
-                </span>
-
-            </td>
-
-
-            <td>
-
-                <span class="
-                    rating-badge
-                    strong-buy
-                ">
-
-                    Strong Buy
-
-                </span>
-
-            </td>
-
-        </tr>
-        
-        <tr
-            class="filterable-row"
-
-            data-market="
-                Singapore
-            "
-
-            data-sector="
-                REIT
-            "
-
-            data-search="
-                j69u.si frasers centrepoint trust
-            "
-        >
-
-            <td>
-                4
-            </td>
-
-
-            <td>
-
-                <a
-                    class="stock-link"
-                    href="stocks/j69u-si/"
-                >
-
-                    <div class="stock-name">
-                        Frasers Centrepoint Trust
-                    </div>
-
-                    <div class="ticker">
-                        J69U.SI
-                    </div>
-
-                    <div class="sector">
-                        REIT
-                    </div>
-
-                </a>
-
-            </td>
-
-
-            <td>
-
-                S$2.26
-
-            </td>
-
-
-            <td class="positive">
-
-                +0.44%
-
-            </td>
-
-
-            <td class="desktop-column">
-                65
-            </td>
-
-
-            <td class="desktop-column">
-                44
-            </td>
-
-
-            <td class="desktop-column">
-                92
-            </td>
-
-
-            <td class="desktop-column">
-                88
-            </td>
-
-
-            <td class="score">
-                83
-            </td>
-
-
-            <td>
-
-                <span class="
-                    quality-badge
-                    quality-good
-                ">
-
-                    100%
-
-                </span>
-
-            </td>
-
-
-            <td>
-
-                <span class="
-                    rating-badge
-                    strong-buy
-                ">
-
-                    Strong Buy
-
-                </span>
-
-            </td>
-
-        </tr>
-        
-        <tr
-            class="filterable-row"
-
-            data-market="
-                Singapore
-            "
-
-            data-sector="
-                Banks
-            "
-
-            data-search="
-                u11.si uob
-            "
-        >
-
-            <td>
-                5
-            </td>
-
-
-            <td>
-
-                <a
-                    class="stock-link"
-                    href="stocks/u11-si/"
-                >
-
-                    <div class="stock-name">
-                        UOB
-                    </div>
-
-                    <div class="ticker">
-                        U11.SI
-                    </div>
-
-                    <div class="sector">
-                        Banks
-                    </div>
-
-                </a>
-
-            </td>
-
-
-            <td>
-
-                S$42.47
-
-            </td>
-
-
-            <td class="negative">
-
-                -2.37%
-
-            </td>
-
-
-            <td class="desktop-column">
-                100
-            </td>
-
-
-            <td class="desktop-column">
-                78
-            </td>
-
-
-            <td class="desktop-column">
-                65
-            </td>
-
-
-            <td class="desktop-column">
-                100
-            </td>
-
-
-            <td class="score">
-                81
-            </td>
-
-
-            <td>
-
-                <span class="
-                    quality-badge
-                    quality-medium
-                ">
-
-                    65%
-
-                </span>
-
-            </td>
-
-
-            <td>
-
-                <span class="
-                    rating-badge
-                    strong-buy
-                ">
-
-                    Strong Buy
-
-                </span>
-
-            </td>
-
-        </tr>
-        
-        <tr
-            class="filterable-row"
-
-            data-market="
-                Singapore
-            "
-
-            data-sector="
-                REIT
-            "
-
-            data-search="
-                c38u.si capitaland integrated commercial trust
-            "
-        >
-
-            <td>
-                6
-            </td>
-
-
-            <td>
-
-                <a
-                    class="stock-link"
-                    href="stocks/c38u-si/"
-                >
-
-                    <div class="stock-name">
-                        CapitaLand Integrated Commercial Trust
-                    </div>
-
-                    <div class="ticker">
-                        C38U.SI
-                    </div>
-
-                    <div class="sector">
-                        REIT
-                    </div>
-
-                </a>
-
-            </td>
-
-
-            <td>
-
-                S$2.47
-
-            </td>
-
-
-            <td class="positive">
-
-                +0.82%
-
-            </td>
-
-
-            <td class="desktop-column">
-                83
-            </td>
-
-
-            <td class="desktop-column">
-                62
-            </td>
-
-
-            <td class="desktop-column">
-                78
-            </td>
-
-
-            <td class="desktop-column">
-                88
-            </td>
-
-
-            <td class="score">
-                80
-            </td>
-
-
-            <td>
-
-                <span class="
-                    quality-badge
-                    quality-good
-                ">
-
-                    100%
-
-                </span>
-
-            </td>
-
-
-            <td>
-
-                <span class="
-                    rating-badge
-                    strong-buy
-                ">
-
-                    Strong Buy
-
-                </span>
-
-            </td>
-
-        </tr>
-        
-        <tr
-            class="filterable-row"
-
-            data-market="
-                Singapore
-            "
-
-            data-sector="
-                REIT
-            "
-
-            data-search="
-                n2iu.si mapletree pan asia commercial trust
-            "
-        >
-
-            <td>
-                7
-            </td>
-
-
-            <td>
-
-                <a
-                    class="stock-link"
-                    href="stocks/n2iu-si/"
-                >
-
-                    <div class="stock-name">
-                        Mapletree Pan Asia Commercial Trust
-                    </div>
-
-                    <div class="ticker">
-                        N2IU.SI
-                    </div>
-
-                    <div class="sector">
-                        REIT
-                    </div>
-
-                </a>
-
-            </td>
-
-
-            <td>
-
-                S$1.34
-
-            </td>
-
-
-            <td class="positive">
-
-                +0.75%
-
-            </td>
-
-
-            <td class="desktop-column">
-                58
-            </td>
-
-
-            <td class="desktop-column">
-                40
-            </td>
-
-
-            <td class="desktop-column">
-                82
-            </td>
-
-
-            <td class="desktop-column">
-                96
-            </td>
-
-
-            <td class="score">
-                80
-            </td>
-
-
-            <td>
-
-                <span class="
-                    quality-badge
-                    quality-good
-                ">
-
-                    90%
-
-                </span>
-
-            </td>
-
-
-            <td>
-
-                <span class="
-                    rating-badge
-                    strong-buy
-                ">
-
-                    Strong Buy
-
-                </span>
-
-            </td>
-
-        </tr>
-        
-        <tr
-            class="filterable-row"
-
-            data-market="
-                Singapore
-            "
-
-            data-sector="
-                REIT
-            "
-
-            data-search="
-                me8u.si mapletree industrial trust
-            "
-        >
-
-            <td>
-                8
-            </td>
-
-
-            <td>
-
-                <a
-                    class="stock-link"
-                    href="stocks/me8u-si/"
-                >
-
-                    <div class="stock-name">
-                        Mapletree Industrial Trust
-                    </div>
-
-                    <div class="ticker">
-                        ME8U.SI
-                    </div>
-
-                    <div class="sector">
-                        REIT
-                    </div>
-
-                </a>
-
-            </td>
-
-
-            <td>
-
-                S$1.94
-
-            </td>
-
-
-            <td class="positive">
-
-                +1.04%
-
-            </td>
-
-
-            <td class="desktop-column">
-                65
-            </td>
-
-
-            <td class="desktop-column">
-                30
-            </td>
-
-
-            <td class="desktop-column">
-                83
-            </td>
-
-
-            <td class="desktop-column">
-                92
+                68
             </td>
 
 
@@ -12633,10 +11076,10 @@ td {
 
                 <span class="
                     quality-badge
-                    quality-good
+                    quality-low
                 ">
 
-                    90%
+                    35%
 
                 </span>
 
@@ -12661,21 +11104,15 @@ td {
         <tr
             class="filterable-row"
 
-            data-market="
-                Singapore
-            "
+            data-market="Singapore"
 
-            data-sector="
-                Consumer
-            "
+            data-sector="Consumer"
 
-            data-search="
-                f34.si wilmar international
-            "
+            data-search="f34.si wilmar international"
         >
 
             <td>
-                9
+                2
             </td>
 
 
@@ -12774,21 +11211,15 @@ td {
         <tr
             class="filterable-row"
 
-            data-market="
-                Singapore
-            "
+            data-market="Singapore"
 
-            data-sector="
-                REIT
-            "
+            data-sector="Banks"
 
-            data-search="
-                a17u.si capitaland ascendas reit
-            "
+            data-search="u11.si uob"
         >
 
             <td>
-                10
+                3
             </td>
 
 
@@ -12796,19 +11227,19 @@ td {
 
                 <a
                     class="stock-link"
-                    href="stocks/a17u-si/"
+                    href="stocks/u11-si/"
                 >
 
                     <div class="stock-name">
-                        CapitaLand Ascendas REIT
+                        UOB
                     </div>
 
                     <div class="ticker">
-                        A17U.SI
+                        U11.SI
                     </div>
 
                     <div class="sector">
-                        REIT
+                        Banks
                     </div>
 
                 </a>
@@ -12818,40 +11249,40 @@ td {
 
             <td>
 
-                S$2.51
+                S$42.47
 
             </td>
 
 
-            <td class="positive">
+            <td class="negative">
 
-                +1.21%
+                -2.37%
 
-            </td>
-
-
-            <td class="desktop-column">
-                50
             </td>
 
 
             <td class="desktop-column">
-                35
+                100
             </td>
 
 
             <td class="desktop-column">
-                84
+                78
             </td>
 
 
             <td class="desktop-column">
-                92
+                64
+            </td>
+
+
+            <td class="desktop-column">
+                86
             </td>
 
 
             <td class="score">
-                78
+                77
             </td>
 
 
@@ -12859,10 +11290,10 @@ td {
 
                 <span class="
                     quality-badge
-                    quality-good
+                    quality-medium
                 ">
 
-                    100%
+                    65%
 
                 </span>
 
@@ -12887,21 +11318,122 @@ td {
         <tr
             class="filterable-row"
 
-            data-market="
-                Singapore
-            "
+            data-market="Singapore"
 
-            data-sector="
-                Transport
-            "
+            data-sector="Banks"
 
-            data-search="
-                s58.si sats
-            "
+            data-search="d05.si dbs group"
         >
 
             <td>
-                11
+                4
+            </td>
+
+
+            <td>
+
+                <a
+                    class="stock-link"
+                    href="stocks/d05-si/"
+                >
+
+                    <div class="stock-name">
+                        DBS Group
+                    </div>
+
+                    <div class="ticker">
+                        D05.SI
+                    </div>
+
+                    <div class="sector">
+                        Banks
+                    </div>
+
+                </a>
+
+            </td>
+
+
+            <td>
+
+                S$71.96
+
+            </td>
+
+
+            <td class="negative">
+
+                -0.72%
+
+            </td>
+
+
+            <td class="desktop-column">
+                85
+            </td>
+
+
+            <td class="desktop-column">
+                90
+            </td>
+
+
+            <td class="desktop-column">
+                79
+            </td>
+
+
+            <td class="desktop-column">
+                56
+            </td>
+
+
+            <td class="score">
+                76
+            </td>
+
+
+            <td>
+
+                <span class="
+                    quality-badge
+                    quality-low
+                ">
+
+                    35%
+
+                </span>
+
+            </td>
+
+
+            <td>
+
+                <span class="
+                    rating-badge
+                    buy
+                ">
+
+                    Buy
+
+                </span>
+
+            </td>
+
+        </tr>
+        
+        <tr
+            class="filterable-row"
+
+            data-market="Singapore"
+
+            data-sector="Transport"
+
+            data-search="s58.si sats"
+        >
+
+            <td>
+                5
             </td>
 
 
@@ -13000,21 +11532,15 @@ td {
         <tr
             class="filterable-row"
 
-            data-market="
-                Singapore
-            "
+            data-market="Singapore"
 
-            data-sector="
-                Consumer
-            "
+            data-sector="Consumer"
 
-            data-search="
-                y92.si thai beverage
-            "
+            data-search="y92.si thai beverage"
         >
 
             <td>
-                12
+                6
             </td>
 
 
@@ -13113,134 +11639,15 @@ td {
         <tr
             class="filterable-row"
 
-            data-market="
-                Singapore
-            "
+            data-market="Singapore"
 
-            data-sector="
-                REIT
-            "
+            data-sector="Financial Services"
 
-            data-search="
-                m44u.si mapletree logistics trust
-            "
+            data-search="aiy.si ifast"
         >
 
             <td>
-                13
-            </td>
-
-
-            <td>
-
-                <a
-                    class="stock-link"
-                    href="stocks/m44u-si/"
-                >
-
-                    <div class="stock-name">
-                        Mapletree Logistics Trust
-                    </div>
-
-                    <div class="ticker">
-                        M44U.SI
-                    </div>
-
-                    <div class="sector">
-                        REIT
-                    </div>
-
-                </a>
-
-            </td>
-
-
-            <td>
-
-                S$1.21
-
-            </td>
-
-
-            <td class="positive">
-
-                +0.00%
-
-            </td>
-
-
-            <td class="desktop-column">
-                28
-            </td>
-
-
-            <td class="desktop-column">
-                35
-            </td>
-
-
-            <td class="desktop-column">
-                80
-            </td>
-
-
-            <td class="desktop-column">
-                92
-            </td>
-
-
-            <td class="score">
-                74
-            </td>
-
-
-            <td>
-
-                <span class="
-                    quality-badge
-                    quality-good
-                ">
-
-                    90%
-
-                </span>
-
-            </td>
-
-
-            <td>
-
-                <span class="
-                    rating-badge
-                    buy
-                ">
-
-                    Buy
-
-                </span>
-
-            </td>
-
-        </tr>
-        
-        <tr
-            class="filterable-row"
-
-            data-market="
-                Singapore
-            "
-
-            data-sector="
-                Financial Services
-            "
-
-            data-search="
-                aiy.si ifast
-            "
-        >
-
-            <td>
-                14
+                7
             </td>
 
 
@@ -13339,21 +11746,15 @@ td {
         <tr
             class="filterable-row"
 
-            data-market="
-                Singapore
-            "
+            data-market="Singapore"
 
-            data-sector="
-                Industrials
-            "
+            data-sector="Industrials"
 
-            data-search="
-                bs6.si yangzijiang shipbuilding
-            "
+            data-search="bs6.si yangzijiang shipbuilding"
         >
 
             <td>
-                15
+                8
             </td>
 
 
@@ -13452,21 +11853,15 @@ td {
         <tr
             class="filterable-row"
 
-            data-market="
-                Singapore
-            "
+            data-market="Singapore"
 
-            data-sector="
-                Transport
-            "
+            data-sector="Transport"
 
-            data-search="
-                c6l.si singapore airlines
-            "
+            data-search="c6l.si singapore airlines"
         >
 
             <td>
-                16
+                9
             </td>
 
 
@@ -13565,21 +11960,15 @@ td {
         <tr
             class="filterable-row"
 
-            data-market="
-                Singapore
-            "
+            data-market="Singapore"
 
-            data-sector="
-                Financial Services
-            "
+            data-sector="Financial Services"
 
-            data-search="
-                s68.si singapore exchange
-            "
+            data-search="s68.si singapore exchange"
         >
 
             <td>
-                17
+                10
             </td>
 
 
@@ -13678,21 +12067,229 @@ td {
         <tr
             class="filterable-row"
 
-            data-market="
-                Singapore
-            "
+            data-market="Singapore"
 
-            data-sector="
-                Industrials
-            "
+            data-sector="REIT"
 
-            data-search="
-                bn4.si keppel
-            "
+            data-search="c38u.si capitaland integrated commercial trust"
         >
 
             <td>
-                18
+                11
+            </td>
+
+
+            <td>
+
+                <a
+                    class="stock-link"
+                    href="stocks/c38u-si/"
+                >
+
+                    <div class="stock-name">
+                        CapitaLand Integrated Commercial Trust
+                    </div>
+
+                    <div class="ticker">
+                        C38U.SI
+                    </div>
+
+                    <div class="sector">
+                        REIT
+                    </div>
+
+                </a>
+
+            </td>
+
+
+            <td>
+
+                S$2.47
+
+            </td>
+
+
+            <td class="positive">
+
+                +0.82%
+
+            </td>
+
+
+            <td class="desktop-column">
+                83
+            </td>
+
+
+            <td class="desktop-column">
+                62
+            </td>
+
+
+            <td class="desktop-column">
+                68
+            </td>
+
+
+            <td class="desktop-column">
+                68
+            </td>
+
+
+            <td class="score">
+                70
+            </td>
+
+
+            <td>
+
+                <span class="
+                    quality-badge
+                    quality-good
+                ">
+
+                    100%
+
+                </span>
+
+            </td>
+
+
+            <td>
+
+                <span class="
+                    rating-badge
+                    buy
+                ">
+
+                    Buy
+
+                </span>
+
+            </td>
+
+        </tr>
+        
+        <tr
+            class="filterable-row"
+
+            data-market="Singapore"
+
+            data-sector="REIT"
+
+            data-search="j69u.si frasers centrepoint trust"
+        >
+
+            <td>
+                12
+            </td>
+
+
+            <td>
+
+                <a
+                    class="stock-link"
+                    href="stocks/j69u-si/"
+                >
+
+                    <div class="stock-name">
+                        Frasers Centrepoint Trust
+                    </div>
+
+                    <div class="ticker">
+                        J69U.SI
+                    </div>
+
+                    <div class="sector">
+                        REIT
+                    </div>
+
+                </a>
+
+            </td>
+
+
+            <td>
+
+                S$2.26
+
+            </td>
+
+
+            <td class="positive">
+
+                +0.44%
+
+            </td>
+
+
+            <td class="desktop-column">
+                65
+            </td>
+
+
+            <td class="desktop-column">
+                44
+            </td>
+
+
+            <td class="desktop-column">
+                80
+            </td>
+
+
+            <td class="desktop-column">
+                68
+            </td>
+
+
+            <td class="score">
+                70
+            </td>
+
+
+            <td>
+
+                <span class="
+                    quality-badge
+                    quality-good
+                ">
+
+                    100%
+
+                </span>
+
+            </td>
+
+
+            <td>
+
+                <span class="
+                    rating-badge
+                    buy
+                ">
+
+                    Buy
+
+                </span>
+
+            </td>
+
+        </tr>
+        
+        <tr
+            class="filterable-row"
+
+            data-market="Singapore"
+
+            data-sector="Industrials"
+
+            data-search="bn4.si keppel"
+        >
+
+            <td>
+                13
             </td>
 
 
@@ -13791,21 +12388,443 @@ td {
         <tr
             class="filterable-row"
 
-            data-market="
-                Singapore
-            "
+            data-market="Singapore"
 
-            data-sector="
-                Property
-            "
+            data-sector="REIT"
 
-            data-search="
-                h78.si hongkong land
-            "
+            data-search="n2iu.si mapletree pan asia commercial trust"
         >
 
             <td>
-                19
+                14
+            </td>
+
+
+            <td>
+
+                <a
+                    class="stock-link"
+                    href="stocks/n2iu-si/"
+                >
+
+                    <div class="stock-name">
+                        Mapletree Pan Asia Commercial Trust
+                    </div>
+
+                    <div class="ticker">
+                        N2IU.SI
+                    </div>
+
+                    <div class="sector">
+                        REIT
+                    </div>
+
+                </a>
+
+            </td>
+
+
+            <td>
+
+                S$1.34
+
+            </td>
+
+
+            <td class="positive">
+
+                +0.75%
+
+            </td>
+
+
+            <td class="desktop-column">
+                58
+            </td>
+
+
+            <td class="desktop-column">
+                40
+            </td>
+
+
+            <td class="desktop-column">
+                69
+            </td>
+
+
+            <td class="desktop-column">
+                78
+            </td>
+
+
+            <td class="score">
+                68
+            </td>
+
+
+            <td>
+
+                <span class="
+                    quality-badge
+                    quality-good
+                ">
+
+                    90%
+
+                </span>
+
+            </td>
+
+
+            <td>
+
+                <span class="
+                    rating-badge
+                    buy
+                ">
+
+                    Buy
+
+                </span>
+
+            </td>
+
+        </tr>
+        
+        <tr
+            class="filterable-row"
+
+            data-market="Singapore"
+
+            data-sector="REIT"
+
+            data-search="ajbu.si keppel dc reit"
+        >
+
+            <td>
+                15
+            </td>
+
+
+            <td>
+
+                <a
+                    class="stock-link"
+                    href="stocks/ajbu-si/"
+                >
+
+                    <div class="stock-name">
+                        Keppel DC REIT
+                    </div>
+
+                    <div class="ticker">
+                        AJBU.SI
+                    </div>
+
+                    <div class="sector">
+                        REIT
+                    </div>
+
+                </a>
+
+            </td>
+
+
+            <td>
+
+                S$2.32
+
+            </td>
+
+
+            <td class="positive">
+
+                +0.00%
+
+            </td>
+
+
+            <td class="desktop-column">
+                83
+            </td>
+
+
+            <td class="desktop-column">
+                61
+            </td>
+
+
+            <td class="desktop-column">
+                73
+            </td>
+
+
+            <td class="desktop-column">
+                59
+            </td>
+
+
+            <td class="score">
+                68
+            </td>
+
+
+            <td>
+
+                <span class="
+                    quality-badge
+                    quality-good
+                ">
+
+                    95%
+
+                </span>
+
+            </td>
+
+
+            <td>
+
+                <span class="
+                    rating-badge
+                    buy
+                ">
+
+                    Buy
+
+                </span>
+
+            </td>
+
+        </tr>
+        
+        <tr
+            class="filterable-row"
+
+            data-market="Singapore"
+
+            data-sector="REIT"
+
+            data-search="a17u.si capitaland ascendas reit"
+        >
+
+            <td>
+                16
+            </td>
+
+
+            <td>
+
+                <a
+                    class="stock-link"
+                    href="stocks/a17u-si/"
+                >
+
+                    <div class="stock-name">
+                        CapitaLand Ascendas REIT
+                    </div>
+
+                    <div class="ticker">
+                        A17U.SI
+                    </div>
+
+                    <div class="sector">
+                        REIT
+                    </div>
+
+                </a>
+
+            </td>
+
+
+            <td>
+
+                S$2.51
+
+            </td>
+
+
+            <td class="positive">
+
+                +1.21%
+
+            </td>
+
+
+            <td class="desktop-column">
+                50
+            </td>
+
+
+            <td class="desktop-column">
+                35
+            </td>
+
+
+            <td class="desktop-column">
+                74
+            </td>
+
+
+            <td class="desktop-column">
+                71
+            </td>
+
+
+            <td class="score">
+                65
+            </td>
+
+
+            <td>
+
+                <span class="
+                    quality-badge
+                    quality-good
+                ">
+
+                    100%
+
+                </span>
+
+            </td>
+
+
+            <td>
+
+                <span class="
+                    rating-badge
+                    buy
+                ">
+
+                    Buy
+
+                </span>
+
+            </td>
+
+        </tr>
+        
+        <tr
+            class="filterable-row"
+
+            data-market="Singapore"
+
+            data-sector="REIT"
+
+            data-search="me8u.si mapletree industrial trust"
+        >
+
+            <td>
+                17
+            </td>
+
+
+            <td>
+
+                <a
+                    class="stock-link"
+                    href="stocks/me8u-si/"
+                >
+
+                    <div class="stock-name">
+                        Mapletree Industrial Trust
+                    </div>
+
+                    <div class="ticker">
+                        ME8U.SI
+                    </div>
+
+                    <div class="sector">
+                        REIT
+                    </div>
+
+                </a>
+
+            </td>
+
+
+            <td>
+
+                S$1.94
+
+            </td>
+
+
+            <td class="positive">
+
+                +1.04%
+
+            </td>
+
+
+            <td class="desktop-column">
+                65
+            </td>
+
+
+            <td class="desktop-column">
+                30
+            </td>
+
+
+            <td class="desktop-column">
+                69
+            </td>
+
+
+            <td class="desktop-column">
+                71
+            </td>
+
+
+            <td class="score">
+                65
+            </td>
+
+
+            <td>
+
+                <span class="
+                    quality-badge
+                    quality-good
+                ">
+
+                    90%
+
+                </span>
+
+            </td>
+
+
+            <td>
+
+                <span class="
+                    rating-badge
+                    buy
+                ">
+
+                    Buy
+
+                </span>
+
+            </td>
+
+        </tr>
+        
+        <tr
+            class="filterable-row"
+
+            data-market="Singapore"
+
+            data-sector="Property"
+
+            data-search="h78.si hongkong land"
+        >
+
+            <td>
+                18
             </td>
 
 
@@ -13904,21 +12923,15 @@ td {
         <tr
             class="filterable-row"
 
-            data-market="
-                Singapore
-            "
+            data-market="Singapore"
 
-            data-sector="
-                Transport
-            "
+            data-sector="Transport"
 
-            data-search="
-                c52.si comfortdelgro
-            "
+            data-search="c52.si comfortdelgro"
         >
 
             <td>
-                20
+                19
             </td>
 
 
@@ -14017,21 +13030,15 @@ td {
         <tr
             class="filterable-row"
 
-            data-market="
-                Singapore
-            "
+            data-market="Singapore"
 
-            data-sector="
-                Property
-            "
+            data-sector="Property"
 
-            data-search="
-                u14.si uol group
-            "
+            data-search="u14.si uol group"
         >
 
             <td>
-                21
+                20
             </td>
 
 
@@ -14130,17 +13137,118 @@ td {
         <tr
             class="filterable-row"
 
-            data-market="
-                Singapore
-            "
+            data-market="Singapore"
 
-            data-sector="
-                Conglomerate
-            "
+            data-sector="REIT"
 
-            data-search="
-                j36.si jardine matheson
-            "
+            data-search="m44u.si mapletree logistics trust"
+        >
+
+            <td>
+                21
+            </td>
+
+
+            <td>
+
+                <a
+                    class="stock-link"
+                    href="stocks/m44u-si/"
+                >
+
+                    <div class="stock-name">
+                        Mapletree Logistics Trust
+                    </div>
+
+                    <div class="ticker">
+                        M44U.SI
+                    </div>
+
+                    <div class="sector">
+                        REIT
+                    </div>
+
+                </a>
+
+            </td>
+
+
+            <td>
+
+                S$1.21
+
+            </td>
+
+
+            <td class="positive">
+
+                +0.00%
+
+            </td>
+
+
+            <td class="desktop-column">
+                28
+            </td>
+
+
+            <td class="desktop-column">
+                35
+            </td>
+
+
+            <td class="desktop-column">
+                65
+            </td>
+
+
+            <td class="desktop-column">
+                75
+            </td>
+
+
+            <td class="score">
+                60
+            </td>
+
+
+            <td>
+
+                <span class="
+                    quality-badge
+                    quality-good
+                ">
+
+                    90%
+
+                </span>
+
+            </td>
+
+
+            <td>
+
+                <span class="
+                    rating-badge
+                    hold
+                ">
+
+                    Hold
+
+                </span>
+
+            </td>
+
+        </tr>
+        
+        <tr
+            class="filterable-row"
+
+            data-market="Singapore"
+
+            data-sector="Conglomerate"
+
+            data-search="j36.si jardine matheson"
         >
 
             <td>
@@ -14243,17 +13351,11 @@ td {
         <tr
             class="filterable-row"
 
-            data-market="
-                Singapore
-            "
+            data-market="Singapore"
 
-            data-sector="
-                Consumer / Leisure
-            "
+            data-sector="Consumer / Leisure"
 
-            data-search="
-                g13.si genting singapore
-            "
+            data-search="g13.si genting singapore"
         >
 
             <td>
@@ -14356,17 +13458,11 @@ td {
         <tr
             class="filterable-row"
 
-            data-market="
-                Singapore
-            "
+            data-market="Singapore"
 
-            data-sector="
-                Consumer
-            "
+            data-sector="Consumer"
 
-            data-search="
-                c07.si jardine cycle &amp; carriage
-            "
+            data-search="c07.si jardine cycle &amp; carriage"
         >
 
             <td>
@@ -14469,17 +13565,11 @@ td {
         <tr
             class="filterable-row"
 
-            data-market="
-                Singapore
-            "
+            data-market="Singapore"
 
-            data-sector="
-                Industrials
-            "
+            data-sector="Industrials"
 
-            data-search="
-                5e2.si seatrium
-            "
+            data-search="5e2.si seatrium"
         >
 
             <td>
@@ -14582,17 +13672,11 @@ td {
         <tr
             class="filterable-row"
 
-            data-market="
-                Singapore
-            "
+            data-market="Singapore"
 
-            data-sector="
-                Telecom
-            "
+            data-sector="Telecom"
 
-            data-search="
-                z74.si singtel
-            "
+            data-search="z74.si singtel"
         >
 
             <td>
@@ -14695,17 +13779,11 @@ td {
         <tr
             class="filterable-row"
 
-            data-market="
-                Singapore
-            "
+            data-market="Singapore"
 
-            data-sector="
-                Property
-            "
+            data-sector="Property"
 
-            data-search="
-                9ci.si capitaland investment
-            "
+            data-search="9ci.si capitaland investment"
         >
 
             <td>
@@ -14808,134 +13886,15 @@ td {
         <tr
             class="filterable-row"
 
-            data-market="
-                Singapore
-            "
+            data-market="Singapore"
 
-            data-sector="
-                Industrials
-            "
+            data-sector="Industrials"
 
-            data-search="
-                s63.si st engineering
-            "
+            data-search="u96.si sembcorp industries"
         >
 
             <td>
                 28
-            </td>
-
-
-            <td>
-
-                <a
-                    class="stock-link"
-                    href="stocks/s63-si/"
-                >
-
-                    <div class="stock-name">
-                        ST Engineering
-                    </div>
-
-                    <div class="ticker">
-                        S63.SI
-                    </div>
-
-                    <div class="sector">
-                        Industrials
-                    </div>
-
-                </a>
-
-            </td>
-
-
-            <td>
-
-                S$10.43
-
-            </td>
-
-
-            <td class="negative">
-
-                -2.52%
-
-            </td>
-
-
-            <td class="desktop-column">
-                50
-            </td>
-
-
-            <td class="desktop-column">
-                42
-            </td>
-
-
-            <td class="desktop-column">
-                50
-            </td>
-
-
-            <td class="desktop-column">
-                45
-            </td>
-
-
-            <td class="score">
-                48
-            </td>
-
-
-            <td>
-
-                <span class="
-                    quality-badge
-                    quality-good
-                ">
-
-                    100%
-
-                </span>
-
-            </td>
-
-
-            <td>
-
-                <span class="
-                    rating-badge
-                    watch
-                ">
-
-                    Watch
-
-                </span>
-
-            </td>
-
-        </tr>
-        
-        <tr
-            class="filterable-row"
-
-            data-market="
-                Singapore
-            "
-
-            data-sector="
-                Industrials
-            "
-
-            data-search="
-                u96.si sembcorp industries
-            "
-        >
-
-            <td>
-                29
             </td>
 
 
@@ -15034,17 +13993,118 @@ td {
         <tr
             class="filterable-row"
 
-            data-market="
-                Singapore
-            "
+            data-market="Singapore"
 
-            data-sector="
-                Consumer
-            "
+            data-sector="Industrials"
 
-            data-search="
-                d01.si dfi retail group
-            "
+            data-search="s63.si st engineering"
+        >
+
+            <td>
+                29
+            </td>
+
+
+            <td>
+
+                <a
+                    class="stock-link"
+                    href="stocks/s63-si/"
+                >
+
+                    <div class="stock-name">
+                        ST Engineering
+                    </div>
+
+                    <div class="ticker">
+                        S63.SI
+                    </div>
+
+                    <div class="sector">
+                        Industrials
+                    </div>
+
+                </a>
+
+            </td>
+
+
+            <td>
+
+                S$10.43
+
+            </td>
+
+
+            <td class="negative">
+
+                -2.52%
+
+            </td>
+
+
+            <td class="desktop-column">
+                50
+            </td>
+
+
+            <td class="desktop-column">
+                42
+            </td>
+
+
+            <td class="desktop-column">
+                50
+            </td>
+
+
+            <td class="desktop-column">
+                37
+            </td>
+
+
+            <td class="score">
+                46
+            </td>
+
+
+            <td>
+
+                <span class="
+                    quality-badge
+                    quality-good
+                ">
+
+                    100%
+
+                </span>
+
+            </td>
+
+
+            <td>
+
+                <span class="
+                    rating-badge
+                    watch
+                ">
+
+                    Watch
+
+                </span>
+
+            </td>
+
+        </tr>
+        
+        <tr
+            class="filterable-row"
+
+            data-market="Singapore"
+
+            data-sector="Consumer"
+
+            data-search="d01.si dfi retail group"
         >
 
             <td>
@@ -15147,17 +14207,11 @@ td {
         <tr
             class="filterable-row"
 
-            data-market="
-                Singapore
-            "
+            data-market="Singapore"
 
-            data-sector="
-                Telecom
-            "
+            data-sector="Telecom"
 
-            data-search="
-                cc3.si starhub
-            "
+            data-search="cc3.si starhub"
         >
 
             <td>
@@ -15270,13 +14324,17 @@ td {
 <div class="footer">
 
     V Stock Intelligence uses
-    automated quantitative scoring.
+    automated sector-specific quantitative scoring.
 
     <br>
 
-    Dashboard ratings are not
-    analyst recommendations
-    and are not financial advice.
+    Current methodology:
+    v2-sector-specific
+
+    <br>
+
+    Dashboard ratings are not analyst
+    recommendations and are not financial advice.
 
 </div>
 
@@ -15451,10 +14509,13 @@ td {
 
 
                 if (visible) {
+
                     visibleRows += 1;
+
                 }
 
             }
+
         );
 
 
@@ -15567,6 +14628,7 @@ td {
                 );
 
             }
+
         );
 
 

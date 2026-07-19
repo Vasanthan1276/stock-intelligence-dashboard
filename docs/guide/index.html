@@ -151,34 +151,6 @@ body {
         6px;
 }
 
-.score-table {
-    width:
-        100%;
-
-    border-collapse:
-        collapse;
-}
-
-.score-table td {
-    padding:
-        12px 8px;
-
-    border-bottom:
-        1px solid
-        #263a55;
-}
-
-.weight {
-    color:
-        #68b9ff;
-
-    font-weight:
-        800;
-
-    text-align:
-        right;
-}
-
 .note {
     background:
         #0b1728;
@@ -236,8 +208,8 @@ body {
 <div class="subtitle">
 
     This guide explains the terminology,
-    scores and opportunity screens used
-    throughout the dashboard.
+    scoring models and opportunity screens
+    used throughout the dashboard.
 
 </div>
 
@@ -245,297 +217,125 @@ body {
 <div class="card">
 
     <div class="section-title">
-        Dashboard Rating
+        Sector-Specific Scoring Models
+    </div>
+
+
+    <div class="term">
+
+        <div class="term-name">
+            General Company
+        </div>
+
+        <div class="term-description">
+
+            Used for companies that do not fall
+            into one of the specialised models.
+
+            Technical 25% · Momentum 20% ·
+            Fundamentals 40% · Valuation 15%.
+
+        </div>
+
+    </div>
+
+
+    <div class="term">
+
+        <div class="term-name">
+            Semiconductor
+        </div>
+
+        <div class="term-description">
+
+            Places more emphasis on growth,
+            margins and momentum because the
+            semiconductor industry is cyclical.
+
+            Technical 20% · Momentum 25% ·
+            Fundamentals 40% · Valuation 15%.
+
+        </div>
+
+    </div>
+
+
+    <div class="term">
+
+        <div class="term-name">
+            Bank
+        </div>
+
+        <div class="term-description">
+
+            Places greater emphasis on
+            profitability, return on equity,
+            return on assets, price-to-book
+            and valuation.
+
+            Technical 15% · Momentum 15% ·
+            Fundamentals 45% · Valuation 25%.
+
+        </div>
+
+    </div>
+
+
+    <div class="term">
+
+        <div class="term-name">
+            REIT
+        </div>
+
+        <div class="term-description">
+
+            Places greater emphasis on valuation,
+            distribution yield and financial
+            strength.
+
+            Technical 15% · Momentum 10% ·
+            Fundamentals 40% · Valuation 35%.
+
+            REIT leverage metrics remain proxy
+            measures because the standard market
+            data feed does not provide full
+            Singapore REIT regulatory leverage data.
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+<div class="card">
+
+    <div class="section-title">
+        Score History
     </div>
 
     <div class="note">
 
-        Ratings such as Strong Buy,
-        Buy, Hold, Watch and Caution are
-        automated quantitative ratings
-        created by this dashboard.
+        Score comparisons are only made between
+        dashboard runs using the same scoring
+        methodology version.
 
         <br><br>
 
-        They are not analyst recommendations
-        and should be used as a starting point
-        for further research rather than as
-        instructions to buy or sell a stock.
+        When the scoring model changes, the dashboard
+        automatically starts a new comparison baseline.
 
-    </div>
+        This prevents methodology changes from appearing
+        as false day-to-day stock movements.
 
-</div>
+        <br><br>
 
+        Current Model Version:
 
-<div class="card">
-
-    <div class="section-title">
-        Overall Score Methodology
-    </div>
-
-    <table class="score-table">
-
-        <tr>
-            <td>
-                Technical Score
-            </td>
-
-            <td class="weight">
-                25%
-            </td>
-        </tr>
-
-        <tr>
-            <td>
-                Momentum Score
-            </td>
-
-            <td class="weight">
-                20%
-            </td>
-        </tr>
-
-        <tr>
-            <td>
-                Fundamental Score
-            </td>
-
-            <td class="weight">
-                40%
-            </td>
-        </tr>
-
-        <tr>
-            <td>
-                Valuation Score
-            </td>
-
-            <td class="weight">
-                15%
-            </td>
-        </tr>
-
-    </table>
-
-</div>
-
-
-<div class="card">
-
-    <div class="section-title">
-        Core Investment Scores
-    </div>
-
-
-    <div class="term">
-
-        <div class="term-name">
-            Technical Score
-        </div>
-
-        <div class="term-description">
-
-            Measures the current share-price
-            trend using indicators such as
-            moving averages, RSI and MACD.
-
-        </div>
-
-    </div>
-
-
-    <div class="term">
-
-        <div class="term-name">
-            Momentum Score
-        </div>
-
-        <div class="term-description">
-
-            Measures recent price performance
-            across several time periods.
-
-        </div>
-
-    </div>
-
-
-    <div class="term">
-
-        <div class="term-name">
-            Fundamental Score
-        </div>
-
-        <div class="term-description">
-
-            Evaluates available business and
-            financial information including
-            growth, margins and balance-sheet
-            measures.
-
-        </div>
-
-    </div>
-
-
-    <div class="term">
-
-        <div class="term-name">
-            Valuation Score
-        </div>
-
-        <div class="term-description">
-
-            Estimates how attractively a stock
-            appears priced using available
-            valuation metrics.
-
-        </div>
-
-    </div>
-
-
-    <div class="term">
-
-        <div class="term-name">
-            Data Quality
-        </div>
-
-        <div class="term-description">
-
-            Shows how much of the scoring model
-            had usable fundamental information.
-
-        </div>
-
-    </div>
-
-
-</div>
-
-
-<div class="card">
-
-    <div class="section-title">
-        Market Opportunity Screens
-    </div>
-
-
-    <div class="term">
-
-        <div class="term-name">
-            Oversold Watch
-        </div>
-
-        <div class="term-description">
-
-            Shows stocks with RSI below 35.
-
-            Being oversold does not mean that
-            a share price will automatically
-            recover.
-
-        </div>
-
-    </div>
-
-
-    <div class="term">
-
-        <div class="term-name">
-            Momentum Leaders
-        </div>
-
-        <div class="term-description">
-
-            Highlights stocks with stronger
-            recent price performance while
-            requiring minimum fundamental
-            strength and sufficient data quality.
-
-        </div>
-
-    </div>
-
-
-    <div class="term">
-
-        <div class="term-name">
-            Value Opportunities
-        </div>
-
-        <div class="term-description">
-
-            Combines the Valuation Score and
-            Fundamental Score equally.
-
-        </div>
-
-    </div>
-
-
-    <div class="term">
-
-        <div class="term-name">
-            Best Balanced
-        </div>
-
-        <div class="term-description">
-
-            Looks for stocks that perform
-            consistently across Technical,
-            Momentum, Fundamentals and Valuation.
-
-        </div>
-
-    </div>
-
-
-</div>
-
-
-<div class="card">
-
-    <div class="section-title">
-        Score History & What's Changed
-    </div>
-
-    <div class="term">
-
-        <div class="term-name">
-            Score History
-        </div>
-
-        <div class="term-description">
-
-            Each successful dashboard scan saves
-            the current scores for every tracked
-            stock.
-
-            Up to 365 scan snapshots are retained.
-
-        </div>
-
-    </div>
-
-
-    <div class="term">
-
-        <div class="term-name">
-            What's Changed
-        </div>
-
-        <div class="term-description">
-
-            Compares the latest dashboard scan
-            against the previous saved scan.
-
-            It highlights changes in the Overall,
-            Technical, Momentum, Fundamental and
-            Valuation scores, as well as changes
-            in Dashboard Rating.
-
-        </div>
+        <strong>
+            v2-sector-specific
+        </strong>
 
     </div>
 
@@ -577,7 +377,7 @@ body {
 <div class="footer">
 
     Last updated:
-    19 July 2026, 12:14 SGT
+    19 July 2026, 12:28 SGT
 
 </div>
 
