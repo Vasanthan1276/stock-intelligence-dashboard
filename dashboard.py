@@ -73,6 +73,18 @@ def quality_label(
     return "Limited"
 
 
+def value_opportunity_score(
+    stock,
+):
+    return round(
+        stock["valuation"]
+        * 0.50
+        +
+        stock["fundamental"]
+        * 0.50
+    )
+
+
 def opportunity_cards(
     stocks,
     count=5,
@@ -256,7 +268,7 @@ def opportunity_cards(
 
 def stock_rows(
     stocks,
-    limit=20,
+    limit=25,
 ):
     output = ""
 
@@ -543,12 +555,31 @@ def get_oversold(
 def get_momentum_leaders(
     stocks,
 ):
-    return sorted(
-        stocks,
-        key=lambda stock:
+    eligible = [
+        stock
+        for stock in stocks
+        if (
             stock[
-                "momentum"
-            ],
+                "fundamental"
+            ] >= 50
+            and
+            stock[
+                "data_quality"
+            ] >= 60
+        )
+    ]
+
+    return sorted(
+        eligible,
+        key=lambda stock:
+            (
+                stock[
+                    "momentum"
+                ],
+                stock[
+                    "overall"
+                ],
+            ),
         reverse=True,
     )
 
@@ -556,19 +587,19 @@ def get_momentum_leaders(
 def get_value_opportunities(
     stocks,
 ):
+    eligible = [
+        stock
+        for stock in stocks
+        if stock[
+            "data_quality"
+        ] >= 60
+    ]
+
     return sorted(
-        stocks,
+        eligible,
         key=lambda stock:
-            (
-                stock[
-                    "valuation"
-                ]
-                * 0.50
-                +
-                stock[
-                    "fundamental"
-                ]
-                * 0.50
+            value_opportunity_score(
+                stock
             ),
         reverse=True,
     )
@@ -630,8 +661,8 @@ def mini_list(
         elif mode == "value":
 
             detail = (
-                f'Value '
-                f'{stock["valuation"]}/100'
+                f'Value Opportunity '
+                f'{value_opportunity_score(stock)}/100'
             )
 
         else:
@@ -1676,8 +1707,8 @@ td {{
 
     <br>
 
-    Data-quality indicators show how much of the
-    fundamental scoring model was supported by available data.
+    Opportunity screens apply additional filters
+    and may rank stocks differently from the main overall score.
 
 </div>
 
