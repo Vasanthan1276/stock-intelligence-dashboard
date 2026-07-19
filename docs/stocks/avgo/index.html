@@ -1,0 +1,492 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>
+    V Stock Intelligence ·
+    AVGO
+</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: #07111f;
+    color: #edf4ff;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.container {
+    width: min(1100px, 94%);
+    margin: auto;
+    padding: 30px 0 60px;
+}
+
+.back {
+    color: #68b9ff;
+    text-decoration: none;
+    font-size: 13px;
+}
+
+.header {
+    margin-top: 24px;
+}
+
+.title {
+    font-size: 34px;
+    font-weight: 800;
+}
+
+.subtitle {
+    color: #8ca5c4;
+    margin-top: 6px;
+}
+
+.card {
+    background: #111e31;
+    border: 1px solid #263c5b;
+    border-radius: 16px;
+    padding: 21px;
+}
+
+.section {
+    margin-top: 20px;
+}
+
+.hero {
+    display: grid;
+    grid-template-columns:
+        repeat(auto-fit, minmax(190px, 1fr));
+    gap: 14px;
+    margin-top: 24px;
+}
+
+.label {
+    color: #8ba4c3;
+    font-size: 11px;
+    text-transform: uppercase;
+}
+
+.big {
+    font-size: 32px;
+    font-weight: 800;
+    margin-top: 7px;
+}
+
+.rating {
+    color: #65baff;
+    font-size: 27px;
+    font-weight: 800;
+    margin-top: 7px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns:
+        repeat(auto-fit, minmax(180px, 1fr));
+    gap: 13px;
+}
+
+.metric {
+    background: #0b1728;
+    border-radius: 12px;
+    padding: 17px;
+}
+
+.metric-value {
+    font-size: 25px;
+    font-weight: 800;
+    margin-top: 7px;
+}
+
+.section-title {
+    font-size: 21px;
+    font-weight: 800;
+    margin-bottom: 15px;
+}
+
+.comment {
+    color: #aebfd4;
+    font-size: 13px;
+    line-height: 1.5;
+    margin-top: 8px;
+}
+
+.positive {
+    color: #51e0a0;
+}
+
+.negative {
+    color: #ff7183;
+}
+
+.rating-badge,
+.quality-badge {
+    display: inline-block;
+    padding: 5px 8px;
+    border-radius: 7px;
+    font-size: 10px;
+    font-weight: 800;
+}
+
+.strong-buy {
+    color: #51e5a0;
+    background: rgba(55, 219, 143, 0.15);
+}
+
+.buy {
+    color: #66bdff;
+    background: rgba(86, 184, 255, 0.15);
+}
+
+.hold {
+    color: #f4cd69;
+}
+
+.watch {
+    color: #ffa165;
+}
+
+.caution {
+    color: #ff7183;
+}
+
+.quality-good {
+    color: #55dea0;
+}
+
+.quality-medium {
+    color: #f3c968;
+}
+
+.quality-low {
+    color: #ff7a87;
+}
+
+.footer {
+    text-align: center;
+    color: #6f88a8;
+    margin-top: 30px;
+    font-size: 12px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+
+<a
+    class="back"
+    href="../../"
+>
+    ← Back to Market Dashboard
+</a>
+
+
+<div class="header">
+
+    <div class="title">
+        Broadcom
+    </div>
+
+    <div class="subtitle">
+
+        AVGO
+
+        ·
+
+        Semiconductors
+
+        ·
+
+        US
+
+    </div>
+
+</div>
+
+
+<div class="hero">
+
+
+<div class="card">
+
+    <div class="label">
+        Current Price
+    </div>
+
+    <div class="big">
+        $370.83
+    </div>
+
+    <div class="negative">
+        -0.97%
+    </div>
+
+</div>
+
+
+<div class="card">
+
+    <div class="label">
+        Overall Score
+    </div>
+
+    <div class="big">
+        69/100
+    </div>
+
+    <div style="margin-top:8px;">
+
+        <span class="
+            rating-badge
+            buy
+        ">
+            BUY
+        </span>
+
+    </div>
+
+</div>
+
+
+<div class="card">
+
+    <div class="label">
+        Value Opportunity
+    </div>
+
+    <div class="big">
+        70/100
+    </div>
+
+    <div class="comment">
+        Valuation + fundamentals
+    </div>
+
+</div>
+
+
+<div class="card">
+
+    <div class="label">
+        Data Quality
+    </div>
+
+    <div class="big">
+        100%
+    </div>
+
+    <div style="margin-top:8px;">
+
+        <span class="
+            quality-badge
+            quality-good
+        ">
+            High
+        </span>
+
+    </div>
+
+</div>
+
+
+</div>
+
+
+<div class="card section">
+
+    <div class="section-title">
+        Core Investment Scores
+    </div>
+
+    <div class="grid">
+
+
+        <div class="metric">
+
+            <div class="label">
+                Technical
+            </div>
+
+            <div class="metric-value">
+                65/100
+            </div>
+
+            <div class="comment">
+                Technical conditions are currently positive.
+            </div>
+
+        </div>
+
+
+        <div class="metric">
+
+            <div class="label">
+                Momentum
+            </div>
+
+            <div class="metric-value">
+                44/100
+            </div>
+
+            <div class="comment">
+                Momentum conditions are currently weak.
+            </div>
+
+        </div>
+
+
+        <div class="metric">
+
+            <div class="label">
+                Fundamentals
+            </div>
+
+            <div class="metric-value">
+                91/100
+            </div>
+
+            <div class="comment">
+                Fundamental conditions are currently strong.
+            </div>
+
+        </div>
+
+
+        <div class="metric">
+
+            <div class="label">
+                Valuation
+            </div>
+
+            <div class="metric-value">
+                48/100
+            </div>
+
+            <div class="comment">
+                Valuation conditions are currently weak.
+            </div>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+<div class="card section">
+
+    <div class="section-title">
+        Opportunity Signals
+    </div>
+
+    <div class="grid">
+
+
+        <div class="metric">
+
+            <div class="label">
+                RSI
+            </div>
+
+            <div class="metric-value">
+
+                43.8
+
+            </div>
+
+            <div class="comment">
+
+                Not currently in the oversold screen.
+
+            </div>
+
+        </div>
+
+
+        <div class="metric">
+
+            <div class="label">
+                Balanced Score
+            </div>
+
+            <div class="metric-value">
+                55/100
+            </div>
+
+            <div class="comment">
+                Rewards strength across multiple factors
+                while penalising large score differences.
+            </div>
+
+        </div>
+
+
+        <div class="metric">
+
+            <div class="label">
+                Value Opportunity
+            </div>
+
+            <div class="metric-value">
+                70/100
+            </div>
+
+            <div class="comment">
+
+                Valuation:
+                48/100
+
+                ·
+
+                Fundamentals:
+                91/100
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+<div class="footer">
+
+    Last updated:
+    19 July 2026, 01:01 UTC
+
+    <br><br>
+
+    Automated quantitative research tool.
+    Not financial advice.
+
+</div>
+
+
+</div>
+
+</body>
+
+</html>
