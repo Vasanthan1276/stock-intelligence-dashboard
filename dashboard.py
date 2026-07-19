@@ -1,6 +1,8 @@
-from datetime import datetime, timezone
+from datetime import datetime
 from pathlib import Path
+from zoneinfo import ZoneInfo
 import html
+import json
 import re
 
 from scanner import run_scanner
@@ -13,728 +15,328 @@ from scanner import run_scanner
 def escape(value):
     if value is None:
         return ""
-
     return html.escape(str(value))
 
 
 def ticker_slug(ticker):
     value = ticker.lower()
-
-    value = re.sub(
-        r"[^a-z0-9]+",
-        "-",
-        value,
-    )
-
+    value = re.sub(r"[^a-z0-9]+", "-", value)
     return value.strip("-")
 
 
 def stock_url(stock):
-    return (
-        "stocks/"
-        + ticker_slug(stock["ticker"])
-        + "/"
-    )
+    return "stocks/" + ticker_slug(stock["ticker"]) + "/"
 
 
 def format_price(price, market):
     if price is None:
         return "N/A"
-
     if market == "Singapore":
         return f"S${price:,.2f}"
-
     return f"${price:,.2f}"
 
 
-def format_percent(value):
+def format_percent(value, signed=True):
     if value is None:
         return "N/A"
+    if signed:
+        return f"{value * 100:+.2f}%"
+    return f"{value * 100:.1f}%"
 
-    return f"{value * 100:+.2f}%"
+
+def format_large_number(value):
+    if value is None:
+        return "N/A"
+    if abs(value) >= 1_000_000_000_000:
+        return f"${value / 1_000_000_000_000:.2f}T"
+    if abs(value) >= 1_000_000_000:
+        return f"${value / 1_000_000_000:.2f}B"
+    if abs(value) >= 1_000_000:
+        return f"${value / 1_000_000:.2f}M"
+    return f"${value:,.0f}"
+
+
+def format_number(value, decimals=1):
+    if value is None:
+        return "N/A"
+    return f"{value:,.{decimals}f}"
 
 
 def rating_class(value):
-    return (
-        value
-        .lower()
-        .replace(" ", "-")
-    )
+    return value.lower().replace(" ", "-")
 
 
 def quality_class(score):
     if score >= 80:
         return "quality-good"
-
     if score >= 60:
         return "quality-medium"
-
     return "quality-low"
 
 
 def quality_label(score):
     if score >= 80:
         return "High"
-
     if score >= 60:
         return "Medium"
-
     return "Limited"
 
 
 def value_opportunity_score(stock):
-    return round(
-        stock["valuation"] * 0.50
-        +
-        stock["fundamental"] * 0.50
-    )
+    return round(stock["valuation"] * 0.50 + stock["fundamental"] * 0.50)
+
+
+def score_commentary(score, category):
+    if score >= 80:
+        return f"{category} conditions are currently strong."
+    if score >= 65:
+        return f"{category} conditions are currently positive."
+    if score >= 50:
+        return f"{category} conditions are broadly neutral."
+    if score >= 35:
+        return f"{category} conditions are currently weak."
+    return f"{category} conditions are currently very weak."
 
 
 # ============================================================
-# INFORMATION TOOLTIPS
+# TOOLTIPS
 # ============================================================
 
 TOOLTIPS = {
-
-    "overall":
-        "The combined dashboard score. It uses Technical 25%, "
-        "Momentum 20%, Fundamentals 40% and Valuation 15%.",
-
-    "technical":
-        "Measures the stock's current price trend using indicators "
-        "such as moving averages, RSI and MACD. A higher score means "
-        "stronger technical conditions.",
-
-    "momentum":
-        "Measures recent share-price performance over approximately "
-        "1 week, 1 month, 3 months and 6 months.",
-
-    "fundamental":
-        "Measures business strength using available data such as "
-        "revenue growth, earnings growth, margins, return on equity, "
-        "debt and liquidity.",
-
-    "valuation":
-        "Measures how attractively the stock appears to be priced "
-        "using valuation indicators such as forward P/E and price-to-book.",
-
-    "data_quality":
-        "Shows how much of the fundamental scoring model had usable data. "
-        "A lower score means the investment score should be interpreted "
-        "with more caution.",
-
-    "rsi":
-        "RSI is the Relative Strength Index, a momentum indicator from "
-        "0 to 100. Below 30 is commonly considered heavily oversold, "
-        "while above 70 may indicate overbought conditions.",
-
-    "oversold":
-        "Stocks with RSI below 35. These shares have experienced weak "
-        "recent price momentum. Oversold does not necessarily mean the "
-        "share price will rebound.",
-
-    "momentum_leaders":
-        "Stocks with strong recent price performance that also meet "
-        "minimum fundamental and data-quality requirements.",
-
-    "value_opportunity":
-        "Combines the Fundamental Score and Valuation Score equally. "
-        "A high score suggests relatively attractive valuation together "
-        "with stronger underlying business fundamentals.",
-
-    "balanced":
-        "Rewards stocks that perform consistently across Technical, "
-        "Momentum, Fundamentals and Valuation, while penalising large "
-        "differences between those scores.",
-
-    "dashboard_rating":
-        "This is an automated quantitative rating generated by "
-        "V Stock Intelligence. It is not an analyst recommendation "
-        "and is not financial advice.",
+    "overall": (
+        "The combined dashboard score. It uses Technical 25%, Momentum 20%, "
+        "Fundamentals 40% and Valuation 15%."
+    ),
+    "technical": (
+        "Measures the stock's current price trend using moving averages, RSI and "
+        "MACD. A higher score indicates stronger technical conditions."
+    ),
+    "momentum": (
+        "Measures recent share-price performance across approximately 1 week, "
+        "1 month, 3 months and 6 months."
+    ),
+    "fundamental": (
+        "Measures available business strength using revenue growth, earnings growth, "
+        "margins, return on equity, debt and liquidity."
+    ),
+    "valuation": (
+        "Measures how attractively the stock appears priced using available valuation "
+        "indicators such as forward P/E and price-to-book."
+    ),
+    "data_quality": (
+        "Shows how much of the fundamental scoring model had usable data. Lower data "
+        "quality means the score should be interpreted more cautiously."
+    ),
+    "oversold": (
+        "Stocks with RSI below 35. This indicates weak recent price momentum, but does "
+        "not guarantee that the stock will rebound."
+    ),
+    "momentum_leaders": (
+        "Stocks with strong recent price performance that also meet minimum fundamental "
+        "and data-quality requirements."
+    ),
+    "value_opportunity": (
+        "An equal combination of the Fundamental Score and Valuation Score."
+    ),
+    "balanced": (
+        "Rewards stocks that perform consistently across Technical, Momentum, "
+        "Fundamentals and Valuation while penalising large score differences."
+    ),
+    "dashboard_rating": (
+        "An automated quantitative rating generated by V Stock Intelligence. It is not "
+        "an analyst recommendation and is not financial advice."
+    ),
 }
 
 
 def info_icon(key):
-    text = TOOLTIPS.get(
-        key,
-        "",
-    )
-
+    text = TOOLTIPS.get(key, "")
     return f"""
-    <span
-        class="info-wrap"
-        tabindex="0"
-        aria-label="{escape(text)}"
-    >
+    <span class="info-wrap" tabindex="0" aria-label="{escape(text)}">
         ⓘ
-
-        <span class="tooltip">
-            {escape(text)}
-        </span>
-
+        <span class="tooltip">{escape(text)}</span>
     </span>
     """
 
 
 # ============================================================
-# OPPORTUNITY CARDS
+# OPPORTUNITY / RANKING HELPERS
 # ============================================================
 
-def opportunity_cards(
-    stocks,
-    count=5,
-):
+def opportunity_cards(stocks, count=5):
     output = ""
-
     for stock in stocks[:count]:
-
-        change_class = (
-            "positive"
-            if stock["daily_change"] >= 0
-            else "negative"
-        )
-
-        css_rating = rating_class(
-            stock["rating"]
-        )
-
-        quality_css = quality_class(
-            stock["data_quality"]
-        )
+        change_class = "positive" if stock["daily_change"] >= 0 else "negative"
+        css_rating = rating_class(stock["rating"])
+        quality_css = quality_class(stock["data_quality"])
 
         output += f"""
-        <a
-            class="opportunity-card"
-            href="{stock_url(stock)}"
-        >
+        <a class="opportunity-card filterable-card"
+           href="{stock_url(stock)}"
+           data-market="{escape(stock['market'])}"
+           data-sector="{escape(stock['sector'])}"
+           data-search="{escape((stock['ticker'] + ' ' + stock['name']).lower())}">
 
             <div class="opportunity-top">
-
                 <div>
-
-                    <div class="opportunity-ticker">
-                        {escape(stock["ticker"])}
-                    </div>
-
-                    <div class="opportunity-name">
-                        {escape(stock["name"])}
-                    </div>
-
-                    <div class="sector">
-                        {escape(stock["sector"])}
-                    </div>
-
+                    <div class="opportunity-ticker">{escape(stock['ticker'])}</div>
+                    <div class="opportunity-name">{escape(stock['name'])}</div>
+                    <div class="sector">{escape(stock['sector'])}</div>
                 </div>
 
-                <div class="
-                    rating-badge
-                    {css_rating}
-                ">
-                    {escape(stock["rating"])}
-                </div>
-
+                <div class="rating-badge {css_rating}">{escape(stock['rating'])}</div>
             </div>
 
+            <div class="opportunity-price">{format_price(stock['price'], stock['market'])}</div>
+            <div class="{change_class}">{format_percent(stock['daily_change'])}</div>
 
-            <div class="opportunity-price">
-
-                {format_price(
-                    stock["price"],
-                    stock["market"],
-                )}
-
-            </div>
-
-
-            <div class="{change_class}">
-
-                {format_percent(
-                    stock["daily_change"]
-                )}
-
-            </div>
-
-
-            <div class="score-row">
-
-                <div>
-                    Overall
-                </div>
-
-                <div>
-                    {stock["overall"]}/100
-                </div>
-
-            </div>
-
-
-            <div class="score-row">
-
-                <div>
-                    Technical
-                </div>
-
-                <div>
-                    {stock["technical"]}
-                </div>
-
-            </div>
-
-
-            <div class="score-row">
-
-                <div>
-                    Momentum
-                </div>
-
-                <div>
-                    {stock["momentum"]}
-                </div>
-
-            </div>
-
-
-            <div class="score-row">
-
-                <div>
-                    Fundamentals
-                </div>
-
-                <div>
-                    {stock["fundamental"]}
-                </div>
-
-            </div>
-
+            <div class="score-row"><div>Overall</div><div>{stock['overall']}/100</div></div>
+            <div class="score-row"><div>Technical</div><div>{stock['technical']}</div></div>
+            <div class="score-row"><div>Momentum</div><div>{stock['momentum']}</div></div>
+            <div class="score-row"><div>Fundamentals</div><div>{stock['fundamental']}</div></div>
 
             <div class="quality-row">
-
-                <span>
-                    Data quality
-                </span>
-
-                <span class="
-                    quality-badge
-                    {quality_css}
-                ">
-                    {quality_label(
-                        stock["data_quality"]
-                    )}
-                </span>
-
+                <span>Data quality</span>
+                <span class="quality-badge {quality_css}">{quality_label(stock['data_quality'])}</span>
             </div>
-
         </a>
         """
-
     return output
 
 
-# ============================================================
-# RANKING TABLE
-# ============================================================
-
-def stock_rows(
-    stocks,
-    limit=25,
-):
+def stock_rows(stocks, limit=100):
     output = ""
-
-    for rank, stock in enumerate(
-        stocks[:limit],
-        start=1,
-    ):
-
-        change_class = (
-            "positive"
-            if stock["daily_change"] >= 0
-            else "negative"
-        )
-
-        css_rating = rating_class(
-            stock["rating"]
-        )
-
-        quality_css = quality_class(
-            stock["data_quality"]
-        )
+    for rank, stock in enumerate(stocks[:limit], start=1):
+        change_class = "positive" if stock["daily_change"] >= 0 else "negative"
+        css_rating = rating_class(stock["rating"])
+        quality_css = quality_class(stock["data_quality"])
+        search_text = escape((stock["ticker"] + " " + stock["name"]).lower())
 
         output += f"""
-        <tr>
-
+        <tr class="filterable-row"
+            data-market="{escape(stock['market'])}"
+            data-sector="{escape(stock['sector'])}"
+            data-search="{search_text}">
+            <td>{rank}</td>
             <td>
-                {rank}
-            </td>
-
-            <td>
-
-                <a
-                    class="stock-link"
-                    href="{stock_url(stock)}"
-                >
-
-                    <div class="stock-name">
-                        {escape(stock["name"])}
-                    </div>
-
-                    <div class="ticker">
-                        {escape(stock["ticker"])}
-                    </div>
-
-                    <div class="sector">
-                        {escape(stock["sector"])}
-                    </div>
-
+                <a class="stock-link" href="{stock_url(stock)}">
+                    <div class="stock-name">{escape(stock['name'])}</div>
+                    <div class="ticker">{escape(stock['ticker'])}</div>
+                    <div class="sector">{escape(stock['sector'])}</div>
                 </a>
-
             </td>
-
-            <td>
-                {format_price(
-                    stock["price"],
-                    stock["market"],
-                )}
-            </td>
-
-            <td class="{change_class}">
-                {format_percent(
-                    stock["daily_change"]
-                )}
-            </td>
-
-            <td class="desktop-column">
-                {stock["technical"]}
-            </td>
-
-            <td class="desktop-column">
-                {stock["momentum"]}
-            </td>
-
-            <td class="desktop-column">
-                {stock["fundamental"]}
-            </td>
-
-            <td class="desktop-column">
-                {stock["valuation"]}
-            </td>
-
-            <td class="score">
-                {stock["overall"]}
-            </td>
-
-            <td>
-
-                <span class="
-                    quality-badge
-                    {quality_css}
-                ">
-                    {stock["data_quality"]}%
-                </span>
-
-            </td>
-
-            <td>
-
-                <span class="
-                    rating-badge
-                    {css_rating}
-                ">
-                    {escape(stock["rating"])}
-                </span>
-
-            </td>
-
+            <td>{format_price(stock['price'], stock['market'])}</td>
+            <td class="{change_class}">{format_percent(stock['daily_change'])}</td>
+            <td class="desktop-column">{stock['technical']}</td>
+            <td class="desktop-column">{stock['momentum']}</td>
+            <td class="desktop-column">{stock['fundamental']}</td>
+            <td class="desktop-column">{stock['valuation']}</td>
+            <td class="score">{stock['overall']}</td>
+            <td><span class="quality-badge {quality_css}">{stock['data_quality']}%</span></td>
+            <td><span class="rating-badge {css_rating}">{escape(stock['rating'])}</span></td>
         </tr>
         """
-
     return output
 
-
-# ============================================================
-# MICRON
-# ============================================================
 
 def find_micron(us_results):
     for stock in us_results:
-
         if stock["ticker"] == "MU":
             return stock
-
     return None
 
 
 def micron_focus(micron):
     if micron is None:
+        return '<div class="muted">Micron data unavailable.</div>'
 
-        return """
-        <div class="muted">
-            Micron data unavailable.
-        </div>
-        """
-
-    change_class = (
-        "positive"
-        if micron["daily_change"] >= 0
-        else "negative"
-    )
-
-    css_rating = rating_class(
-        micron["rating"]
-    )
+    change_class = "positive" if micron["daily_change"] >= 0 else "negative"
+    css_rating = rating_class(micron["rating"])
 
     return f"""
     <div class="micron-layout">
-
         <div>
-
-            <div class="micron-label">
-                FLAGSHIP STOCK REPORT
-            </div>
-
-            <div class="micron-title">
-                Micron Technology
-            </div>
-
-            <div class="muted">
-                NASDAQ: MU
-            </div>
-
+            <div class="micron-label">FLAGSHIP STOCK REPORT</div>
+            <div class="micron-title">Micron Technology</div>
+            <div class="muted">NASDAQ: MU</div>
         </div>
 
-
         <div>
-
-            <div class="micron-price">
-                {format_price(
-                    micron["price"],
-                    "US",
-                )}
-            </div>
-
-            <div class="{change_class}">
-                {format_percent(
-                    micron["daily_change"]
-                )}
-            </div>
-
+            <div class="micron-price">{format_price(micron['price'], 'US')}</div>
+            <div class="{change_class}">{format_percent(micron['daily_change'])}</div>
         </div>
 
-
         <div>
-
-            <div class="micron-score">
-                {micron["overall"]}/100
-            </div>
-
-            <span class="
-                rating-badge
-                {css_rating}
-            ">
-                {escape(micron["rating"])}
-            </span>
-
+            <div class="micron-score">{micron['overall']}/100</div>
+            <span class="rating-badge {css_rating}">{escape(micron['rating'])}</span>
         </div>
 
-
         <div>
-
-            <a
-                class="primary-button"
-                href="micron/"
-            >
-                Open Full Micron Report →
-            </a>
-
+            <a class="primary-button" href="micron/">Open Full Micron Report →</a>
         </div>
-
     </div>
     """
 
 
-# ============================================================
-# OPPORTUNITY SCREENS
-# ============================================================
-
 def get_oversold(stocks):
-    results = [
-        stock
-        for stock in stocks
-        if (
-            stock["rsi"] is not None
-            and
-            stock["rsi"] < 35
-        )
-    ]
-
-    return sorted(
-        results,
-        key=lambda stock:
-            stock["rsi"],
-    )
+    results = [stock for stock in stocks if stock["rsi"] is not None and stock["rsi"] < 35]
+    return sorted(results, key=lambda stock: stock["rsi"])
 
 
 def get_momentum_leaders(stocks):
     eligible = [
-        stock
-        for stock in stocks
-        if (
-            stock["fundamental"] >= 50
-            and
-            stock["data_quality"] >= 60
-        )
+        stock for stock in stocks
+        if stock["fundamental"] >= 50 and stock["data_quality"] >= 60
     ]
-
     return sorted(
         eligible,
-        key=lambda stock: (
-            stock["momentum"],
-            stock["overall"],
-        ),
+        key=lambda stock: (stock["momentum"], stock["overall"]),
         reverse=True,
     )
 
 
 def get_value_opportunities(stocks):
-    eligible = [
-        stock
-        for stock in stocks
-        if stock["data_quality"] >= 60
-    ]
-
-    return sorted(
-        eligible,
-        key=lambda stock:
-            value_opportunity_score(stock),
-        reverse=True,
-    )
+    eligible = [stock for stock in stocks if stock["data_quality"] >= 60]
+    return sorted(eligible, key=value_opportunity_score, reverse=True)
 
 
 def get_balanced_opportunities(stocks):
-    eligible = [
-        stock
-        for stock in stocks
-        if stock["data_quality"] >= 60
-    ]
-
-    return sorted(
-        eligible,
-        key=lambda stock:
-            stock["balanced_score"],
-        reverse=True,
-    )
+    eligible = [stock for stock in stocks if stock["data_quality"] >= 60]
+    return sorted(eligible, key=lambda stock: stock["balanced_score"], reverse=True)
 
 
-def mini_list(
-    stocks,
-    mode,
-    limit=6,
-):
+def mini_list(stocks, mode, limit=6):
     if not stocks:
-
-        return """
-        <div class="muted">
-            No stocks currently meet this screen.
-        </div>
-        """
+        return '<div class="muted">No stocks currently meet this screen.</div>'
 
     output = ""
-
     for stock in stocks[:limit]:
-
         if mode == "oversold":
-
-            main_detail = (
-                f'RSI '
-                f'{stock["rsi"]:.1f}'
-            )
-
-            secondary = (
-                f'Overall '
-                f'{stock["overall"]}/100'
-            )
-
-
+            main_detail = f"RSI {stock['rsi']:.1f}"
+            secondary = f"Overall {stock['overall']}/100"
         elif mode == "momentum":
-
-            main_detail = (
-                f'Momentum '
-                f'{stock["momentum"]}/100'
-            )
-
-            secondary = (
-                f'Fundamentals '
-                f'{stock["fundamental"]}/100'
-            )
-
-
+            main_detail = f"Momentum {stock['momentum']}/100"
+            secondary = f"Fundamentals {stock['fundamental']}/100"
         elif mode == "value":
-
-            main_detail = (
-                f'Value Opportunity '
-                f'{value_opportunity_score(stock)}/100'
-            )
-
-            secondary = (
-                f'Valuation '
-                f'{stock["valuation"]}'
-                f' · Fundamentals '
-                f'{stock["fundamental"]}'
-            )
-
-
+            main_detail = f"Value Opportunity {value_opportunity_score(stock)}/100"
+            secondary = f"Valuation {stock['valuation']} · Fundamentals {stock['fundamental']}"
         else:
-
-            main_detail = (
-                f'Balance '
-                f'{stock["balanced_score"]}/100'
-            )
-
-            secondary = (
-                f'Overall '
-                f'{stock["overall"]}'
-                f' · Data '
-                f'{stock["data_quality"]}%'
-            )
-
+            main_detail = f"Balance {stock['balanced_score']}/100"
+            secondary = f"Overall {stock['overall']} · Data {stock['data_quality']}%"
 
         output += f"""
-        <a
-            class="mini-row"
-            href="{stock_url(stock)}"
-        >
-
+        <a class="mini-row" href="{stock_url(stock)}">
             <div>
-
-                <div class="mini-ticker">
-                    {escape(stock["ticker"])}
-                </div>
-
-                <div class="mini-name">
-                    {escape(stock["name"])}
-                </div>
-
-                <div class="sector">
-                    {escape(stock["sector"])}
-                </div>
-
+                <div class="mini-ticker">{escape(stock['ticker'])}</div>
+                <div class="mini-name">{escape(stock['name'])}</div>
+                <div class="sector">{escape(stock['sector'])}</div>
             </div>
-
-
             <div class="mini-right">
-
-                <div class="mini-score">
-                    {main_detail}
-                </div>
-
-                <div class="mini-secondary">
-                    {secondary}
-                </div>
-
+                <div class="mini-score">{main_detail}</div>
+                <div class="mini-secondary">{secondary}</div>
             </div>
-
         </a>
         """
-
     return output
 
 
@@ -742,615 +344,165 @@ def mini_list(
 # STOCK DETAIL PAGE
 # ============================================================
 
-def score_commentary(
-    score,
-    category,
-):
-    if score >= 80:
-        return f"{category} conditions are currently strong."
+def chart_svg(stock):
+    prices = stock.get("chart_prices") or []
+    if len(prices) < 2:
+        return '<div class="muted">Price chart unavailable.</div>'
 
-    if score >= 65:
-        return f"{category} conditions are currently positive."
+    width = 1000
+    height = 300
+    pad_x = 20
+    pad_y = 20
+    minimum = min(prices)
+    maximum = max(prices)
+    spread = maximum - minimum
+    if spread == 0:
+        spread = 1
 
-    if score >= 50:
-        return f"{category} conditions are broadly neutral."
+    points = []
+    for index, price in enumerate(prices):
+        x = pad_x + (index / (len(prices) - 1)) * (width - 2 * pad_x)
+        y = pad_y + ((maximum - price) / spread) * (height - 2 * pad_y)
+        points.append(f"{x:.2f},{y:.2f}")
 
-    if score >= 35:
-        return f"{category} conditions are currently weak."
+    positive = prices[-1] >= prices[0]
+    stroke = "#51e0a0" if positive else "#ff7183"
 
-    return f"{category} conditions are currently very weak."
+    return f"""
+    <svg class="price-chart" viewBox="0 0 {width} {height}" preserveAspectRatio="none" role="img" aria-label="Six month price trend">
+        <polyline
+            fill="none"
+            stroke="{stroke}"
+            stroke-width="4"
+            points="{' '.join(points)}"
+        />
+    </svg>
+    <div class="chart-scale">
+        <span>6 months ago</span>
+        <span>Low {format_price(minimum, stock['market'])}</span>
+        <span>High {format_price(maximum, stock['market'])}</span>
+        <span>Latest</span>
+    </div>
+    """
 
 
-def generate_stock_detail_page(
-    stock,
-    updated,
-):
+def generate_stock_detail_page(stock, updated):
+    css_rating = rating_class(stock["rating"])
+    quality_css = quality_class(stock["data_quality"])
+    change_class = "positive" if stock["daily_change"] >= 0 else "negative"
+    value_score = value_opportunity_score(stock)
 
-    css_rating = rating_class(
-        stock["rating"]
-    )
-
-    quality_css = quality_class(
-        stock["data_quality"]
-    )
-
-    change_class = (
-        "positive"
-        if stock["daily_change"] >= 0
-        else "negative"
-    )
-
-    value_score = value_opportunity_score(
-        stock
-    )
+    analyst_upside_class = "positive" if (stock.get("analyst_upside") or 0) >= 0 else "negative"
 
     page = f"""
 <!DOCTYPE html>
-
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
-
-<meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
->
-
-<title>
-V Stock Intelligence · {escape(stock["ticker"])}
-</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>V Stock Intelligence · {escape(stock['ticker'])}</title>
 <style>
-
-* {{
-    box-sizing: border-box;
-}}
-
-body {{
-    margin: 0;
-    background: #07111f;
-    color: #edf4ff;
-    font-family: Arial, Helvetica, sans-serif;
-}}
-
-.container {{
-    width: min(1100px, 94%);
-    margin: auto;
-    padding: 30px 0 60px;
-}}
-
-.top-nav {{
-    display: flex;
-    gap: 20px;
-    flex-wrap: wrap;
-}}
-
-.top-nav a {{
-    color: #68b9ff;
-    text-decoration: none;
-    font-size: 13px;
-}}
-
-.header {{
-    margin-top: 24px;
-}}
-
-.title {{
-    font-size: 34px;
-    font-weight: 800;
-}}
-
-.subtitle {{
-    color: #8ca5c4;
-    margin-top: 6px;
-}}
-
-.card {{
-    background: #111e31;
-    border: 1px solid #263c5b;
-    border-radius: 16px;
-    padding: 21px;
-}}
-
-.section {{
-    margin-top: 20px;
-}}
-
-.hero {{
-    display: grid;
-    grid-template-columns:
-        repeat(auto-fit, minmax(190px, 1fr));
-    gap: 14px;
-    margin-top: 24px;
-}}
-
-.label {{
-    color: #8ba4c3;
-    font-size: 11px;
-    text-transform: uppercase;
-}}
-
-.big {{
-    font-size: 32px;
-    font-weight: 800;
-    margin-top: 7px;
-}}
-
-.grid {{
-    display: grid;
-    grid-template-columns:
-        repeat(auto-fit, minmax(180px, 1fr));
-    gap: 13px;
-}}
-
-.metric {{
-    background: #0b1728;
-    border-radius: 12px;
-    padding: 17px;
-}}
-
-.metric-value {{
-    font-size: 25px;
-    font-weight: 800;
-    margin-top: 7px;
-}}
-
-.section-title {{
-    font-size: 21px;
-    font-weight: 800;
-    margin-bottom: 15px;
-}}
-
-.comment {{
-    color: #aebfd4;
-    font-size: 13px;
-    line-height: 1.5;
-    margin-top: 8px;
-}}
-
-.positive {{
-    color: #51e0a0;
-}}
-
-.negative {{
-    color: #ff7183;
-}}
-
-.rating-badge,
-.quality-badge {{
-    display: inline-block;
-    padding: 5px 8px;
-    border-radius: 7px;
-    font-size: 10px;
-    font-weight: 800;
-}}
-
-.strong-buy {{
-    color: #51e5a0;
-    background: rgba(55,219,143,0.15);
-}}
-
-.buy {{
-    color: #66bdff;
-    background: rgba(86,184,255,0.15);
-}}
-
-.hold {{
-    color: #f4cd69;
-}}
-
-.watch {{
-    color: #ffa165;
-}}
-
-.caution {{
-    color: #ff7183;
-}}
-
-.quality-good {{
-    color: #55dea0;
-}}
-
-.quality-medium {{
-    color: #f3c968;
-}}
-
-.quality-low {{
-    color: #ff7a87;
-}}
-
-.footer {{
-    text-align: center;
-    color: #6f88a8;
-    margin-top: 30px;
-    font-size: 12px;
-}}
-
+*{{box-sizing:border-box}}body{{margin:0;background:#07111f;color:#edf4ff;font-family:Arial,Helvetica,sans-serif}}.container{{width:min(1180px,94%);margin:auto;padding:30px 0 60px}}.top-nav{{display:flex;gap:20px;flex-wrap:wrap}}.top-nav a{{color:#68b9ff;text-decoration:none;font-size:13px}}.header{{margin-top:24px}}.title{{font-size:34px;font-weight:800}}.subtitle{{color:#8ca5c4;margin-top:6px}}.card{{background:#111e31;border:1px solid #263c5b;border-radius:16px;padding:21px}}.section{{margin-top:20px}}.hero{{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin-top:24px}}.label{{color:#8ba4c3;font-size:11px;text-transform:uppercase}}.big{{font-size:32px;font-weight:800;margin-top:7px}}.grid{{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:13px}}.metric{{background:#0b1728;border-radius:12px;padding:17px}}.metric-value{{font-size:24px;font-weight:800;margin-top:7px}}.section-title{{font-size:21px;font-weight:800;margin-bottom:15px}}.comment{{color:#aebfd4;font-size:13px;line-height:1.5;margin-top:8px}}.positive{{color:#51e0a0}}.negative{{color:#ff7183}}.rating-badge,.quality-badge{{display:inline-block;padding:5px 8px;border-radius:7px;font-size:10px;font-weight:800}}.strong-buy{{color:#51e5a0;background:rgba(55,219,143,.15)}}.buy{{color:#66bdff;background:rgba(86,184,255,.15)}}.hold{{color:#f4cd69}}.watch{{color:#ffa165}}.caution{{color:#ff7183}}.quality-good{{color:#55dea0}}.quality-medium{{color:#f3c968}}.quality-low{{color:#ff7a87}}.price-chart{{width:100%;height:300px;background:#0b1728;border-radius:12px;display:block}}.chart-scale{{display:flex;justify-content:space-between;gap:12px;color:#718ba9;font-size:11px;margin-top:9px;flex-wrap:wrap}}.footer{{text-align:center;color:#6f88a8;margin-top:30px;font-size:12px;line-height:1.6}}
 </style>
-
 </head>
-
 <body>
-
 <div class="container">
 
-
 <div class="top-nav">
-
-    <a href="../../">
-        ← Back to Market Dashboard
-    </a>
-
-    <a href="../../guide/">
-        How to Read This Dashboard
-    </a>
-
+    <a href="../../">← Back to Market Dashboard</a>
+    <a href="../../guide/">How to Read This Dashboard</a>
 </div>
-
 
 <div class="header">
-
-    <div class="title">
-        {escape(stock["name"])}
-    </div>
-
-    <div class="subtitle">
-
-        {escape(stock["ticker"])}
-
-        ·
-
-        {escape(stock["sector"])}
-
-        ·
-
-        {escape(stock["market"])}
-
-    </div>
-
+    <div class="title">{escape(stock['name'])}</div>
+    <div class="subtitle">{escape(stock['ticker'])} · {escape(stock['sector'])} · {escape(stock['market'])}</div>
 </div>
-
 
 <div class="hero">
-
-
-<div class="card">
-
-    <div class="label">
-        Current Price
-    </div>
-
-    <div class="big">
-        {format_price(
-            stock["price"],
-            stock["market"],
-        )}
-    </div>
-
-    <div class="{change_class}">
-        {format_percent(
-            stock["daily_change"]
-        )}
-    </div>
-
+    <div class="card"><div class="label">Current Price</div><div class="big">{format_price(stock['price'], stock['market'])}</div><div class="{change_class}">{format_percent(stock['daily_change'])}</div></div>
+    <div class="card"><div class="label">Dashboard Rating</div><div class="big">{stock['overall']}/100</div><div style="margin-top:8px"><span class="rating-badge {css_rating}">{escape(stock['rating'])}</span></div></div>
+    <div class="card"><div class="label">Value Opportunity</div><div class="big">{value_score}/100</div><div class="comment">Valuation + fundamentals</div></div>
+    <div class="card"><div class="label">Data Quality</div><div class="big">{stock['data_quality']}%</div><div style="margin-top:8px"><span class="quality-badge {quality_css}">{quality_label(stock['data_quality'])}</span></div></div>
 </div>
-
-
-<div class="card">
-
-    <div class="label">
-        Dashboard Rating
-    </div>
-
-    <div class="big">
-        {stock["overall"]}/100
-    </div>
-
-    <div style="margin-top:8px;">
-
-        <span class="
-            rating-badge
-            {css_rating}
-        ">
-            {escape(stock["rating"])}
-        </span>
-
-    </div>
-
-</div>
-
-
-<div class="card">
-
-    <div class="label">
-        Value Opportunity
-    </div>
-
-    <div class="big">
-        {value_score}/100
-    </div>
-
-    <div class="comment">
-        Valuation + fundamentals
-    </div>
-
-</div>
-
-
-<div class="card">
-
-    <div class="label">
-        Data Quality
-    </div>
-
-    <div class="big">
-        {stock["data_quality"]}%
-    </div>
-
-    <div style="margin-top:8px;">
-
-        <span class="
-            quality-badge
-            {quality_css}
-        ">
-            {quality_label(
-                stock["data_quality"]
-            )}
-        </span>
-
-    </div>
-
-</div>
-
-
-</div>
-
 
 <div class="card section">
-
-    <div class="section-title">
-        Core Investment Scores
-    </div>
-
-    <div class="grid">
-
-
-        <div class="metric">
-
-            <div class="label">
-                Technical
-            </div>
-
-            <div class="metric-value">
-                {stock["technical"]}/100
-            </div>
-
-            <div class="comment">
-                {score_commentary(
-                    stock["technical"],
-                    "Technical"
-                )}
-            </div>
-
-        </div>
-
-
-        <div class="metric">
-
-            <div class="label">
-                Momentum
-            </div>
-
-            <div class="metric-value">
-                {stock["momentum"]}/100
-            </div>
-
-            <div class="comment">
-                {score_commentary(
-                    stock["momentum"],
-                    "Momentum"
-                )}
-            </div>
-
-        </div>
-
-
-        <div class="metric">
-
-            <div class="label">
-                Fundamentals
-            </div>
-
-            <div class="metric-value">
-                {stock["fundamental"]}/100
-            </div>
-
-            <div class="comment">
-                {score_commentary(
-                    stock["fundamental"],
-                    "Fundamental"
-                )}
-            </div>
-
-        </div>
-
-
-        <div class="metric">
-
-            <div class="label">
-                Valuation
-            </div>
-
-            <div class="metric-value">
-                {stock["valuation"]}/100
-            </div>
-
-            <div class="comment">
-                {score_commentary(
-                    stock["valuation"],
-                    "Valuation"
-                )}
-            </div>
-
-        </div>
-
-
-    </div>
-
+    <div class="section-title">Six-Month Price Trend</div>
+    {chart_svg(stock)}
 </div>
-
 
 <div class="card section">
-
-    <div class="section-title">
-        Opportunity Signals
-    </div>
-
+    <div class="section-title">Core Investment Scores</div>
     <div class="grid">
-
-
-        <div class="metric">
-
-            <div class="label">
-                RSI
-            </div>
-
-            <div class="metric-value">
-
-                {
-                    f'{stock["rsi"]:.1f}'
-                    if stock["rsi"] is not None
-                    else "N/A"
-                }
-
-            </div>
-
-            <div class="comment">
-
-                {
-                    "Currently in the Oversold Watch screen."
-                    if (
-                        stock["rsi"] is not None
-                        and
-                        stock["rsi"] < 35
-                    )
-                    else
-                    "Not currently in the Oversold Watch screen."
-                }
-
-            </div>
-
-        </div>
-
-
-        <div class="metric">
-
-            <div class="label">
-                Balanced Score
-            </div>
-
-            <div class="metric-value">
-                {stock["balanced_score"]}/100
-            </div>
-
-            <div class="comment">
-                Rewards strength across several factors
-                while penalising large score differences.
-            </div>
-
-        </div>
-
-
-        <div class="metric">
-
-            <div class="label">
-                Value Opportunity
-            </div>
-
-            <div class="metric-value">
-                {value_score}/100
-            </div>
-
-            <div class="comment">
-
-                Valuation:
-                {stock["valuation"]}/100
-
-                ·
-
-                Fundamentals:
-                {stock["fundamental"]}/100
-
-            </div>
-
-        </div>
-
-
+        <div class="metric"><div class="label">Technical</div><div class="metric-value">{stock['technical']}/100</div><div class="comment">{score_commentary(stock['technical'], 'Technical')}</div></div>
+        <div class="metric"><div class="label">Momentum</div><div class="metric-value">{stock['momentum']}/100</div><div class="comment">{score_commentary(stock['momentum'], 'Momentum')}</div></div>
+        <div class="metric"><div class="label">Fundamentals</div><div class="metric-value">{stock['fundamental']}/100</div><div class="comment">{score_commentary(stock['fundamental'], 'Fundamental')}</div></div>
+        <div class="metric"><div class="label">Valuation</div><div class="metric-value">{stock['valuation']}/100</div><div class="comment">{score_commentary(stock['valuation'], 'Valuation')}</div></div>
     </div>
-
 </div>
 
+<div class="card section">
+    <div class="section-title">Price & Technical Context</div>
+    <div class="grid">
+        <div class="metric"><div class="label">RSI</div><div class="metric-value">{format_number(stock.get('rsi'))}</div></div>
+        <div class="metric"><div class="label">20 Day MA</div><div class="metric-value">{format_price(stock.get('ma20'), stock['market'])}</div></div>
+        <div class="metric"><div class="label">50 Day MA</div><div class="metric-value">{format_price(stock.get('ma50'), stock['market'])}</div></div>
+        <div class="metric"><div class="label">200 Day MA</div><div class="metric-value">{format_price(stock.get('ma200'), stock['market'])}</div></div>
+        <div class="metric"><div class="label">52 Week Low</div><div class="metric-value">{format_price(stock.get('low_52'), stock['market'])}</div></div>
+        <div class="metric"><div class="label">52 Week High</div><div class="metric-value">{format_price(stock.get('high_52'), stock['market'])}</div></div>
+        <div class="metric"><div class="label">Support</div><div class="metric-value">{format_price(stock.get('support'), stock['market'])}</div></div>
+        <div class="metric"><div class="label">Resistance</div><div class="metric-value">{format_price(stock.get('resistance'), stock['market'])}</div></div>
+    </div>
+</div>
+
+<div class="card section">
+    <div class="section-title">Recent Performance</div>
+    <div class="grid">
+        <div class="metric"><div class="label">1 Month</div><div class="metric-value">{format_percent(stock.get('return_1m'))}</div></div>
+        <div class="metric"><div class="label">3 Months</div><div class="metric-value">{format_percent(stock.get('return_3m'))}</div></div>
+        <div class="metric"><div class="label">6 Months</div><div class="metric-value">{format_percent(stock.get('return_6m'))}</div></div>
+        <div class="metric"><div class="label">Balanced Score</div><div class="metric-value">{stock['balanced_score']}/100</div></div>
+    </div>
+</div>
+
+<div class="card section">
+    <div class="section-title">Fundamental Snapshot</div>
+    <div class="grid">
+        <div class="metric"><div class="label">Market Cap</div><div class="metric-value">{format_large_number(stock.get('market_cap'))}</div></div>
+        <div class="metric"><div class="label">Trailing P/E</div><div class="metric-value">{format_number(stock.get('trailing_pe'))}</div></div>
+        <div class="metric"><div class="label">Forward P/E</div><div class="metric-value">{format_number(stock.get('forward_pe'))}</div></div>
+        <div class="metric"><div class="label">Price / Book</div><div class="metric-value">{format_number(stock.get('price_to_book'))}</div></div>
+        <div class="metric"><div class="label">Revenue Growth</div><div class="metric-value">{format_percent(stock.get('revenue_growth'))}</div></div>
+        <div class="metric"><div class="label">Earnings Growth</div><div class="metric-value">{format_percent(stock.get('earnings_growth'))}</div></div>
+        <div class="metric"><div class="label">Gross Margin</div><div class="metric-value">{format_percent(stock.get('gross_margin'), signed=False)}</div></div>
+        <div class="metric"><div class="label">Operating Margin</div><div class="metric-value">{format_percent(stock.get('operating_margin'), signed=False)}</div></div>
+    </div>
+</div>
+
+<div class="card section">
+    <div class="section-title">Analyst View</div>
+    <div class="grid">
+        <div class="metric"><div class="label">Consensus</div><div class="metric-value">{escape(stock.get('analyst_recommendation') or 'N/A')}</div></div>
+        <div class="metric"><div class="label">Mean Target</div><div class="metric-value">{format_price(stock.get('analyst_target'), stock['market'])}</div></div>
+        <div class="metric"><div class="label">Target Upside / Downside</div><div class="metric-value {analyst_upside_class}">{format_percent(stock.get('analyst_upside'))}</div></div>
+        <div class="metric"><div class="label">Analyst Opinions</div><div class="metric-value">{escape(stock.get('analyst_count') or 'N/A')}</div></div>
+        <div class="metric"><div class="label">Low Target</div><div class="metric-value">{format_price(stock.get('analyst_low'), stock['market'])}</div></div>
+        <div class="metric"><div class="label">High Target</div><div class="metric-value">{format_price(stock.get('analyst_high'), stock['market'])}</div></div>
+    </div>
+</div>
 
 <div class="footer">
-
-    Last updated:
-    {updated}
-
-    <br><br>
-
-    Dashboard ratings are automated quantitative indicators.
-    They are not financial advice or analyst recommendations.
-
+    Last updated: {updated}<br><br>
+    Dashboard ratings are automated quantitative indicators. They are not analyst recommendations or financial advice.
 </div>
 
-
 </div>
-
 </body>
-
 </html>
 """
 
-    output_folder = (
-        Path("docs")
-        /
-        "stocks"
-        /
-        ticker_slug(
-            stock["ticker"]
-        )
-    )
-
-    output_folder.mkdir(
-        parents=True,
-        exist_ok=True,
-    )
-
-    output_file = (
-        output_folder
-        /
-        "index.html"
-    )
-
-    output_file.write_text(
-        page,
-        encoding="utf-8",
-    )
-
-
-def generate_all_stock_pages(
-    stocks,
-    updated,
-):
-
-    for stock in stocks:
-
-        generate_stock_detail_page(
-            stock,
-            updated,
-        )
+    output_folder = Path("docs") / "stocks" / ticker_slug(stock["ticker"])
+    output_folder.mkdir(parents=True, exist_ok=True)
+    (output_folder / "index.html").write_text(page, encoding="utf-8")
 
 
 # ============================================================
@@ -1358,545 +510,75 @@ def generate_all_stock_pages(
 # ============================================================
 
 def generate_guide_page(updated):
-
     page = f"""
 <!DOCTYPE html>
-
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
-
-<meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
->
-
-<title>
-V Stock Intelligence · Guide
-</title>
-
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>V Stock Intelligence · Guide</title>
 <style>
-
-* {{
-    box-sizing: border-box;
-}}
-
-body {{
-    margin: 0;
-    background: #07111f;
-    color: #edf4ff;
-    font-family: Arial, Helvetica, sans-serif;
-}}
-
-.container {{
-    width: min(1000px, 94%);
-    margin: auto;
-    padding: 30px 0 70px;
-}}
-
-.back {{
-    color: #68b9ff;
-    text-decoration: none;
-    font-size: 13px;
-}}
-
-.title {{
-    font-size: 36px;
-    font-weight: 800;
-    margin-top: 28px;
-}}
-
-.subtitle {{
-    color: #8ca5c4;
-    margin-top: 8px;
-    line-height: 1.5;
-}}
-
-.card {{
-    background: #111e31;
-    border: 1px solid #263c5b;
-    border-radius: 16px;
-    padding: 23px;
-    margin-top: 20px;
-}}
-
-.section-title {{
-    font-size: 22px;
-    font-weight: 800;
-    margin-bottom: 18px;
-}}
-
-.term {{
-    padding: 15px 0;
-    border-bottom: 1px solid #263a55;
-}}
-
-.term:last-child {{
-    border-bottom: none;
-}}
-
-.term-name {{
-    font-size: 17px;
-    font-weight: 800;
-}}
-
-.term-description {{
-    color: #afc0d5;
-    line-height: 1.55;
-    margin-top: 6px;
-}}
-
-.score-table {{
-    width: 100%;
-    border-collapse: collapse;
-}}
-
-.score-table td {{
-    padding: 12px 8px;
-    border-bottom: 1px solid #263a55;
-}}
-
-.weight {{
-    color: #68b9ff;
-    font-weight: 800;
-    text-align: right;
-}}
-
-.note {{
-    background: #0b1728;
-    border-radius: 12px;
-    padding: 17px;
-    color: #afc0d5;
-    line-height: 1.6;
-}}
-
-.footer {{
-    text-align: center;
-    color: #7089a8;
-    margin-top: 30px;
-    font-size: 12px;
-}}
-
+*{{box-sizing:border-box}}body{{margin:0;background:#07111f;color:#edf4ff;font-family:Arial,Helvetica,sans-serif}}.container{{width:min(1000px,94%);margin:auto;padding:30px 0 70px}}.back{{color:#68b9ff;text-decoration:none;font-size:13px}}.title{{font-size:36px;font-weight:800;margin-top:28px}}.subtitle{{color:#8ca5c4;margin-top:8px;line-height:1.5}}.card{{background:#111e31;border:1px solid #263c5b;border-radius:16px;padding:23px;margin-top:20px}}.section-title{{font-size:22px;font-weight:800;margin-bottom:18px}}.term{{padding:15px 0;border-bottom:1px solid #263a55}}.term:last-child{{border-bottom:none}}.term-name{{font-size:17px;font-weight:800}}.term-description{{color:#afc0d5;line-height:1.55;margin-top:6px}}.score-table{{width:100%;border-collapse:collapse}}.score-table td{{padding:12px 8px;border-bottom:1px solid #263a55}}.weight{{color:#68b9ff;font-weight:800;text-align:right}}.note{{background:#0b1728;border-radius:12px;padding:17px;color:#afc0d5;line-height:1.6}}.footer{{text-align:center;color:#7089a8;margin-top:30px;font-size:12px}}
 </style>
-
 </head>
-
 <body>
-
 <div class="container">
-
-
-<a
-    class="back"
-    href="../"
->
-    ← Back to Market Dashboard
-</a>
-
-
-<div class="title">
-    How to Read V Stock Intelligence
-</div>
-
-<div class="subtitle">
-
-    This guide explains the terminology, scores and
-    opportunity screens used throughout the dashboard.
-
-</div>
-
+<a class="back" href="../">← Back to Market Dashboard</a>
+<div class="title">How to Read V Stock Intelligence</div>
+<div class="subtitle">A plain-language guide to the terminology, scores and opportunity screens used throughout the dashboard.</div>
 
 <div class="card">
-
-    <div class="section-title">
-        Dashboard Rating
-    </div>
-
-    <div class="note">
-
-        Ratings such as Strong Buy, Buy, Hold, Watch and Caution
-        are automated quantitative ratings created by this dashboard.
-
-        <br><br>
-
-        They are not analyst recommendations and should be used
-        as a starting point for further research rather than as
-        instructions to buy or sell a stock.
-
-    </div>
-
+<div class="section-title">Dashboard Rating</div>
+<div class="note">Ratings such as Strong Buy, Buy, Hold, Watch and Caution are automated quantitative ratings created by this dashboard. They are not analyst recommendations and should be used as a starting point for further research.</div>
 </div>
-
 
 <div class="card">
-
-    <div class="section-title">
-        Overall Score Methodology
-    </div>
-
-    <table class="score-table">
-
-        <tr>
-            <td>Technical Score</td>
-            <td class="weight">25%</td>
-        </tr>
-
-        <tr>
-            <td>Momentum Score</td>
-            <td class="weight">20%</td>
-        </tr>
-
-        <tr>
-            <td>Fundamental Score</td>
-            <td class="weight">40%</td>
-        </tr>
-
-        <tr>
-            <td>Valuation Score</td>
-            <td class="weight">15%</td>
-        </tr>
-
-    </table>
-
+<div class="section-title">Overall Score Methodology</div>
+<table class="score-table">
+<tr><td>Technical Score</td><td class="weight">25%</td></tr>
+<tr><td>Momentum Score</td><td class="weight">20%</td></tr>
+<tr><td>Fundamental Score</td><td class="weight">40%</td></tr>
+<tr><td>Valuation Score</td><td class="weight">15%</td></tr>
+</table>
 </div>
-
 
 <div class="card">
-
-    <div class="section-title">
-        Core Investment Scores
-    </div>
-
-
-    <div class="term">
-
-        <div class="term-name">
-            Technical Score
-        </div>
-
-        <div class="term-description">
-
-            Measures the current share-price trend using indicators
-            such as the 20-day, 50-day and 200-day moving averages,
-            RSI and MACD.
-
-            A high score indicates stronger technical conditions.
-
-        </div>
-
-    </div>
-
-
-    <div class="term">
-
-        <div class="term-name">
-            Momentum Score
-        </div>
-
-        <div class="term-description">
-
-            Measures recent price performance across several periods,
-            including approximately one week, one month, three months
-            and six months.
-
-        </div>
-
-    </div>
-
-
-    <div class="term">
-
-        <div class="term-name">
-            Fundamental Score
-        </div>
-
-        <div class="term-description">
-
-            Evaluates available business and financial information
-            such as revenue growth, earnings growth, profit margins,
-            return on equity, debt and liquidity.
-
-        </div>
-
-    </div>
-
-
-    <div class="term">
-
-        <div class="term-name">
-            Valuation Score
-        </div>
-
-        <div class="term-description">
-
-            Estimates how attractively a stock appears to be priced
-            using available valuation metrics such as forward P/E
-            and price-to-book.
-
-            A high valuation score means the shares appear relatively
-            attractive under the dashboard's valuation rules.
-
-        </div>
-
-    </div>
-
-
-    <div class="term">
-
-        <div class="term-name">
-            Data Quality
-        </div>
-
-        <div class="term-description">
-
-            Shows how much of the fundamental scoring model had usable
-            data available.
-
-            High data quality provides greater confidence in the
-            completeness of the score. Limited data quality means the
-            score should be interpreted more cautiously.
-
-        </div>
-
-    </div>
-
-
+<div class="section-title">Core Investment Scores</div>
+<div class="term"><div class="term-name">Technical Score</div><div class="term-description">Measures current price trends using moving averages, RSI and MACD.</div></div>
+<div class="term"><div class="term-name">Momentum Score</div><div class="term-description">Measures recent price performance over several periods including one week, one month, three months and six months.</div></div>
+<div class="term"><div class="term-name">Fundamental Score</div><div class="term-description">Evaluates available business information such as revenue growth, earnings growth, margins, return on equity, debt and liquidity.</div></div>
+<div class="term"><div class="term-name">Valuation Score</div><div class="term-description">Estimates how attractively a stock appears priced using available valuation metrics such as forward P/E and price-to-book.</div></div>
+<div class="term"><div class="term-name">Data Quality</div><div class="term-description">Shows how much of the fundamental scoring model had usable data. Lower data quality means the score should be interpreted with more caution.</div></div>
 </div>
-
 
 <div class="card">
-
-    <div class="section-title">
-        Market Opportunity Screens
-    </div>
-
-
-    <div class="term">
-
-        <div class="term-name">
-            Oversold Watch
-        </div>
-
-        <div class="term-description">
-
-            Shows stocks with RSI below 35.
-
-            These shares have experienced unusually weak recent
-            price momentum and may deserve further investigation.
-
-            Being oversold does not mean that a share price will
-            automatically recover.
-
-        </div>
-
-    </div>
-
-
-    <div class="term">
-
-        <div class="term-name">
-            Momentum Leaders
-        </div>
-
-        <div class="term-description">
-
-            Highlights stocks with stronger recent price performance
-            while requiring minimum fundamental strength and
-            sufficient data quality.
-
-        </div>
-
-    </div>
-
-
-    <div class="term">
-
-        <div class="term-name">
-            Value Opportunities
-        </div>
-
-        <div class="term-description">
-
-            Combines the Valuation Score and Fundamental Score equally.
-
-            A high score therefore suggests that a company has both
-            relatively attractive valuation characteristics and
-            stronger underlying fundamentals.
-
-        </div>
-
-    </div>
-
-
-    <div class="term">
-
-        <div class="term-name">
-            Best Balanced
-        </div>
-
-        <div class="term-description">
-
-            Looks for stocks that perform consistently across
-            Technical, Momentum, Fundamentals and Valuation.
-
-            The score is reduced when a stock is extremely strong
-            in one area but weak in another.
-
-        </div>
-
-    </div>
-
-
+<div class="section-title">Market Opportunity Screens</div>
+<div class="term"><div class="term-name">Oversold Watch</div><div class="term-description">Stocks with RSI below 35. This indicates weak recent price momentum but does not guarantee a rebound.</div></div>
+<div class="term"><div class="term-name">Momentum Leaders</div><div class="term-description">Stocks with strong recent price performance that also meet minimum fundamental and data-quality requirements.</div></div>
+<div class="term"><div class="term-name">Value Opportunities</div><div class="term-description">Combines the Valuation Score and Fundamental Score equally.</div></div>
+<div class="term"><div class="term-name">Best Balanced</div><div class="term-description">Looks for stocks with more consistent scores across Technical, Momentum, Fundamentals and Valuation.</div></div>
 </div>
-
 
 <div class="card">
-
-    <div class="section-title">
-        Technical Terms
-    </div>
-
-
-    <div class="term">
-
-        <div class="term-name">
-            RSI — Relative Strength Index
-        </div>
-
-        <div class="term-description">
-
-            RSI ranges from 0 to 100 and measures recent price momentum.
-
-            <br><br>
-
-            Below 30: heavily oversold
-
-            <br>
-
-            30–40: weak
-
-            <br>
-
-            40–60: broadly neutral
-
-            <br>
-
-            60–70: strong momentum
-
-            <br>
-
-            Above 70: potentially overbought
-
-        </div>
-
-    </div>
-
-
-    <div class="term">
-
-        <div class="term-name">
-            Moving Average
-        </div>
-
-        <div class="term-description">
-
-            The average share price over a specific number of
-            trading days.
-
-            The dashboard uses 20-day, 50-day and 200-day averages
-            to assess short-, medium- and longer-term price trends.
-
-        </div>
-
-    </div>
-
-
-    <div class="term">
-
-        <div class="term-name">
-            MACD
-        </div>
-
-        <div class="term-description">
-
-            Moving Average Convergence Divergence is a trend and
-            momentum indicator.
-
-            The dashboard uses the relationship between the MACD line
-            and its signal line as one component of the Technical Score.
-
-        </div>
-
-    </div>
-
-
+<div class="section-title">Technical Terms</div>
+<div class="term"><div class="term-name">RSI — Relative Strength Index</div><div class="term-description">Below 30: heavily oversold<br>30–40: weak<br>40–60: broadly neutral<br>60–70: strong momentum<br>Above 70: potentially overbought</div></div>
+<div class="term"><div class="term-name">Moving Average</div><div class="term-description">The average share price over a specified number of trading days. The dashboard uses 20-, 50- and 200-day averages.</div></div>
+<div class="term"><div class="term-name">MACD</div><div class="term-description">A trend and momentum indicator used as one component of the Technical Score.</div></div>
 </div>
-
 
 <div class="card">
-
-    <div class="section-title">
-        Important Limitations
-    </div>
-
-    <div class="note">
-
-        The dashboard uses automated third-party market and financial data.
-        Data may occasionally be delayed, incomplete or inconsistent.
-
-        <br><br>
-
-        Quantitative scores cannot fully capture company-specific risks,
-        future events, management quality, macroeconomic conditions or
-        sudden changes in market sentiment.
-
-        <br><br>
-
-        Always conduct additional research before making an investment decision.
-
-    </div>
-
+<div class="section-title">Important Limitations</div>
+<div class="note">The dashboard uses automated third-party market and financial data. Data may occasionally be delayed, incomplete or inconsistent. Quantitative scores cannot fully capture company-specific risks, management quality, macroeconomic conditions or sudden market changes.</div>
 </div>
 
-
-<div class="footer">
-
-    Last updated:
-    {updated}
-
+<div class="footer">Last updated: {updated}</div>
 </div>
-
-
-</div>
-
 </body>
-
 </html>
 """
-
-    output_folder = (
-        Path("docs")
-        /
-        "guide"
-    )
-
-    output_folder.mkdir(
-        parents=True,
-        exist_ok=True,
-    )
-
-    output_file = (
-        output_folder
-        /
-        "index.html"
-    )
-
-    output_file.write_text(
-        page,
-        encoding="utf-8",
-    )
+    output_folder = Path("docs") / "guide"
+    output_folder.mkdir(parents=True, exist_ok=True)
+    (output_folder / "index.html").write_text(page, encoding="utf-8")
 
 
 # ============================================================
@@ -1904,1008 +586,197 @@ body {{
 # ============================================================
 
 def main():
-
-    print(
-        "Running stock scanner..."
-    )
+    print("Running stock scanner...")
 
     scan_data = run_scanner()
-
     us_results = scan_data["us"]
+    singapore_results = scan_data["singapore"]
+    micron = find_micron(us_results)
+    all_results = us_results + singapore_results
 
-    singapore_results = scan_data[
-        "singapore"
-    ]
-
-    micron = find_micron(
-        us_results
-    )
-
-    all_results = (
-        us_results
-        +
-        singapore_results
-    )
-
-    oversold = get_oversold(
-        all_results
-    )
-
-    momentum_leaders = (
-        get_momentum_leaders(
-            all_results
-        )
-    )
-
-    value_opportunities = (
-        get_value_opportunities(
-            all_results
-        )
-    )
-
-    balanced_opportunities = (
-        get_balanced_opportunities(
-            all_results
-        )
-    )
+    oversold = get_oversold(all_results)
+    momentum_leaders = get_momentum_leaders(all_results)
+    value_opportunities = get_value_opportunities(all_results)
+    balanced_opportunities = get_balanced_opportunities(all_results)
 
     updated = datetime.now(
-        timezone.utc
-    ).strftime(
-        "%d %B %Y, %H:%M UTC"
-    )
-
+        ZoneInfo("Asia/Singapore")
+    ).strftime("%d %B %Y, %H:%M SGT")
 
     for stock in all_results:
+        generate_stock_detail_page(stock, updated)
 
-        generate_stock_detail_page(
-            stock,
-            updated,
-        )
+    generate_guide_page(updated)
 
-
-    generate_guide_page(
-        updated
+    sectors = sorted({stock["sector"] for stock in all_results})
+    sector_options = "".join(
+        f'<option value="{escape(sector)}">{escape(sector)}</option>'
+        for sector in sectors
     )
-
 
     page = f"""
 <!DOCTYPE html>
-
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
-
-<meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
->
-
-<title>
-V Stock Intelligence
-</title>
-
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>V Stock Intelligence</title>
 <style>
-
-* {{
-    box-sizing: border-box;
-}}
-
-body {{
-    margin: 0;
-    background: #07111f;
-    color: #edf4ff;
-    font-family: Arial, Helvetica, sans-serif;
-}}
-
-.container {{
-    width: min(1380px, 95%);
-    margin: auto;
-    padding: 28px 0 60px;
-}}
-
-.header {{
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    margin-bottom: 24px;
-}}
-
-.main-title {{
-    font-size: 36px;
-    font-weight: 800;
-}}
-
-.subtitle,
-.muted {{
-    color: #8ca5c4;
-}}
-
-.updated {{
-    color: #748dab;
-    font-size: 12px;
-    text-align: right;
-}}
-
-.nav {{
-    margin-top: 10px;
-}}
-
-.nav a {{
-    color: #68b9ff;
-    text-decoration: none;
-    font-size: 13px;
-    font-weight: 700;
-}}
-
-.card {{
-    background: #111e31;
-    border: 1px solid #263c5b;
-    border-radius: 16px;
-    padding: 21px;
-}}
-
-.section {{
-    margin-top: 20px;
-}}
-
-.section-title {{
-    font-size: 22px;
-    font-weight: 800;
-}}
-
-.section-subtitle {{
-    color: #8098b6;
-    font-size: 13px;
-    margin-top: 5px;
-    margin-bottom: 16px;
-    line-height: 1.4;
-}}
-
-.info-wrap {{
-    position: relative;
-    display: inline-block;
-    margin-left: 5px;
-    color: #68b9ff;
-    cursor: help;
-    font-size: 14px;
-    outline: none;
-}}
-
-.tooltip {{
-    visibility: hidden;
-    opacity: 0;
-
-    position: absolute;
-    z-index: 100;
-
-    left: 50%;
-    top: 25px;
-
-    transform:
-        translateX(-50%);
-
-    width: 280px;
-
-    background:
-        #020912;
-
-    color:
-        #d9e5f5;
-
-    border:
-        1px solid
-        #345274;
-
-    border-radius:
-        10px;
-
-    padding:
-        12px;
-
-    font-size:
-        12px;
-
-    font-weight:
-        normal;
-
-    line-height:
-        1.45;
-
-    text-align:
-        left;
-
-    transition:
-        opacity 0.15s;
-}}
-
-.info-wrap:hover .tooltip,
-.info-wrap:focus .tooltip {{
-    visibility: visible;
-    opacity: 1;
-}}
-
-.micron-layout {{
-    display: grid;
-    grid-template-columns:
-        1.5fr 1fr 0.8fr 1.2fr;
-    gap: 25px;
-    align-items: center;
-}}
-
-.micron-label {{
-    color: #62b8ff;
-    font-size: 11px;
-    font-weight: 800;
-}}
-
-.micron-title {{
-    font-size: 27px;
-    font-weight: 800;
-    margin: 7px 0;
-}}
-
-.micron-price,
-.micron-score {{
-    font-size: 32px;
-    font-weight: 800;
-}}
-
-.primary-button {{
-    display: inline-block;
-    background: #55a8fa;
-    color: #06111f;
-    font-weight: 800;
-    text-decoration: none;
-    padding: 14px 18px;
-    border-radius: 10px;
-}}
-
-.opportunity-grid {{
-    display: grid;
-    grid-template-columns:
-        repeat(5, 1fr);
-    gap: 13px;
-}}
-
-.opportunity-card {{
-    display: block;
-    background: #0b1728;
-    border-radius: 13px;
-    padding: 16px;
-    text-decoration: none;
-    color: inherit;
-}}
-
-.opportunity-card:hover {{
-    background: #10203a;
-}}
-
-.opportunity-top {{
-    display: flex;
-    justify-content: space-between;
-    gap: 8px;
-}}
-
-.opportunity-ticker {{
-    font-size: 20px;
-    font-weight: 800;
-}}
-
-.opportunity-name {{
-    color: #829bb9;
-    font-size: 12px;
-    margin-top: 4px;
-}}
-
-.sector {{
-    color: #607c9f;
-    font-size: 10px;
-    margin-top: 4px;
-}}
-
-.opportunity-price {{
-    font-size: 23px;
-    font-weight: 800;
-    margin-top: 18px;
-}}
-
-.score-row,
-.quality-row {{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 8px 0;
-    border-bottom: 1px solid #223650;
-    font-size: 12px;
-    color: #a1b5cf;
-}}
-
-.quality-row {{
-    border-bottom: none;
-}}
-
-.rating-badge,
-.quality-badge {{
-    display: inline-block;
-    padding: 5px 8px;
-    border-radius: 7px;
-    font-size: 10px;
-    font-weight: 800;
-}}
-
-.strong-buy {{
-    color: #51e5a0;
-    background: rgba(55,219,143,0.15);
-}}
-
-.buy {{
-    color: #66bdff;
-    background: rgba(86,184,255,0.15);
-}}
-
-.hold {{
-    color: #f4cd69;
-}}
-
-.watch {{
-    color: #ffa165;
-}}
-
-.caution {{
-    color: #ff7183;
-}}
-
-.quality-good {{
-    color: #55dea0;
-}}
-
-.quality-medium {{
-    color: #f3c968;
-}}
-
-.quality-low {{
-    color: #ff7a87;
-}}
-
-.positive {{
-    color: #51e0a0;
-}}
-
-.negative {{
-    color: #ff7183;
-}}
-
-.screen-grid {{
-    display: grid;
-    grid-template-columns:
-        repeat(4, 1fr);
-    gap: 14px;
-}}
-
-.screen-card {{
-    background: #0b1728;
-    border-radius: 13px;
-    padding: 17px;
-}}
-
-.screen-title {{
-    font-size: 17px;
-    font-weight: 800;
-    margin-bottom: 5px;
-}}
-
-.screen-description {{
-    color: #718ba9;
-    font-size: 11px;
-    line-height: 1.4;
-    min-height: 48px;
-    margin-bottom: 8px;
-}}
-
-.mini-row {{
-    display: flex;
-    justify-content: space-between;
-    gap: 12px;
-    padding: 11px 0;
-    border-bottom: 1px solid #223650;
-    text-decoration: none;
-    color: inherit;
-}}
-
-.mini-row:last-child {{
-    border-bottom: none;
-}}
-
-.mini-ticker {{
-    font-weight: 800;
-}}
-
-.mini-name {{
-    color: #7b95b5;
-    font-size: 11px;
-    margin-top: 3px;
-}}
-
-.mini-right {{
-    text-align: right;
-}}
-
-.mini-score {{
-    color: #62b8ff;
-    font-size: 12px;
-    font-weight: 700;
-}}
-
-.mini-secondary {{
-    color: #708aa9;
-    font-size: 10px;
-    margin-top: 4px;
-}}
-
-.table-wrapper {{
-    overflow-x: auto;
-}}
-
-table {{
-    width: 100%;
-    border-collapse: collapse;
-}}
-
-th,
-td {{
-    padding: 13px 10px;
-    text-align: left;
-    border-bottom: 1px solid #20344f;
-}}
-
-th {{
-    color: #7892b1;
-    font-size: 11px;
-}}
-
-td {{
-    font-size: 13px;
-}}
-
-.stock-link {{
-    color: inherit;
-    text-decoration: none;
-}}
-
-.stock-link:hover .stock-name {{
-    color: #62b8ff;
-}}
-
-.stock-name {{
-    font-weight: 700;
-}}
-
-.ticker {{
-    color: #738caa;
-    font-size: 11px;
-    margin-top: 3px;
-}}
-
-.score {{
-    font-weight: 800;
-}}
-
-.footer {{
-    text-align: center;
-    color: #6f88a8;
-    margin-top: 30px;
-    font-size: 12px;
-    line-height: 1.6;
-}}
-
-@media (
-    max-width: 1100px
-) {{
-
-    .opportunity-grid {{
-        grid-template-columns:
-            repeat(2, 1fr);
-    }}
-
-    .screen-grid {{
-        grid-template-columns:
-            repeat(2, 1fr);
-    }}
-
-    .micron-layout {{
-        grid-template-columns:
-            repeat(2, 1fr);
-    }}
-
-}}
-
-@media (
-    max-width: 720px
-) {{
-
-    .header {{
-        display: block;
-    }}
-
-    .updated {{
-        text-align: left;
-        margin-top: 10px;
-    }}
-
-    .opportunity-grid,
-    .screen-grid,
-    .micron-layout {{
-        grid-template-columns: 1fr;
-    }}
-
-    .desktop-column {{
-        display: none;
-    }}
-
-    .tooltip {{
-        width: 240px;
-    }}
-
-}}
-
+*{{box-sizing:border-box}}body{{margin:0;background:#07111f;color:#edf4ff;font-family:Arial,Helvetica,sans-serif}}.container{{width:min(1380px,95%);margin:auto;padding:28px 0 60px}}.header{{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:24px;gap:20px}}.main-title{{font-size:36px;font-weight:800}}.subtitle,.muted{{color:#8ca5c4}}.updated{{color:#748dab;font-size:12px;text-align:right}}.nav{{margin-top:10px}}.nav a{{color:#68b9ff;text-decoration:none;font-size:13px;font-weight:700}}.card{{background:#111e31;border:1px solid #263c5b;border-radius:16px;padding:21px}}.section{{margin-top:20px}}.section-title{{font-size:22px;font-weight:800}}.section-subtitle{{color:#8098b6;font-size:13px;margin-top:5px;margin-bottom:16px;line-height:1.4}}.filter-bar{{display:grid;grid-template-columns:2fr 1fr 1fr auto;gap:12px;align-items:center;margin-bottom:20px}}.filter-bar input,.filter-bar select{{width:100%;background:#0b1728;border:1px solid #2b4363;color:#edf4ff;border-radius:10px;padding:12px;font-size:14px}}.filter-bar button{{background:#203653;border:1px solid #345477;color:#dce9f9;border-radius:10px;padding:12px 16px;font-weight:700;cursor:pointer}}.filter-status{{color:#7892b1;font-size:12px;margin-top:10px}}.info-wrap{{position:relative;display:inline-block;margin-left:5px;color:#68b9ff;cursor:help;font-size:14px;outline:none}}.tooltip{{visibility:hidden;opacity:0;position:absolute;z-index:100;left:50%;top:25px;transform:translateX(-50%);width:280px;background:#020912;color:#d9e5f5;border:1px solid #345274;border-radius:10px;padding:12px;font-size:12px;font-weight:normal;line-height:1.45;text-align:left}}.info-wrap:hover .tooltip,.info-wrap:focus .tooltip{{visibility:visible;opacity:1}}.micron-layout{{display:grid;grid-template-columns:1.5fr 1fr .8fr 1.2fr;gap:25px;align-items:center}}.micron-label{{color:#62b8ff;font-size:11px;font-weight:800}}.micron-title{{font-size:27px;font-weight:800;margin:7px 0}}.micron-price,.micron-score{{font-size:32px;font-weight:800}}.primary-button{{display:inline-block;background:#55a8fa;color:#06111f;font-weight:800;text-decoration:none;padding:14px 18px;border-radius:10px}}.opportunity-grid{{display:grid;grid-template-columns:repeat(5,1fr);gap:13px}}.opportunity-card{{display:block;background:#0b1728;border-radius:13px;padding:16px;text-decoration:none;color:inherit}}.opportunity-card:hover{{background:#10203a}}.opportunity-top{{display:flex;justify-content:space-between;gap:8px}}.opportunity-ticker{{font-size:20px;font-weight:800}}.opportunity-name{{color:#829bb9;font-size:12px;margin-top:4px}}.sector{{color:#607c9f;font-size:10px;margin-top:4px}}.opportunity-price{{font-size:23px;font-weight:800;margin-top:18px}}.score-row,.quality-row{{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #223650;font-size:12px;color:#a1b5cf}}.quality-row{{border-bottom:none}}.rating-badge,.quality-badge{{display:inline-block;padding:5px 8px;border-radius:7px;font-size:10px;font-weight:800}}.strong-buy{{color:#51e5a0;background:rgba(55,219,143,.15)}}.buy{{color:#66bdff;background:rgba(86,184,255,.15)}}.hold{{color:#f4cd69}}.watch{{color:#ffa165}}.caution{{color:#ff7183}}.quality-good{{color:#55dea0}}.quality-medium{{color:#f3c968}}.quality-low{{color:#ff7a87}}.positive{{color:#51e0a0}}.negative{{color:#ff7183}}.screen-grid{{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}}.screen-card{{background:#0b1728;border-radius:13px;padding:17px}}.screen-title{{font-size:17px;font-weight:800;margin-bottom:5px}}.screen-description{{color:#718ba9;font-size:11px;line-height:1.4;min-height:48px;margin-bottom:8px}}.mini-row{{display:flex;justify-content:space-between;gap:12px;padding:11px 0;border-bottom:1px solid #223650;text-decoration:none;color:inherit}}.mini-row:last-child{{border-bottom:none}}.mini-ticker{{font-weight:800}}.mini-name{{color:#7b95b5;font-size:11px;margin-top:3px}}.mini-right{{text-align:right}}.mini-score{{color:#62b8ff;font-size:12px;font-weight:700}}.mini-secondary{{color:#708aa9;font-size:10px;margin-top:4px}}.table-wrapper{{overflow-x:auto}}table{{width:100%;border-collapse:collapse}}th,td{{padding:13px 10px;text-align:left;border-bottom:1px solid #20344f}}th{{color:#7892b1;font-size:11px}}td{{font-size:13px}}.stock-link{{color:inherit;text-decoration:none}}.stock-link:hover .stock-name{{color:#62b8ff}}.stock-name{{font-weight:700}}.ticker{{color:#738caa;font-size:11px;margin-top:3px}}.score{{font-weight:800}}.hidden-by-filter{{display:none!important}}.footer{{text-align:center;color:#6f88a8;margin-top:30px;font-size:12px;line-height:1.6}}
+@media(max-width:1100px){{.opportunity-grid{{grid-template-columns:repeat(2,1fr)}}.screen-grid{{grid-template-columns:repeat(2,1fr)}}.micron-layout{{grid-template-columns:repeat(2,1fr)}}.filter-bar{{grid-template-columns:1fr 1fr}}}}
+@media(max-width:720px){{.header{{display:block}}.updated{{text-align:left;margin-top:10px}}.opportunity-grid,.screen-grid,.micron-layout,.filter-bar{{grid-template-columns:1fr}}.desktop-column{{display:none}}.tooltip{{width:240px}}}}
 </style>
-
 </head>
-
 <body>
-
 <div class="container">
 
-
 <div class="header">
-
     <div>
-
-        <div class="main-title">
-            V Stock Intelligence
-        </div>
-
-        <div class="subtitle">
-            US & Singapore Market Opportunity Dashboard
-        </div>
-
-        <div class="nav">
-
-            <a href="guide/">
-                How to Read This Dashboard →
-            </a>
-
-        </div>
-
+        <div class="main-title">V Stock Intelligence</div>
+        <div class="subtitle">US & Singapore Market Opportunity Dashboard</div>
+        <div class="nav"><a href="guide/">How to Read This Dashboard →</a></div>
     </div>
-
-
-    <div class="updated">
-
-        Last updated
-
-        <br>
-
-        {updated}
-
-    </div>
-
+    <div class="updated">Last updated<br>{updated}</div>
 </div>
-
 
 <div class="card">
-
-    {micron_focus(
-        micron
-    )}
-
+    <div class="filter-bar">
+        <input id="stockSearch" type="search" placeholder="Search ticker or company..." aria-label="Search ticker or company">
+        <select id="marketFilter" aria-label="Filter by market">
+            <option value="All">All Markets</option>
+            <option value="US">US</option>
+            <option value="Singapore">Singapore</option>
+        </select>
+        <select id="sectorFilter" aria-label="Filter by sector">
+            <option value="All">All Sectors</option>
+            {sector_options}
+        </select>
+        <button id="clearFilters" type="button">Clear Filters</button>
+    </div>
+    <div id="filterStatus" class="filter-status">Showing all ranked stocks.</div>
 </div>
 
+<div class="card section">{micron_focus(micron)}</div>
 
 <div class="card section">
-
-    <div class="section-title">
-
-        US Top Opportunities
-
-        {info_icon(
-            "overall"
-        )}
-
-    </div>
-
-    <div class="section-subtitle">
-
-        Highest-ranked US stocks using the dashboard's
-        combined quantitative score.
-
-    </div>
-
-    <div class="opportunity-grid">
-
-        {opportunity_cards(
-            us_results,
-            5,
-        )}
-
-    </div>
-
+    <div class="section-title">US Top Opportunities {info_icon('overall')}</div>
+    <div class="section-subtitle">Highest-ranked US stocks using the dashboard's combined quantitative score.</div>
+    <div class="opportunity-grid">{opportunity_cards(us_results, 5)}</div>
 </div>
 
-
 <div class="card section">
-
-    <div class="section-title">
-
-        Singapore Top Opportunities
-
-        {info_icon(
-            "overall"
-        )}
-
-    </div>
-
-    <div class="section-subtitle">
-
-        Highest-ranked SGX stocks using the same
-        quantitative scoring methodology.
-
-    </div>
-
-    <div class="opportunity-grid">
-
-        {opportunity_cards(
-            singapore_results,
-            5,
-        )}
-
-    </div>
-
+    <div class="section-title">Singapore Top Opportunities {info_icon('overall')}</div>
+    <div class="section-subtitle">Highest-ranked SGX stocks using the same quantitative scoring methodology.</div>
+    <div class="opportunity-grid">{opportunity_cards(singapore_results, 5)}</div>
 </div>
 
-
 <div class="card section">
-
-    <div class="section-title">
-        Market Opportunity Screens
-    </div>
-
-    <div class="section-subtitle">
-
-        Alternative ways of finding potential opportunities.
-        These screens may rank stocks differently from the
-        main Overall Score.
-
-    </div>
-
-
+    <div class="section-title">Market Opportunity Screens</div>
+    <div class="section-subtitle">Alternative ways of finding potential opportunities. These screens may rank stocks differently from the main Overall Score.</div>
     <div class="screen-grid">
-
-
-        <div class="screen-card">
-
-            <div class="screen-title">
-
-                Oversold Watch
-
-                {info_icon(
-                    "oversold"
-                )}
-
-            </div>
-
-            <div class="screen-description">
-
-                Stocks with RSI below 35 that have experienced
-                unusually weak recent price momentum.
-
-            </div>
-
-            {mini_list(
-                oversold,
-                "oversold",
-            )}
-
-        </div>
-
-
-        <div class="screen-card">
-
-            <div class="screen-title">
-
-                Momentum Leaders
-
-                {info_icon(
-                    "momentum_leaders"
-                )}
-
-            </div>
-
-            <div class="screen-description">
-
-                Strong recent price performers that also meet
-                minimum fundamental and data-quality requirements.
-
-            </div>
-
-            {mini_list(
-                momentum_leaders,
-                "momentum",
-            )}
-
-        </div>
-
-
-        <div class="screen-card">
-
-            <div class="screen-title">
-
-                Value Opportunities
-
-                {info_icon(
-                    "value_opportunity"
-                )}
-
-            </div>
-
-            <div class="screen-description">
-
-                Stocks combining relatively attractive valuation
-                with stronger underlying fundamentals.
-
-            </div>
-
-            {mini_list(
-                value_opportunities,
-                "value",
-            )}
-
-        </div>
-
-
-        <div class="screen-card">
-
-            <div class="screen-title">
-
-                Best Balanced
-
-                {info_icon(
-                    "balanced"
-                )}
-
-            </div>
-
-            <div class="screen-description">
-
-                Stocks showing more consistent strength across
-                all four major scoring categories.
-
-            </div>
-
-            {mini_list(
-                balanced_opportunities,
-                "balanced",
-            )}
-
-        </div>
-
-
+        <div class="screen-card"><div class="screen-title">Oversold Watch {info_icon('oversold')}</div><div class="screen-description">Stocks with RSI below 35 that have experienced unusually weak recent price momentum.</div>{mini_list(oversold, 'oversold')}</div>
+        <div class="screen-card"><div class="screen-title">Momentum Leaders {info_icon('momentum_leaders')}</div><div class="screen-description">Strong recent price performers that also meet minimum fundamental and data-quality requirements.</div>{mini_list(momentum_leaders, 'momentum')}</div>
+        <div class="screen-card"><div class="screen-title">Value Opportunities {info_icon('value_opportunity')}</div><div class="screen-description">Stocks combining relatively attractive valuation with stronger underlying fundamentals.</div>{mini_list(value_opportunities, 'value')}</div>
+        <div class="screen-card"><div class="screen-title">Best Balanced {info_icon('balanced')}</div><div class="screen-description">Stocks showing more consistent strength across all four major scoring categories.</div>{mini_list(balanced_opportunities, 'balanced')}</div>
     </div>
-
 </div>
-
 
 <div class="card section">
-
-    <div class="section-title">
-        US Stock Rankings
-    </div>
-
-    <div class="section-subtitle">
-
-        Click any company name to open its individual analysis.
-
-    </div>
-
+    <div class="section-title">US Stock Rankings</div>
+    <div class="section-subtitle">Search and filters above apply to this table and the Singapore table below.</div>
     <div class="table-wrapper">
-
         <table>
-
-            <thead>
-
-                <tr>
-
-                    <th>#</th>
-
-                    <th>Company</th>
-
-                    <th>Price</th>
-
-                    <th>Day</th>
-
-                    <th class="desktop-column">
-                        Technical
-                        {info_icon("technical")}
-                    </th>
-
-                    <th class="desktop-column">
-                        Momentum
-                        {info_icon("momentum")}
-                    </th>
-
-                    <th class="desktop-column">
-                        Fundamental
-                        {info_icon("fundamental")}
-                    </th>
-
-                    <th class="desktop-column">
-                        Value
-                        {info_icon("valuation")}
-                    </th>
-
-                    <th>
-                        Overall
-                        {info_icon("overall")}
-                    </th>
-
-                    <th>
-                        Data
-                        {info_icon("data_quality")}
-                    </th>
-
-                    <th>
-                        Dashboard Rating
-                        {info_icon("dashboard_rating")}
-                    </th>
-
-                </tr>
-
-            </thead>
-
-            <tbody>
-
-                {stock_rows(
-                    us_results,
-                    25,
-                )}
-
-            </tbody>
-
+            <thead><tr><th>#</th><th>Company</th><th>Price</th><th>Day</th><th class="desktop-column">Technical {info_icon('technical')}</th><th class="desktop-column">Momentum {info_icon('momentum')}</th><th class="desktop-column">Fundamental {info_icon('fundamental')}</th><th class="desktop-column">Value {info_icon('valuation')}</th><th>Overall {info_icon('overall')}</th><th>Data {info_icon('data_quality')}</th><th>Dashboard Rating {info_icon('dashboard_rating')}</th></tr></thead>
+            <tbody>{stock_rows(us_results, 100)}</tbody>
         </table>
-
     </div>
-
 </div>
-
 
 <div class="card section">
-
-    <div class="section-title">
-        Singapore Stock Rankings
-    </div>
-
-    <div class="section-subtitle">
-
-        Click any company name to open its individual analysis.
-
-    </div>
-
+    <div class="section-title">Singapore Stock Rankings</div>
+    <div class="section-subtitle">Search by ticker or company, or filter by market and sector.</div>
     <div class="table-wrapper">
-
         <table>
-
-            <thead>
-
-                <tr>
-
-                    <th>#</th>
-
-                    <th>Company</th>
-
-                    <th>Price</th>
-
-                    <th>Day</th>
-
-                    <th class="desktop-column">
-                        Technical
-                        {info_icon("technical")}
-                    </th>
-
-                    <th class="desktop-column">
-                        Momentum
-                        {info_icon("momentum")}
-                    </th>
-
-                    <th class="desktop-column">
-                        Fundamental
-                        {info_icon("fundamental")}
-                    </th>
-
-                    <th class="desktop-column">
-                        Value
-                        {info_icon("valuation")}
-                    </th>
-
-                    <th>
-                        Overall
-                        {info_icon("overall")}
-                    </th>
-
-                    <th>
-                        Data
-                        {info_icon("data_quality")}
-                    </th>
-
-                    <th>
-                        Dashboard Rating
-                        {info_icon("dashboard_rating")}
-                    </th>
-
-                </tr>
-
-            </thead>
-
-            <tbody>
-
-                {stock_rows(
-                    singapore_results,
-                    25,
-                )}
-
-            </tbody>
-
+            <thead><tr><th>#</th><th>Company</th><th>Price</th><th>Day</th><th class="desktop-column">Technical {info_icon('technical')}</th><th class="desktop-column">Momentum {info_icon('momentum')}</th><th class="desktop-column">Fundamental {info_icon('fundamental')}</th><th class="desktop-column">Value {info_icon('valuation')}</th><th>Overall {info_icon('overall')}</th><th>Data {info_icon('data_quality')}</th><th>Dashboard Rating {info_icon('dashboard_rating')}</th></tr></thead>
+            <tbody>{stock_rows(singapore_results, 100)}</tbody>
         </table>
-
     </div>
+</div>
+
+<div class="footer">V Stock Intelligence uses automated quantitative scoring.<br>Dashboard ratings are not analyst recommendations and are not financial advice.</div>
 
 </div>
 
+<script>
+(function() {{
+    const searchInput = document.getElementById('stockSearch');
+    const marketFilter = document.getElementById('marketFilter');
+    const sectorFilter = document.getElementById('sectorFilter');
+    const clearButton = document.getElementById('clearFilters');
+    const status = document.getElementById('filterStatus');
 
-<div class="footer">
+    function applyFilters() {{
+        const search = searchInput.value.trim().toLowerCase();
+        const market = marketFilter.value;
+        const sector = sectorFilter.value;
+        const rows = Array.from(document.querySelectorAll('.filterable-row'));
+        let visibleRows = 0;
 
-    V Stock Intelligence uses automated quantitative scoring.
+        rows.forEach(row => {{
+            const rowSearch = (row.dataset.search || '').toLowerCase();
+            const rowMarket = row.dataset.market || '';
+            const rowSector = row.dataset.sector || '';
 
-    <br>
+            const searchMatch = !search || rowSearch.includes(search);
+            const marketMatch = market === 'All' || rowMarket === market;
+            const sectorMatch = sector === 'All' || rowSector === sector;
+            const visible = searchMatch && marketMatch && sectorMatch;
 
-    Dashboard ratings are not analyst recommendations
-    and are not financial advice.
+            row.classList.toggle('hidden-by-filter', !visible);
+            if (visible) visibleRows += 1;
+        }});
 
-</div>
+        const topCards = Array.from(document.querySelectorAll('.filterable-card'));
+        topCards.forEach(card => {{
+            const cardSearch = (card.dataset.search || '').toLowerCase();
+            const cardMarket = card.dataset.market || '';
+            const cardSector = card.dataset.sector || '';
+            const searchMatch = !search || cardSearch.includes(search);
+            const marketMatch = market === 'All' || cardMarket === market;
+            const sectorMatch = sector === 'All' || cardSector === sector;
+            card.classList.toggle('hidden-by-filter', !(searchMatch && marketMatch && sectorMatch));
+        }});
 
+        if (!search && market === 'All' && sector === 'All') {{
+            status.textContent = 'Showing all ranked stocks.';
+        }} else {{
+            status.textContent = `Showing ${{visibleRows}} matching ranked stock${{visibleRows === 1 ? '' : 's'}}.`;
+        }}
+    }}
 
-</div>
+    searchInput.addEventListener('input', applyFilters);
+    marketFilter.addEventListener('change', applyFilters);
+    sectorFilter.addEventListener('change', applyFilters);
+
+    clearButton.addEventListener('click', function() {{
+        searchInput.value = '';
+        marketFilter.value = 'All';
+        sectorFilter.value = 'All';
+        applyFilters();
+        searchInput.focus();
+    }});
+}})();
+</script>
 
 </body>
-
 </html>
 """
 
+    output_folder = Path("docs")
+    output_folder.mkdir(exist_ok=True)
+    (output_folder / "index.html").write_text(page, encoding="utf-8")
 
-    output_folder = Path(
-        "docs"
-    )
-
-    output_folder.mkdir(
-        exist_ok=True
-    )
-
-    output_file = (
-        output_folder
-        /
-        "index.html"
-    )
-
-    output_file.write_text(
-        page,
-        encoding="utf-8",
-    )
-
-    print(
-        "Main dashboard, guide and stock pages generated successfully."
-    )
+    print("Main dashboard, guide and richer stock detail pages generated successfully.")
 
 
 if __name__ == "__main__":
