@@ -9,10 +9,7 @@
 
 <meta
     name="viewport"
-    content="
-        width=device-width,
-        initial-scale=1.0
-    "
+    content="width=device-width, initial-scale=1.0"
 >
 
 <title>
@@ -22,545 +19,338 @@ V Stock Intelligence
 <style>
 
 * {
-    box-sizing:
-        border-box;
+    box-sizing: border-box;
 }
 
 body {
-    margin:
-        0;
-
-    background:
-        #07111f;
-
-    color:
-        #edf4ff;
-
-    font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
+    margin: 0;
+    background: #07111f;
+    color: #edf4ff;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 .container {
-    width:
-        min(
-            1380px,
-            95%
-        );
-
-    margin:
-        auto;
-
-    padding:
-        28px 0
-        60px;
+    width: min(1380px, 95%);
+    margin: auto;
+    padding: 28px 0 60px;
 }
 
 .header {
-    display:
-        flex;
-
-    justify-content:
-        space-between;
-
-    align-items:
-        flex-end;
-
-    margin-bottom:
-        24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 24px;
 }
 
 .main-title {
-    font-size:
-        36px;
-
-    font-weight:
-        800;
+    font-size: 36px;
+    font-weight: 800;
 }
 
 .subtitle,
 .muted {
-    color:
-        #8ca5c4;
+    color: #8ca5c4;
 }
 
 .updated {
-    color:
-        #748dab;
-
-    font-size:
-        12px;
-
-    text-align:
-        right;
+    color: #748dab;
+    font-size: 12px;
+    text-align: right;
 }
 
 .card {
-    background:
-        #111e31;
-
-    border:
-        1px solid
-        #263c5b;
-
-    border-radius:
-        16px;
-
-    padding:
-        21px;
+    background: #111e31;
+    border: 1px solid #263c5b;
+    border-radius: 16px;
+    padding: 21px;
 }
 
 .section {
-    margin-top:
-        20px;
+    margin-top: 20px;
 }
 
 .section-title {
-    font-size:
-        22px;
-
-    font-weight:
-        800;
+    font-size: 22px;
+    font-weight: 800;
 }
 
 .section-subtitle {
-    color:
-        #8098b6;
-
-    font-size:
-        13px;
-
-    margin-top:
-        4px;
-
-    margin-bottom:
-        16px;
+    color: #8098b6;
+    font-size: 13px;
+    margin-top: 4px;
+    margin-bottom: 16px;
 }
 
 .micron-layout {
-    display:
-        grid;
-
+    display: grid;
     grid-template-columns:
         1.5fr
         1fr
         0.8fr
         1.2fr;
-
-    gap:
-        25px;
-
-    align-items:
-        center;
+    gap: 25px;
+    align-items: center;
 }
 
 .micron-label {
-    color:
-        #62b8ff;
-
-    font-size:
-        11px;
-
-    font-weight:
-        800;
+    color: #62b8ff;
+    font-size: 11px;
+    font-weight: 800;
 }
 
 .micron-title {
-    font-size:
-        27px;
-
-    font-weight:
-        800;
-
-    margin:
-        7px 0;
+    font-size: 27px;
+    font-weight: 800;
+    margin: 7px 0;
 }
 
 .micron-price,
 .micron-score {
-    font-size:
-        32px;
-
-    font-weight:
-        800;
+    font-size: 32px;
+    font-weight: 800;
 }
 
 .primary-button {
-    display:
-        inline-block;
-
-    background:
-        #55a8fa;
-
-    color:
-        #06111f;
-
-    font-weight:
-        800;
-
-    text-decoration:
-        none;
-
-    padding:
-        14px 18px;
-
-    border-radius:
-        10px;
+    display: inline-block;
+    background: #55a8fa;
+    color: #06111f;
+    font-weight: 800;
+    text-decoration: none;
+    padding: 14px 18px;
+    border-radius: 10px;
 }
 
 .opportunity-grid {
-    display:
-        grid;
-
+    display: grid;
     grid-template-columns:
-        repeat(
-            5,
-            1fr
-        );
-
-    gap:
-        13px;
+        repeat(5, 1fr);
+    gap: 13px;
 }
 
 .opportunity-card {
-    background:
-        #0b1728;
+    display: block;
+    background: #0b1728;
+    border-radius: 13px;
+    padding: 16px;
+    text-decoration: none;
+    color: inherit;
+}
 
-    border-radius:
-        13px;
-
-    padding:
-        16px;
+.opportunity-card:hover {
+    background: #10203a;
 }
 
 .opportunity-top {
-    display:
-        flex;
-
-    justify-content:
-        space-between;
-
-    gap:
-        8px;
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
 }
 
 .opportunity-ticker {
-    font-size:
-        20px;
-
-    font-weight:
-        800;
+    font-size: 20px;
+    font-weight: 800;
 }
 
 .opportunity-name {
-    color:
-        #829bb9;
-
-    font-size:
-        12px;
-
-    margin-top:
-        4px;
+    color: #829bb9;
+    font-size: 12px;
+    margin-top: 4px;
 }
 
 .sector {
-    color:
-        #607c9f;
-
-    font-size:
-        10px;
-
-    margin-top:
-        4px;
+    color: #607c9f;
+    font-size: 10px;
+    margin-top: 4px;
 }
 
 .opportunity-price {
-    font-size:
-        23px;
-
-    font-weight:
-        800;
-
-    margin-top:
-        18px;
+    font-size: 23px;
+    font-weight: 800;
+    margin-top: 18px;
 }
 
 .score-row,
 .quality-row {
-    display:
-        flex;
-
-    justify-content:
-        space-between;
-
-    align-items:
-        center;
-
-    padding:
-        8px 0;
-
-    border-bottom:
-        1px solid
-        #223650;
-
-    font-size:
-        12px;
-
-    color:
-        #a1b5cf;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #223650;
+    font-size: 12px;
+    color: #a1b5cf;
 }
 
 .quality-row {
-    border-bottom:
-        none;
+    border-bottom: none;
 }
 
 .rating-badge,
 .quality-badge {
-    display:
-        inline-block;
-
-    padding:
-        5px 8px;
-
-    border-radius:
-        7px;
-
-    font-size:
-        10px;
-
-    font-weight:
-        800;
+    display: inline-block;
+    padding: 5px 8px;
+    border-radius: 7px;
+    font-size: 10px;
+    font-weight: 800;
 }
 
 .strong-buy {
-    color:
-        #51e5a0;
-
-    background:
-        rgba(
-            55,
-            219,
-            143,
-            0.15
-        );
+    color: #51e5a0;
+    background: rgba(55, 219, 143, 0.15);
 }
 
 .buy {
-    color:
-        #66bdff;
-
-    background:
-        rgba(
-            86,
-            184,
-            255,
-            0.15
-        );
+    color: #66bdff;
+    background: rgba(86, 184, 255, 0.15);
 }
 
 .hold {
-    color:
-        #f4cd69;
+    color: #f4cd69;
 }
 
 .watch {
-    color:
-        #ffa165;
+    color: #ffa165;
 }
 
 .caution {
-    color:
-        #ff7183;
+    color: #ff7183;
 }
 
 .quality-good {
-    color:
-        #55dea0;
+    color: #55dea0;
 }
 
 .quality-medium {
-    color:
-        #f3c968;
+    color: #f3c968;
 }
 
 .quality-low {
-    color:
-        #ff7a87;
+    color: #ff7a87;
 }
 
 .positive {
-    color:
-        #51e0a0;
+    color: #51e0a0;
 }
 
 .negative {
-    color:
-        #ff7183;
+    color: #ff7183;
 }
 
 .screen-grid {
-    display:
-        grid;
-
+    display: grid;
     grid-template-columns:
-        repeat(
-            4,
-            1fr
-        );
-
-    gap:
-        14px;
+        repeat(4, 1fr);
+    gap: 14px;
 }
 
 .screen-card {
-    background:
-        #0b1728;
-
-    border-radius:
-        13px;
-
-    padding:
-        17px;
+    background: #0b1728;
+    border-radius: 13px;
+    padding: 17px;
 }
 
 .screen-title {
-    font-size:
-        17px;
-
-    font-weight:
-        800;
-
-    margin-bottom:
-        12px;
+    font-size: 17px;
+    font-weight: 800;
+    margin-bottom: 12px;
 }
 
 .mini-row {
-    display:
-        flex;
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 11px 0;
+    border-bottom: 1px solid #223650;
+    text-decoration: none;
+    color: inherit;
+}
 
-    justify-content:
-        space-between;
-
-    gap:
-        12px;
-
-    padding:
-        11px 0;
-
-    border-bottom:
-        1px solid
-        #223650;
+.mini-row:hover {
+    background: rgba(255,255,255,0.02);
 }
 
 .mini-row:last-child {
-    border-bottom:
-        none;
+    border-bottom: none;
 }
 
 .mini-ticker {
-    font-weight:
-        800;
+    font-weight: 800;
 }
 
 .mini-name {
-    color:
-        #7b95b5;
+    color: #7b95b5;
+    font-size: 11px;
+    margin-top: 3px;
+}
 
-    font-size:
-        11px;
-
-    margin-top:
-        3px;
+.mini-right {
+    text-align: right;
 }
 
 .mini-score {
-    color:
-        #62b8ff;
+    color: #62b8ff;
+    font-size: 12px;
+    font-weight: 700;
+}
 
-    font-size:
-        12px;
-
-    font-weight:
-        700;
-
-    text-align:
-        right;
+.mini-secondary {
+    color: #708aa9;
+    font-size: 10px;
+    margin-top: 4px;
 }
 
 .table-wrapper {
-    overflow-x:
-        auto;
+    overflow-x: auto;
 }
 
 table {
-    width:
-        100%;
-
-    border-collapse:
-        collapse;
+    width: 100%;
+    border-collapse: collapse;
 }
 
 th,
 td {
-    padding:
-        13px 10px;
-
-    text-align:
-        left;
-
-    border-bottom:
-        1px solid
-        #20344f;
+    padding: 13px 10px;
+    text-align: left;
+    border-bottom: 1px solid #20344f;
 }
 
 th {
-    color:
-        #7892b1;
-
-    font-size:
-        11px;
+    color: #7892b1;
+    font-size: 11px;
 }
 
 td {
-    font-size:
-        13px;
+    font-size: 13px;
+}
+
+.stock-link {
+    color: inherit;
+    text-decoration: none;
+}
+
+.stock-link:hover .stock-name {
+    color: #62b8ff;
 }
 
 .stock-name {
-    font-weight:
-        700;
+    font-weight: 700;
 }
 
 .ticker {
-    color:
-        #738caa;
-
-    font-size:
-        11px;
-
-    margin-top:
-        3px;
+    color: #738caa;
+    font-size: 11px;
+    margin-top: 3px;
 }
 
 .score {
-    font-weight:
-        800;
+    font-weight: 800;
 }
 
 .footer {
-    text-align:
-        center;
-
-    color:
-        #6f88a8;
-
-    margin-top:
-        30px;
-
-    font-size:
-        12px;
+    text-align: center;
+    color: #6f88a8;
+    margin-top: 30px;
+    font-size: 12px;
 }
 
 @media (
@@ -569,26 +359,17 @@ td {
 
     .opportunity-grid {
         grid-template-columns:
-            repeat(
-                2,
-                1fr
-            );
+            repeat(2, 1fr);
     }
 
     .screen-grid {
         grid-template-columns:
-            repeat(
-                2,
-                1fr
-            );
+            repeat(2, 1fr);
     }
 
     .micron-layout {
         grid-template-columns:
-            repeat(
-                2,
-                1fr
-            );
+            repeat(2, 1fr);
     }
 
 }
@@ -598,28 +379,22 @@ td {
 ) {
 
     .header {
-        display:
-            block;
+        display: block;
     }
 
     .updated {
-        text-align:
-            left;
-
-        margin-top:
-            10px;
+        text-align: left;
+        margin-top: 10px;
     }
 
     .opportunity-grid,
     .screen-grid,
     .micron-layout {
-        grid-template-columns:
-            1fr;
+        grid-template-columns: 1fr;
     }
 
     .desktop-column {
-        display:
-            none;
+        display: none;
     }
 
 }
@@ -653,7 +428,7 @@ td {
 
         <br>
 
-        19 July 2026, 00:47 UTC
+        19 July 2026, 00:56 UTC
 
     </div>
 
@@ -738,13 +513,16 @@ td {
     </div>
 
     <div class="section-subtitle">
-        Highest-ranked stocks in the current US watch universe
+        Click any stock to open its individual analysis
     </div>
 
     <div class="opportunity-grid">
 
         
-        <div class="opportunity-card">
+        <a
+            class="opportunity-card"
+            href="stocks/gs/"
+        >
 
             <div class="opportunity-top">
 
@@ -763,6 +541,7 @@ td {
                     </div>
 
                 </div>
+
 
                 <div class="
                     rating-badge
@@ -791,7 +570,7 @@ td {
             <div class="score-row">
 
                 <div>
-                    Score
+                    Overall
                 </div>
 
                 <div>
@@ -850,16 +629,17 @@ td {
                     quality-badge
                     quality-good
                 ">
-
                     High
-
                 </span>
 
             </div>
 
-        </div>
+        </a>
         
-        <div class="opportunity-card">
+        <a
+            class="opportunity-card"
+            href="stocks/jpm/"
+        >
 
             <div class="opportunity-top">
 
@@ -878,6 +658,7 @@ td {
                     </div>
 
                 </div>
+
 
                 <div class="
                     rating-badge
@@ -906,7 +687,7 @@ td {
             <div class="score-row">
 
                 <div>
-                    Score
+                    Overall
                 </div>
 
                 <div>
@@ -965,16 +746,17 @@ td {
                     quality-badge
                     quality-good
                 ">
-
                     High
-
                 </span>
 
             </div>
 
-        </div>
+        </a>
         
-        <div class="opportunity-card">
+        <a
+            class="opportunity-card"
+            href="stocks/bac/"
+        >
 
             <div class="opportunity-top">
 
@@ -993,6 +775,7 @@ td {
                     </div>
 
                 </div>
+
 
                 <div class="
                     rating-badge
@@ -1021,7 +804,7 @@ td {
             <div class="score-row">
 
                 <div>
-                    Score
+                    Overall
                 </div>
 
                 <div>
@@ -1080,16 +863,17 @@ td {
                     quality-badge
                     quality-good
                 ">
-
                     High
-
                 </span>
 
             </div>
 
-        </div>
+        </a>
         
-        <div class="opportunity-card">
+        <a
+            class="opportunity-card"
+            href="stocks/meta/"
+        >
 
             <div class="opportunity-top">
 
@@ -1108,6 +892,7 @@ td {
                     </div>
 
                 </div>
+
 
                 <div class="
                     rating-badge
@@ -1136,7 +921,7 @@ td {
             <div class="score-row">
 
                 <div>
-                    Score
+                    Overall
                 </div>
 
                 <div>
@@ -1195,16 +980,17 @@ td {
                     quality-badge
                     quality-good
                 ">
-
                     High
-
                 </span>
 
             </div>
 
-        </div>
+        </a>
         
-        <div class="opportunity-card">
+        <a
+            class="opportunity-card"
+            href="stocks/nvda/"
+        >
 
             <div class="opportunity-top">
 
@@ -1223,6 +1009,7 @@ td {
                     </div>
 
                 </div>
+
 
                 <div class="
                     rating-badge
@@ -1251,7 +1038,7 @@ td {
             <div class="score-row">
 
                 <div>
-                    Score
+                    Overall
                 </div>
 
                 <div>
@@ -1310,14 +1097,12 @@ td {
                     quality-badge
                     quality-good
                 ">
-
                     High
-
                 </span>
 
             </div>
 
-        </div>
+        </a>
         
 
     </div>
@@ -1335,13 +1120,16 @@ td {
     </div>
 
     <div class="section-subtitle">
-        Highest-ranked SGX stocks in the current Singapore watch universe
+        Click any stock to open its individual analysis
     </div>
 
     <div class="opportunity-grid">
 
         
-        <div class="opportunity-card">
+        <a
+            class="opportunity-card"
+            href="stocks/u11-si/"
+        >
 
             <div class="opportunity-top">
 
@@ -1360,6 +1148,7 @@ td {
                     </div>
 
                 </div>
+
 
                 <div class="
                     rating-badge
@@ -1388,7 +1177,7 @@ td {
             <div class="score-row">
 
                 <div>
-                    Score
+                    Overall
                 </div>
 
                 <div>
@@ -1447,16 +1236,17 @@ td {
                     quality-badge
                     quality-medium
                 ">
-
                     Medium
-
                 </span>
 
             </div>
 
-        </div>
+        </a>
         
-        <div class="opportunity-card">
+        <a
+            class="opportunity-card"
+            href="stocks/f34-si/"
+        >
 
             <div class="opportunity-top">
 
@@ -1475,6 +1265,7 @@ td {
                     </div>
 
                 </div>
+
 
                 <div class="
                     rating-badge
@@ -1503,7 +1294,7 @@ td {
             <div class="score-row">
 
                 <div>
-                    Score
+                    Overall
                 </div>
 
                 <div>
@@ -1562,16 +1353,17 @@ td {
                     quality-badge
                     quality-good
                 ">
-
                     High
-
                 </span>
 
             </div>
 
-        </div>
+        </a>
         
-        <div class="opportunity-card">
+        <a
+            class="opportunity-card"
+            href="stocks/o39-si/"
+        >
 
             <div class="opportunity-top">
 
@@ -1590,6 +1382,7 @@ td {
                     </div>
 
                 </div>
+
 
                 <div class="
                     rating-badge
@@ -1618,7 +1411,7 @@ td {
             <div class="score-row">
 
                 <div>
-                    Score
+                    Overall
                 </div>
 
                 <div>
@@ -1677,16 +1470,17 @@ td {
                     quality-badge
                     quality-low
                 ">
-
                     Limited
-
                 </span>
 
             </div>
 
-        </div>
+        </a>
         
-        <div class="opportunity-card">
+        <a
+            class="opportunity-card"
+            href="stocks/d05-si/"
+        >
 
             <div class="opportunity-top">
 
@@ -1705,6 +1499,7 @@ td {
                     </div>
 
                 </div>
+
 
                 <div class="
                     rating-badge
@@ -1733,7 +1528,7 @@ td {
             <div class="score-row">
 
                 <div>
-                    Score
+                    Overall
                 </div>
 
                 <div>
@@ -1792,16 +1587,17 @@ td {
                     quality-badge
                     quality-low
                 ">
-
                     Limited
-
                 </span>
 
             </div>
 
-        </div>
+        </a>
         
-        <div class="opportunity-card">
+        <a
+            class="opportunity-card"
+            href="stocks/ajbu-si/"
+        >
 
             <div class="opportunity-top">
 
@@ -1820,6 +1616,7 @@ td {
                     </div>
 
                 </div>
+
 
                 <div class="
                     rating-badge
@@ -1848,7 +1645,7 @@ td {
             <div class="score-row">
 
                 <div>
-                    Score
+                    Overall
                 </div>
 
                 <div>
@@ -1907,14 +1704,12 @@ td {
                     quality-badge
                     quality-good
                 ">
-
                     High
-
                 </span>
 
             </div>
 
-        </div>
+        </a>
         
 
     </div>
@@ -1932,7 +1727,7 @@ td {
     </div>
 
     <div class="section-subtitle">
-        Different ways to identify potential opportunities beyond the overall score
+        Component scores are shown to explain each ranking
     </div>
 
     <div class="screen-grid">
@@ -1945,7 +1740,10 @@ td {
             </div>
 
             
-        <div class="mini-row">
+        <a
+            class="mini-row"
+            href="stocks/u96-si/"
+        >
 
             <div>
 
@@ -1963,13 +1761,25 @@ td {
 
             </div>
 
-            <div class="mini-score">
-                RSI 22.8
+
+            <div class="mini-right">
+
+                <div class="mini-score">
+                    RSI 22.8
+                </div>
+
+                <div class="mini-secondary">
+                    Overall 42/100
+                </div>
+
             </div>
 
-        </div>
+        </a>
         
-        <div class="mini-row">
+        <a
+            class="mini-row"
+            href="stocks/orcl/"
+        >
 
             <div>
 
@@ -1987,13 +1797,25 @@ td {
 
             </div>
 
-            <div class="mini-score">
-                RSI 29.3
+
+            <div class="mini-right">
+
+                <div class="mini-score">
+                    RSI 29.3
+                </div>
+
+                <div class="mini-secondary">
+                    Overall 44/100
+                </div>
+
             </div>
 
-        </div>
+        </a>
         
-        <div class="mini-row">
+        <a
+            class="mini-row"
+            href="stocks/nflx/"
+        >
 
             <div>
 
@@ -2011,11 +1833,20 @@ td {
 
             </div>
 
-            <div class="mini-score">
-                RSI 30.7
+
+            <div class="mini-right">
+
+                <div class="mini-score">
+                    RSI 30.7
+                </div>
+
+                <div class="mini-secondary">
+                    Overall 45/100
+                </div>
+
             </div>
 
-        </div>
+        </a>
         
 
         </div>
@@ -2028,7 +1859,10 @@ td {
             </div>
 
             
-        <div class="mini-row">
+        <a
+            class="mini-row"
+            href="stocks/aapl/"
+        >
 
             <div>
 
@@ -2046,13 +1880,25 @@ td {
 
             </div>
 
-            <div class="mini-score">
-                Momentum 94/100
+
+            <div class="mini-right">
+
+                <div class="mini-score">
+                    Momentum 94/100
+                </div>
+
+                <div class="mini-secondary">
+                    Fundamentals 71/100
+                </div>
+
             </div>
 
-        </div>
+        </a>
         
-        <div class="mini-row">
+        <a
+            class="mini-row"
+            href="stocks/unh/"
+        >
 
             <div>
 
@@ -2070,13 +1916,25 @@ td {
 
             </div>
 
-            <div class="mini-score">
-                Momentum 90/100
+
+            <div class="mini-right">
+
+                <div class="mini-score">
+                    Momentum 90/100
+                </div>
+
+                <div class="mini-secondary">
+                    Fundamentals 53/100
+                </div>
+
             </div>
 
-        </div>
+        </a>
         
-        <div class="mini-row">
+        <a
+            class="mini-row"
+            href="stocks/abbv/"
+        >
 
             <div>
 
@@ -2094,13 +1952,25 @@ td {
 
             </div>
 
-            <div class="mini-score">
-                Momentum 86/100
+
+            <div class="mini-right">
+
+                <div class="mini-score">
+                    Momentum 86/100
+                </div>
+
+                <div class="mini-secondary">
+                    Fundamentals 65/100
+                </div>
+
             </div>
 
-        </div>
+        </a>
         
-        <div class="mini-row">
+        <a
+            class="mini-row"
+            href="stocks/s58-si/"
+        >
 
             <div>
 
@@ -2118,13 +1988,25 @@ td {
 
             </div>
 
-            <div class="mini-score">
-                Momentum 85/100
+
+            <div class="mini-right">
+
+                <div class="mini-score">
+                    Momentum 85/100
+                </div>
+
+                <div class="mini-secondary">
+                    Fundamentals 53/100
+                </div>
+
             </div>
 
-        </div>
+        </a>
         
-        <div class="mini-row">
+        <a
+            class="mini-row"
+            href="stocks/mrk/"
+        >
 
             <div>
 
@@ -2142,13 +2024,25 @@ td {
 
             </div>
 
-            <div class="mini-score">
-                Momentum 84/100
+
+            <div class="mini-right">
+
+                <div class="mini-score">
+                    Momentum 84/100
+                </div>
+
+                <div class="mini-secondary">
+                    Fundamentals 74/100
+                </div>
+
             </div>
 
-        </div>
+        </a>
         
-        <div class="mini-row">
+        <a
+            class="mini-row"
+            href="stocks/asml/"
+        >
 
             <div>
 
@@ -2166,11 +2060,20 @@ td {
 
             </div>
 
-            <div class="mini-score">
-                Momentum 82/100
+
+            <div class="mini-right">
+
+                <div class="mini-score">
+                    Momentum 82/100
+                </div>
+
+                <div class="mini-secondary">
+                    Fundamentals 83/100
+                </div>
+
             </div>
 
-        </div>
+        </a>
         
 
         </div>
@@ -2183,7 +2086,10 @@ td {
             </div>
 
             
-        <div class="mini-row">
+        <a
+            class="mini-row"
+            href="stocks/bs6-si/"
+        >
 
             <div>
 
@@ -2201,13 +2107,25 @@ td {
 
             </div>
 
-            <div class="mini-score">
-                Value Opportunity 83/100
+
+            <div class="mini-right">
+
+                <div class="mini-score">
+                    Value Opportunity 83/100
+                </div>
+
+                <div class="mini-secondary">
+                    Valuation 80 · Fundamentals 86
+                </div>
+
             </div>
 
-        </div>
+        </a>
         
-        <div class="mini-row">
+        <a
+            class="mini-row"
+            href="stocks/gs/"
+        >
 
             <div>
 
@@ -2225,13 +2143,25 @@ td {
 
             </div>
 
-            <div class="mini-score">
-                Value Opportunity 82/100
+
+            <div class="mini-right">
+
+                <div class="mini-score">
+                    Value Opportunity 82/100
+                </div>
+
+                <div class="mini-secondary">
+                    Valuation 75 · Fundamentals 88
+                </div>
+
             </div>
 
-        </div>
+        </a>
         
-        <div class="mini-row">
+        <a
+            class="mini-row"
+            href="stocks/blk/"
+        >
 
             <div>
 
@@ -2249,13 +2179,25 @@ td {
 
             </div>
 
-            <div class="mini-score">
-                Value Opportunity 80/100
+
+            <div class="mini-right">
+
+                <div class="mini-score">
+                    Value Opportunity 80/100
+                </div>
+
+                <div class="mini-secondary">
+                    Valuation 75 · Fundamentals 86
+                </div>
+
             </div>
 
-        </div>
+        </a>
         
-        <div class="mini-row">
+        <a
+            class="mini-row"
+            href="stocks/bac/"
+        >
 
             <div>
 
@@ -2273,13 +2215,25 @@ td {
 
             </div>
 
-            <div class="mini-score">
-                Value Opportunity 78/100
+
+            <div class="mini-right">
+
+                <div class="mini-score">
+                    Value Opportunity 78/100
+                </div>
+
+                <div class="mini-secondary">
+                    Valuation 80 · Fundamentals 75
+                </div>
+
             </div>
 
-        </div>
+        </a>
         
-        <div class="mini-row">
+        <a
+            class="mini-row"
+            href="stocks/mu/"
+        >
 
             <div>
 
@@ -2297,13 +2251,25 @@ td {
 
             </div>
 
-            <div class="mini-score">
-                Value Opportunity 78/100
+
+            <div class="mini-right">
+
+                <div class="mini-score">
+                    Value Opportunity 78/100
+                </div>
+
+                <div class="mini-secondary">
+                    Valuation 60 · Fundamentals 95
+                </div>
+
             </div>
 
-        </div>
+        </a>
         
-        <div class="mini-row">
+        <a
+            class="mini-row"
+            href="stocks/u14-si/"
+        >
 
             <div>
 
@@ -2321,11 +2287,20 @@ td {
 
             </div>
 
-            <div class="mini-score">
-                Value Opportunity 78/100
+
+            <div class="mini-right">
+
+                <div class="mini-score">
+                    Value Opportunity 78/100
+                </div>
+
+                <div class="mini-secondary">
+                    Valuation 82 · Fundamentals 75
+                </div>
+
             </div>
 
-        </div>
+        </a>
         
 
         </div>
@@ -2338,7 +2313,10 @@ td {
             </div>
 
             
-        <div class="mini-row">
+        <a
+            class="mini-row"
+            href="stocks/gs/"
+        >
 
             <div>
 
@@ -2356,13 +2334,25 @@ td {
 
             </div>
 
-            <div class="mini-score">
-                Balance 80/100
+
+            <div class="mini-right">
+
+                <div class="mini-score">
+                    Balance 80/100
+                </div>
+
+                <div class="mini-secondary">
+                    Overall 86 · Data 100%
+                </div>
+
             </div>
 
-        </div>
+        </a>
         
-        <div class="mini-row">
+        <a
+            class="mini-row"
+            href="stocks/bac/"
+        >
 
             <div>
 
@@ -2380,13 +2370,25 @@ td {
 
             </div>
 
-            <div class="mini-score">
-                Balance 79/100
+
+            <div class="mini-right">
+
+                <div class="mini-score">
+                    Balance 79/100
+                </div>
+
+                <div class="mini-secondary">
+                    Overall 81 · Data 80%
+                </div>
+
             </div>
 
-        </div>
+        </a>
         
-        <div class="mini-row">
+        <a
+            class="mini-row"
+            href="stocks/jpm/"
+        >
 
             <div>
 
@@ -2404,13 +2406,25 @@ td {
 
             </div>
 
-            <div class="mini-score">
-                Balance 78/100
+
+            <div class="mini-right">
+
+                <div class="mini-score">
+                    Balance 78/100
+                </div>
+
+                <div class="mini-secondary">
+                    Overall 82 · Data 80%
+                </div>
+
             </div>
 
-        </div>
+        </a>
         
-        <div class="mini-row">
+        <a
+            class="mini-row"
+            href="stocks/abbv/"
+        >
 
             <div>
 
@@ -2428,13 +2442,25 @@ td {
 
             </div>
 
-            <div class="mini-score">
-                Balance 77/100
+
+            <div class="mini-right">
+
+                <div class="mini-score">
+                    Balance 77/100
+                </div>
+
+                <div class="mini-secondary">
+                    Overall 77 · Data 80%
+                </div>
+
             </div>
 
-        </div>
+        </a>
         
-        <div class="mini-row">
+        <a
+            class="mini-row"
+            href="stocks/u11-si/"
+        >
 
             <div>
 
@@ -2452,13 +2478,25 @@ td {
 
             </div>
 
-            <div class="mini-score">
-                Balance 73/100
+
+            <div class="mini-right">
+
+                <div class="mini-score">
+                    Balance 73/100
+                </div>
+
+                <div class="mini-secondary">
+                    Overall 76 · Data 65%
+                </div>
+
             </div>
 
-        </div>
+        </a>
         
-        <div class="mini-row">
+        <a
+            class="mini-row"
+            href="stocks/f34-si/"
+        >
 
             <div>
 
@@ -2476,11 +2514,20 @@ td {
 
             </div>
 
-            <div class="mini-score">
-                Balance 73/100
+
+            <div class="mini-right">
+
+                <div class="mini-score">
+                    Balance 73/100
+                </div>
+
+                <div class="mini-secondary">
+                    Overall 76 · Data 100%
+                </div>
+
             </div>
 
-        </div>
+        </a>
         
 
         </div>
@@ -2501,7 +2548,7 @@ td {
     </div>
 
     <div class="section-subtitle">
-        Sector, scoring and data-quality comparison
+        Click a company name to open its analysis
     </div>
 
     <div class="table-wrapper">
@@ -2557,47 +2604,62 @@ td {
 
             <td>
 
-                <div class="stock-name">
-                    Goldman Sachs
-                </div>
+                <a
+                    class="stock-link"
+                    href="stocks/gs/"
+                >
 
-                <div class="ticker">
-                    GS
-                </div>
+                    <div class="stock-name">
+                        Goldman Sachs
+                    </div>
 
-                <div class="sector">
-                    Financials
-                </div>
+                    <div class="ticker">
+                        GS
+                    </div>
+
+                    <div class="sector">
+                        Financials
+                    </div>
+
+                </a>
 
             </td>
+
 
             <td>
                 $1,065.22
             </td>
 
+
             <td class="negative">
                 -2.76%
             </td>
+
 
             <td class="desktop-column">
                 100
             </td>
 
+
             <td class="desktop-column">
                 73
             </td>
+
 
             <td class="desktop-column">
                 88
             </td>
 
+
             <td class="desktop-column">
                 75
             </td>
 
+
             <td class="score">
                 86
             </td>
+
 
             <td>
 
@@ -2609,6 +2671,7 @@ td {
                 </span>
 
             </td>
+
 
             <td>
 
@@ -2631,47 +2694,62 @@ td {
 
             <td>
 
-                <div class="stock-name">
-                    JPMorgan Chase
-                </div>
+                <a
+                    class="stock-link"
+                    href="stocks/jpm/"
+                >
 
-                <div class="ticker">
-                    JPM
-                </div>
+                    <div class="stock-name">
+                        JPMorgan Chase
+                    </div>
 
-                <div class="sector">
-                    Financials
-                </div>
+                    <div class="ticker">
+                        JPM
+                    </div>
+
+                    <div class="sector">
+                        Financials
+                    </div>
+
+                </a>
 
             </td>
+
 
             <td>
                 $341.10
             </td>
 
+
             <td class="negative">
                 -0.60%
             </td>
+
 
             <td class="desktop-column">
                 100
             </td>
 
+
             <td class="desktop-column">
                 79
             </td>
 
-            <td class="desktop-column">
-                75
-            </td>
 
             <td class="desktop-column">
                 75
             </td>
+
+
+            <td class="desktop-column">
+                75
+            </td>
+
 
             <td class="score">
                 82
             </td>
+
 
             <td>
 
@@ -2683,6 +2761,7 @@ td {
                 </span>
 
             </td>
+
 
             <td>
 
@@ -2705,47 +2784,62 @@ td {
 
             <td>
 
-                <div class="stock-name">
-                    Bank of America
-                </div>
+                <a
+                    class="stock-link"
+                    href="stocks/bac/"
+                >
 
-                <div class="ticker">
-                    BAC
-                </div>
+                    <div class="stock-name">
+                        Bank of America
+                    </div>
 
-                <div class="sector">
-                    Financials
-                </div>
+                    <div class="ticker">
+                        BAC
+                    </div>
+
+                    <div class="sector">
+                        Financials
+                    </div>
+
+                </a>
 
             </td>
+
 
             <td>
                 $61.27
             </td>
 
+
             <td class="negative">
                 -0.36%
             </td>
+
 
             <td class="desktop-column">
                 93
             </td>
 
+
             <td class="desktop-column">
                 79
             </td>
+
 
             <td class="desktop-column">
                 75
             </td>
 
+
             <td class="desktop-column">
                 80
             </td>
 
+
             <td class="score">
                 81
             </td>
+
 
             <td>
 
@@ -2757,6 +2851,7 @@ td {
                 </span>
 
             </td>
+
 
             <td>
 
@@ -2779,47 +2874,62 @@ td {
 
             <td>
 
-                <div class="stock-name">
-                    Meta Platforms
-                </div>
+                <a
+                    class="stock-link"
+                    href="stocks/meta/"
+                >
 
-                <div class="ticker">
-                    META
-                </div>
+                    <div class="stock-name">
+                        Meta Platforms
+                    </div>
 
-                <div class="sector">
-                    Communication Services
-                </div>
+                    <div class="ticker">
+                        META
+                    </div>
+
+                    <div class="sector">
+                        Communication Services
+                    </div>
+
+                </a>
 
             </td>
+
 
             <td>
                 $646.01
             </td>
 
+
             <td class="negative">
                 -2.79%
             </td>
+
 
             <td class="desktop-column">
                 90
             </td>
 
+
             <td class="desktop-column">
                 58
             </td>
+
 
             <td class="desktop-column">
                 94
             </td>
 
+
             <td class="desktop-column">
                 55
             </td>
 
+
             <td class="score">
                 80
             </td>
+
 
             <td>
 
@@ -2831,6 +2941,7 @@ td {
                 </span>
 
             </td>
+
 
             <td>
 
@@ -2853,47 +2964,62 @@ td {
 
             <td>
 
-                <div class="stock-name">
-                    NVIDIA
-                </div>
+                <a
+                    class="stock-link"
+                    href="stocks/nvda/"
+                >
 
-                <div class="ticker">
-                    NVDA
-                </div>
+                    <div class="stock-name">
+                        NVIDIA
+                    </div>
 
-                <div class="sector">
-                    Semiconductors
-                </div>
+                    <div class="ticker">
+                        NVDA
+                    </div>
+
+                    <div class="sector">
+                        Semiconductors
+                    </div>
+
+                </a>
 
             </td>
+
 
             <td>
                 $202.81
             </td>
 
+
             <td class="negative">
                 -2.21%
             </td>
+
 
             <td class="desktop-column">
                 80
             </td>
 
+
             <td class="desktop-column">
                 62
             </td>
+
 
             <td class="desktop-column">
                 95
             </td>
 
+
             <td class="desktop-column">
                 55
             </td>
 
+
             <td class="score">
                 79
             </td>
+
 
             <td>
 
@@ -2905,6 +3031,7 @@ td {
                 </span>
 
             </td>
+
 
             <td>
 
@@ -2927,47 +3054,62 @@ td {
 
             <td>
 
-                <div class="stock-name">
-                    Visa
-                </div>
+                <a
+                    class="stock-link"
+                    href="stocks/v/"
+                >
 
-                <div class="ticker">
-                    V
-                </div>
+                    <div class="stock-name">
+                        Visa
+                    </div>
 
-                <div class="sector">
-                    Financials
-                </div>
+                    <div class="ticker">
+                        V
+                    </div>
+
+                    <div class="sector">
+                        Financials
+                    </div>
+
+                </a>
 
             </td>
+
 
             <td>
                 $358.56
             </td>
 
+
             <td class="negative">
                 -1.80%
             </td>
+
 
             <td class="desktop-column">
                 100
             </td>
 
+
             <td class="desktop-column">
                 73
             </td>
+
 
             <td class="desktop-column">
                 80
             </td>
 
+
             <td class="desktop-column">
                 48
             </td>
 
+
             <td class="score">
                 79
             </td>
+
 
             <td>
 
@@ -2979,6 +3121,7 @@ td {
                 </span>
 
             </td>
+
 
             <td>
 
@@ -3001,47 +3144,62 @@ td {
 
             <td>
 
-                <div class="stock-name">
-                    BlackRock
-                </div>
+                <a
+                    class="stock-link"
+                    href="stocks/blk/"
+                >
 
-                <div class="ticker">
-                    BLK
-                </div>
+                    <div class="stock-name">
+                        BlackRock
+                    </div>
 
-                <div class="sector">
-                    Financials
-                </div>
+                    <div class="ticker">
+                        BLK
+                    </div>
+
+                    <div class="sector">
+                        Financials
+                    </div>
+
+                </a>
 
             </td>
+
 
             <td>
                 $1,072.20
             </td>
 
+
             <td class="negative">
                 -1.37%
             </td>
+
 
             <td class="desktop-column">
                 90
             </td>
 
+
             <td class="desktop-column">
                 55
             </td>
+
 
             <td class="desktop-column">
                 86
             </td>
 
+
             <td class="desktop-column">
                 75
             </td>
 
+
             <td class="score">
                 79
             </td>
+
 
             <td>
 
@@ -3053,6 +3211,7 @@ td {
                 </span>
 
             </td>
+
 
             <td>
 
@@ -3075,47 +3234,62 @@ td {
 
             <td>
 
-                <div class="stock-name">
-                    AbbVie
-                </div>
+                <a
+                    class="stock-link"
+                    href="stocks/abbv/"
+                >
 
-                <div class="ticker">
-                    ABBV
-                </div>
+                    <div class="stock-name">
+                        AbbVie
+                    </div>
 
-                <div class="sector">
-                    Healthcare
-                </div>
+                    <div class="ticker">
+                        ABBV
+                    </div>
+
+                    <div class="sector">
+                        Healthcare
+                    </div>
+
+                </a>
 
             </td>
+
 
             <td>
                 $254.49
             </td>
 
+
             <td class="positive">
                 +0.04%
             </td>
+
 
             <td class="desktop-column">
                 85
             </td>
 
+
             <td class="desktop-column">
                 86
             </td>
+
 
             <td class="desktop-column">
                 65
             </td>
 
+
             <td class="desktop-column">
                 82
             </td>
 
+
             <td class="score">
                 77
             </td>
+
 
             <td>
 
@@ -3127,6 +3301,7 @@ td {
                 </span>
 
             </td>
+
 
             <td>
 
@@ -3149,47 +3324,62 @@ td {
 
             <td>
 
-                <div class="stock-name">
-                    Apple
-                </div>
+                <a
+                    class="stock-link"
+                    href="stocks/aapl/"
+                >
 
-                <div class="ticker">
-                    AAPL
-                </div>
+                    <div class="stock-name">
+                        Apple
+                    </div>
 
-                <div class="sector">
-                    Technology
-                </div>
+                    <div class="ticker">
+                        AAPL
+                    </div>
+
+                    <div class="sector">
+                        Technology
+                    </div>
+
+                </a>
 
             </td>
+
 
             <td>
                 $333.74
             </td>
 
+
             <td class="positive">
                 +0.14%
             </td>
+
 
             <td class="desktop-column">
                 93
             </td>
 
+
             <td class="desktop-column">
                 94
             </td>
+
 
             <td class="desktop-column">
                 71
             </td>
 
+
             <td class="desktop-column">
                 38
             </td>
 
+
             <td class="score">
                 76
             </td>
+
 
             <td>
 
@@ -3201,6 +3391,7 @@ td {
                 </span>
 
             </td>
+
 
             <td>
 
@@ -3223,47 +3414,62 @@ td {
 
             <td>
 
-                <div class="stock-name">
-                    Morgan Stanley
-                </div>
+                <a
+                    class="stock-link"
+                    href="stocks/ms/"
+                >
 
-                <div class="ticker">
-                    MS
-                </div>
+                    <div class="stock-name">
+                        Morgan Stanley
+                    </div>
 
-                <div class="sector">
-                    Financials
-                </div>
+                    <div class="ticker">
+                        MS
+                    </div>
+
+                    <div class="sector">
+                        Financials
+                    </div>
+
+                </a>
 
             </td>
+
 
             <td>
                 $215.50
             </td>
 
+
             <td class="negative">
                 -1.31%
             </td>
+
 
             <td class="desktop-column">
                 70
             </td>
 
+
             <td class="desktop-column">
                 72
             </td>
+
 
             <td class="desktop-column">
                 85
             </td>
 
+
             <td class="desktop-column">
                 65
             </td>
 
+
             <td class="score">
                 76
             </td>
+
 
             <td>
 
@@ -3275,6 +3481,7 @@ td {
                 </span>
 
             </td>
+
 
             <td>
 
@@ -3297,47 +3504,62 @@ td {
 
             <td>
 
-                <div class="stock-name">
-                    Merck
-                </div>
+                <a
+                    class="stock-link"
+                    href="stocks/mrk/"
+                >
 
-                <div class="ticker">
-                    MRK
-                </div>
+                    <div class="stock-name">
+                        Merck
+                    </div>
 
-                <div class="sector">
-                    Healthcare
-                </div>
+                    <div class="ticker">
+                        MRK
+                    </div>
+
+                    <div class="sector">
+                        Healthcare
+                    </div>
+
+                </a>
 
             </td>
+
 
             <td>
                 $127.50
             </td>
 
+
             <td class="negative">
                 -0.10%
             </td>
+
 
             <td class="desktop-column">
                 85
             </td>
 
+
             <td class="desktop-column">
                 84
             </td>
+
 
             <td class="desktop-column">
                 74
             </td>
 
+
             <td class="desktop-column">
                 55
             </td>
 
+
             <td class="score">
                 76
             </td>
+
 
             <td>
 
@@ -3349,6 +3571,7 @@ td {
                 </span>
 
             </td>
+
 
             <td>
 
@@ -3371,47 +3594,62 @@ td {
 
             <td>
 
-                <div class="stock-name">
-                    Eli Lilly
-                </div>
+                <a
+                    class="stock-link"
+                    href="stocks/lly/"
+                >
 
-                <div class="ticker">
-                    LLY
-                </div>
+                    <div class="stock-name">
+                        Eli Lilly
+                    </div>
 
-                <div class="sector">
-                    Healthcare
-                </div>
+                    <div class="ticker">
+                        LLY
+                    </div>
+
+                    <div class="sector">
+                        Healthcare
+                    </div>
+
+                </a>
 
             </td>
+
 
             <td>
                 $1,179.11
             </td>
 
+
             <td class="positive">
                 +0.85%
             </td>
+
 
             <td class="desktop-column">
                 85
             </td>
 
+
             <td class="desktop-column">
                 76
             </td>
+
 
             <td class="desktop-column">
                 81
             </td>
 
+
             <td class="desktop-column">
                 38
             </td>
 
+
             <td class="score">
                 75
             </td>
+
 
             <td>
 
@@ -3423,6 +3661,7 @@ td {
                 </span>
 
             </td>
+
 
             <td>
 
@@ -3445,47 +3684,62 @@ td {
 
             <td>
 
-                <div class="stock-name">
-                    Micron Technology
-                </div>
+                <a
+                    class="stock-link"
+                    href="stocks/mu/"
+                >
 
-                <div class="ticker">
-                    MU
-                </div>
+                    <div class="stock-name">
+                        Micron Technology
+                    </div>
 
-                <div class="sector">
-                    Semiconductors
-                </div>
+                    <div class="ticker">
+                        MU
+                    </div>
+
+                    <div class="sector">
+                        Semiconductors
+                    </div>
+
+                </a>
 
             </td>
+
 
             <td>
                 $848.95
             </td>
 
+
             <td class="negative">
                 -0.50%
             </td>
+
 
             <td class="desktop-column">
                 50
             </td>
 
+
             <td class="desktop-column">
                 72
             </td>
+
 
             <td class="desktop-column">
                 95
             </td>
 
+
             <td class="desktop-column">
                 60
             </td>
 
+
             <td class="score">
                 74
             </td>
+
 
             <td>
 
@@ -3497,6 +3751,7 @@ td {
                 </span>
 
             </td>
+
 
             <td>
 
@@ -3519,47 +3774,62 @@ td {
 
             <td>
 
-                <div class="stock-name">
-                    ASML
-                </div>
+                <a
+                    class="stock-link"
+                    href="stocks/asml/"
+                >
 
-                <div class="ticker">
-                    ASML
-                </div>
+                    <div class="stock-name">
+                        ASML
+                    </div>
 
-                <div class="sector">
-                    Semiconductor Equipment
-                </div>
+                    <div class="ticker">
+                        ASML
+                    </div>
+
+                    <div class="sector">
+                        Semiconductor Equipment
+                    </div>
+
+                </a>
 
             </td>
+
 
             <td>
                 $1,747.58
             </td>
 
+
             <td class="negative">
                 -2.09%
             </td>
+
 
             <td class="desktop-column">
                 70
             </td>
 
+
             <td class="desktop-column">
                 82
             </td>
+
 
             <td class="desktop-column">
                 83
             </td>
 
+
             <td class="desktop-column">
                 38
             </td>
 
+
             <td class="score">
                 73
             </td>
+
 
             <td>
 
@@ -3571,6 +3841,7 @@ td {
                 </span>
 
             </td>
+
 
             <td>
 
@@ -3593,47 +3864,62 @@ td {
 
             <td>
 
-                <div class="stock-name">
-                    Chevron
-                </div>
+                <a
+                    class="stock-link"
+                    href="stocks/cvx/"
+                >
 
-                <div class="ticker">
-                    CVX
-                </div>
+                    <div class="stock-name">
+                        Chevron
+                    </div>
 
-                <div class="sector">
-                    Energy
-                </div>
+                    <div class="ticker">
+                        CVX
+                    </div>
+
+                    <div class="sector">
+                        Energy
+                    </div>
+
+                </a>
 
             </td>
+
 
             <td>
                 $187.38
             </td>
 
+
             <td class="positive">
                 +1.91%
             </td>
+
 
             <td class="desktop-column">
                 100
             </td>
 
+
             <td class="desktop-column">
                 67
             </td>
+
 
             <td class="desktop-column">
                 59
             </td>
 
+
             <td class="desktop-column">
                 75
             </td>
 
+
             <td class="score">
                 73
             </td>
+
 
             <td>
 
@@ -3645,6 +3931,7 @@ td {
                 </span>
 
             </td>
+
 
             <td>
 
@@ -3667,47 +3954,62 @@ td {
 
             <td>
 
-                <div class="stock-name">
-                    American Express
-                </div>
+                <a
+                    class="stock-link"
+                    href="stocks/axp/"
+                >
 
-                <div class="ticker">
-                    AXP
-                </div>
+                    <div class="stock-name">
+                        American Express
+                    </div>
 
-                <div class="sector">
-                    Financials
-                </div>
+                    <div class="ticker">
+                        AXP
+                    </div>
+
+                    <div class="sector">
+                        Financials
+                    </div>
+
+                </a>
 
             </td>
+
 
             <td>
                 $355.35
             </td>
 
+
             <td class="negative">
                 -1.72%
             </td>
+
 
             <td class="desktop-column">
                 90
             </td>
 
+
             <td class="desktop-column">
                 56
             </td>
+
 
             <td class="desktop-column">
                 76
             </td>
 
+
             <td class="desktop-column">
                 55
             </td>
 
+
             <td class="score">
                 72
             </td>
+
 
             <td>
 
@@ -3719,6 +4021,7 @@ td {
                 </span>
 
             </td>
+
 
             <td>
 
@@ -3741,47 +4044,62 @@ td {
 
             <td>
 
-                <div class="stock-name">
-                    Exxon Mobil
-                </div>
+                <a
+                    class="stock-link"
+                    href="stocks/xom/"
+                >
 
-                <div class="ticker">
-                    XOM
-                </div>
+                    <div class="stock-name">
+                        Exxon Mobil
+                    </div>
 
-                <div class="sector">
-                    Energy
-                </div>
+                    <div class="ticker">
+                        XOM
+                    </div>
+
+                    <div class="sector">
+                        Energy
+                    </div>
+
+                </a>
 
             </td>
+
 
             <td>
                 $147.36
             </td>
 
+
             <td class="positive">
                 +0.97%
             </td>
+
 
             <td class="desktop-column">
                 100
             </td>
 
+
             <td class="desktop-column">
                 67
             </td>
+
 
             <td class="desktop-column">
                 55
             </td>
 
+
             <td class="desktop-column">
                 75
             </td>
 
+
             <td class="score">
                 72
             </td>
+
 
             <td>
 
@@ -3793,6 +4111,7 @@ td {
                 </span>
 
             </td>
+
 
             <td>
 
@@ -3815,47 +4134,62 @@ td {
 
             <td>
 
-                <div class="stock-name">
-                    ConocoPhillips
-                </div>
+                <a
+                    class="stock-link"
+                    href="stocks/cop/"
+                >
 
-                <div class="ticker">
-                    COP
-                </div>
+                    <div class="stock-name">
+                        ConocoPhillips
+                    </div>
 
-                <div class="sector">
-                    Energy
-                </div>
+                    <div class="ticker">
+                        COP
+                    </div>
+
+                    <div class="sector">
+                        Energy
+                    </div>
+
+                </a>
 
             </td>
+
 
             <td>
                 $114.71
             </td>
 
+
             <td class="positive">
                 +1.66%
             </td>
+
 
             <td class="desktop-column">
                 100
             </td>
 
+
             <td class="desktop-column">
                 61
             </td>
+
 
             <td class="desktop-column">
                 58
             </td>
 
+
             <td class="desktop-column">
                 75
             </td>
 
+
             <td class="score">
                 72
             </td>
+
 
             <td>
 
@@ -3867,6 +4201,7 @@ td {
                 </span>
 
             </td>
+
 
             <td>
 
@@ -3889,47 +4224,62 @@ td {
 
             <td>
 
-                <div class="stock-name">
-                    Applied Materials
-                </div>
+                <a
+                    class="stock-link"
+                    href="stocks/amat/"
+                >
 
-                <div class="ticker">
-                    AMAT
-                </div>
+                    <div class="stock-name">
+                        Applied Materials
+                    </div>
 
-                <div class="sector">
-                    Semiconductor Equipment
-                </div>
+                    <div class="ticker">
+                        AMAT
+                    </div>
+
+                    <div class="sector">
+                        Semiconductor Equipment
+                    </div>
+
+                </a>
 
             </td>
+
 
             <td>
                 $529.66
             </td>
 
+
             <td class="negative">
                 -5.57%
             </td>
 
+
             <td class="desktop-column">
                 70
             </td>
+
 
             <td class="desktop-column">
                 76
             </td>
 
+
             <td class="desktop-column">
                 80
             </td>
+
 
             <td class="desktop-column">
                 38
             </td>
 
+
             <td class="score">
                 70
             </td>
+
 
             <td>
 
@@ -3941,6 +4291,7 @@ td {
                 </span>
 
             </td>
+
 
             <td>
 
@@ -3963,47 +4314,62 @@ td {
 
             <td>
 
-                <div class="stock-name">
-                    Amazon
-                </div>
+                <a
+                    class="stock-link"
+                    href="stocks/amzn/"
+                >
 
-                <div class="ticker">
-                    AMZN
-                </div>
+                    <div class="stock-name">
+                        Amazon
+                    </div>
 
-                <div class="sector">
-                    Consumer / Technology
-                </div>
+                    <div class="ticker">
+                        AMZN
+                    </div>
+
+                    <div class="sector">
+                        Consumer / Technology
+                    </div>
+
+                </a>
 
             </td>
+
 
             <td>
                 $247.23
             </td>
 
+
             <td class="negative">
                 -1.06%
             </td>
+
 
             <td class="desktop-column">
                 80
             </td>
 
+
             <td class="desktop-column">
                 56
             </td>
+
 
             <td class="desktop-column">
                 78
             </td>
 
+
             <td class="desktop-column">
                 48
             </td>
 
+
             <td class="score">
                 70
             </td>
+
 
             <td>
 
@@ -4015,6 +4381,7 @@ td {
                 </span>
 
             </td>
+
 
             <td>
 
@@ -4037,47 +4404,62 @@ td {
 
             <td>
 
-                <div class="stock-name">
-                    Broadcom
-                </div>
+                <a
+                    class="stock-link"
+                    href="stocks/avgo/"
+                >
 
-                <div class="ticker">
-                    AVGO
-                </div>
+                    <div class="stock-name">
+                        Broadcom
+                    </div>
 
-                <div class="sector">
-                    Semiconductors
-                </div>
+                    <div class="ticker">
+                        AVGO
+                    </div>
+
+                    <div class="sector">
+                        Semiconductors
+                    </div>
+
+                </a>
 
             </td>
+
 
             <td>
                 $370.83
             </td>
 
+
             <td class="negative">
                 -0.97%
             </td>
+
 
             <td class="desktop-column">
                 65
             </td>
 
+
             <td class="desktop-column">
                 44
             </td>
+
 
             <td class="desktop-column">
                 91
             </td>
 
+
             <td class="desktop-column">
                 48
             </td>
 
+
             <td class="score">
                 69
             </td>
+
 
             <td>
 
@@ -4089,6 +4471,7 @@ td {
                 </span>
 
             </td>
+
 
             <td>
 
@@ -4111,47 +4494,62 @@ td {
 
             <td>
 
-                <div class="stock-name">
-                    TSMC
-                </div>
+                <a
+                    class="stock-link"
+                    href="stocks/tsm/"
+                >
 
-                <div class="ticker">
-                    TSM
-                </div>
+                    <div class="stock-name">
+                        TSMC
+                    </div>
 
-                <div class="sector">
-                    Semiconductors
-                </div>
+                    <div class="ticker">
+                        TSM
+                    </div>
+
+                    <div class="sector">
+                        Semiconductors
+                    </div>
+
+                </a>
 
             </td>
+
 
             <td>
                 $398.37
             </td>
 
+
             <td class="negative">
                 -2.77%
             </td>
+
 
             <td class="desktop-column">
                 43
             </td>
 
+
             <td class="desktop-column">
                 67
             </td>
+
 
             <td class="desktop-column">
                 93
             </td>
 
+
             <td class="desktop-column">
                 48
             </td>
 
+
             <td class="score">
                 69
             </td>
+
 
             <td>
 
@@ -4163,6 +4561,7 @@ td {
                 </span>
 
             </td>
+
 
             <td>
 
@@ -4185,47 +4584,62 @@ td {
 
             <td>
 
-                <div class="stock-name">
-                    Mastercard
-                </div>
+                <a
+                    class="stock-link"
+                    href="stocks/ma/"
+                >
 
-                <div class="ticker">
-                    MA
-                </div>
+                    <div class="stock-name">
+                        Mastercard
+                    </div>
 
-                <div class="sector">
-                    Financials
-                </div>
+                    <div class="ticker">
+                        MA
+                    </div>
+
+                    <div class="sector">
+                        Financials
+                    </div>
+
+                </a>
 
             </td>
+
 
             <td>
                 $543.60
             </td>
 
+
             <td class="negative">
                 -1.44%
             </td>
+
 
             <td class="desktop-column">
                 90
             </td>
 
+
             <td class="desktop-column">
                 58
             </td>
 
+
             <td class="desktop-column">
                 69
             </td>
+
 
             <td class="desktop-column">
                 48
             </td>
 
+
             <td class="score">
                 69
             </td>
+
 
             <td>
 
@@ -4237,6 +4651,7 @@ td {
                 </span>
 
             </td>
+
 
             <td>
 
@@ -4259,47 +4674,62 @@ td {
 
             <td>
 
-                <div class="stock-name">
-                    UnitedHealth
-                </div>
+                <a
+                    class="stock-link"
+                    href="stocks/unh/"
+                >
 
-                <div class="ticker">
-                    UNH
-                </div>
+                    <div class="stock-name">
+                        UnitedHealth
+                    </div>
 
-                <div class="sector">
-                    Healthcare
-                </div>
+                    <div class="ticker">
+                        UNH
+                    </div>
+
+                    <div class="sector">
+                        Healthcare
+                    </div>
+
+                </a>
 
             </td>
+
 
             <td>
                 $426.09
             </td>
 
+
             <td class="positive">
                 +0.64%
             </td>
+
 
             <td class="desktop-column">
                 85
             </td>
 
+
             <td class="desktop-column">
                 90
             </td>
+
 
             <td class="desktop-column">
                 53
             </td>
 
+
             <td class="desktop-column">
                 58
             </td>
 
+
             <td class="score">
                 69
             </td>
+
 
             <td>
 
@@ -4311,6 +4741,7 @@ td {
                 </span>
 
             </td>
+
 
             <td>
 
@@ -4333,47 +4764,62 @@ td {
 
             <td>
 
-                <div class="stock-name">
-                    Coca-Cola
-                </div>
+                <a
+                    class="stock-link"
+                    href="stocks/ko/"
+                >
 
-                <div class="ticker">
-                    KO
-                </div>
+                    <div class="stock-name">
+                        Coca-Cola
+                    </div>
 
-                <div class="sector">
-                    Consumer Staples
-                </div>
+                    <div class="ticker">
+                        KO
+                    </div>
+
+                    <div class="sector">
+                        Consumer Staples
+                    </div>
+
+                </a>
 
             </td>
+
 
             <td>
                 $81.56
             </td>
 
+
             <td class="negative">
                 -3.96%
             </td>
 
-            <td class="desktop-column">
-                70
-            </td>
 
             <td class="desktop-column">
                 70
             </td>
+
+
+            <td class="desktop-column">
+                70
+            </td>
+
 
             <td class="desktop-column">
                 75
             </td>
 
+
             <td class="desktop-column">
                 48
             </td>
 
+
             <td class="score">
                 69
             </td>
+
 
             <td>
 
@@ -4385,6 +4831,7 @@ td {
                 </span>
 
             </td>
+
 
             <td>
 
@@ -4419,7 +4866,7 @@ td {
     </div>
 
     <div class="section-subtitle">
-        SGX rankings with data-quality visibility
+        Click a company name to open its analysis
     </div>
 
     <div class="table-wrapper">
@@ -4475,47 +4922,62 @@ td {
 
             <td>
 
-                <div class="stock-name">
-                    UOB
-                </div>
+                <a
+                    class="stock-link"
+                    href="stocks/u11-si/"
+                >
 
-                <div class="ticker">
-                    U11.SI
-                </div>
+                    <div class="stock-name">
+                        UOB
+                    </div>
 
-                <div class="sector">
-                    Banks
-                </div>
+                    <div class="ticker">
+                        U11.SI
+                    </div>
+
+                    <div class="sector">
+                        Banks
+                    </div>
+
+                </a>
 
             </td>
+
 
             <td>
                 S$42.47
             </td>
 
+
             <td class="negative">
                 -2.37%
             </td>
+
 
             <td class="desktop-column">
                 100
             </td>
 
+
             <td class="desktop-column">
                 78
             </td>
+
 
             <td class="desktop-column">
                 55
             </td>
 
+
             <td class="desktop-column">
                 88
             </td>
 
+
             <td class="score">
                 76
             </td>
+
 
             <td>
 
@@ -4527,6 +4989,7 @@ td {
                 </span>
 
             </td>
+
 
             <td>
 
@@ -4549,47 +5012,62 @@ td {
 
             <td>
 
-                <div class="stock-name">
-                    Wilmar International
-                </div>
+                <a
+                    class="stock-link"
+                    href="stocks/f34-si/"
+                >
 
-                <div class="ticker">
-                    F34.SI
-                </div>
+                    <div class="stock-name">
+                        Wilmar International
+                    </div>
 
-                <div class="sector">
-                    Consumer
-                </div>
+                    <div class="ticker">
+                        F34.SI
+                    </div>
+
+                    <div class="sector">
+                        Consumer
+                    </div>
+
+                </a>
 
             </td>
+
 
             <td>
                 S$3.87
             </td>
 
+
             <td class="negative">
                 -0.77%
             </td>
+
 
             <td class="desktop-column">
                 100
             </td>
 
+
             <td class="desktop-column">
                 76
             </td>
+
 
             <td class="desktop-column">
                 56
             </td>
 
+
             <td class="desktop-column">
                 88
             </td>
 
+
             <td class="score">
                 76
             </td>
+
 
             <td>
 
@@ -4601,6 +5079,7 @@ td {
                 </span>
 
             </td>
+
 
             <td>
 
@@ -4623,47 +5102,62 @@ td {
 
             <td>
 
-                <div class="stock-name">
-                    OCBC
-                </div>
+                <a
+                    class="stock-link"
+                    href="stocks/o39-si/"
+                >
 
-                <div class="ticker">
-                    O39.SI
-                </div>
+                    <div class="stock-name">
+                        OCBC
+                    </div>
 
-                <div class="sector">
-                    Banks
-                </div>
+                    <div class="ticker">
+                        O39.SI
+                    </div>
+
+                    <div class="sector">
+                        Banks
+                    </div>
+
+                </a>
 
             </td>
+
 
             <td>
                 S$28.56
             </td>
 
+
             <td class="negative">
                 -0.76%
             </td>
+
 
             <td class="desktop-column">
                 85
             </td>
 
+
             <td class="desktop-column">
                 94
             </td>
+
 
             <td class="desktop-column">
                 60
             </td>
 
+
             <td class="desktop-column">
                 75
             </td>
 
+
             <td class="score">
                 75
             </td>
+
 
             <td>
 
@@ -4675,6 +5169,7 @@ td {
                 </span>
 
             </td>
+
 
             <td>
 
@@ -4697,47 +5192,62 @@ td {
 
             <td>
 
-                <div class="stock-name">
-                    DBS Group
-                </div>
+                <a
+                    class="stock-link"
+                    href="stocks/d05-si/"
+                >
 
-                <div class="ticker">
-                    D05.SI
-                </div>
+                    <div class="stock-name">
+                        DBS Group
+                    </div>
 
-                <div class="sector">
-                    Banks
-                </div>
+                    <div class="ticker">
+                        D05.SI
+                    </div>
+
+                    <div class="sector">
+                        Banks
+                    </div>
+
+                </a>
 
             </td>
+
 
             <td>
                 S$71.96
             </td>
 
+
             <td class="negative">
                 -0.72%
             </td>
+
 
             <td class="desktop-column">
                 85
             </td>
 
+
             <td class="desktop-column">
                 90
             </td>
+
 
             <td class="desktop-column">
                 60
             </td>
 
+
             <td class="desktop-column">
                 75
             </td>
 
+
             <td class="score">
                 74
             </td>
+
 
             <td>
 
@@ -4749,6 +5259,7 @@ td {
                 </span>
 
             </td>
+
 
             <td>
 
@@ -4771,47 +5282,62 @@ td {
 
             <td>
 
-                <div class="stock-name">
-                    Keppel DC REIT
-                </div>
+                <a
+                    class="stock-link"
+                    href="stocks/ajbu-si/"
+                >
 
-                <div class="ticker">
-                    AJBU.SI
-                </div>
+                    <div class="stock-name">
+                        Keppel DC REIT
+                    </div>
 
-                <div class="sector">
-                    REIT
-                </div>
+                    <div class="ticker">
+                        AJBU.SI
+                    </div>
+
+                    <div class="sector">
+                        REIT
+                    </div>
+
+                </a>
 
             </td>
+
 
             <td>
                 S$2.32
             </td>
 
+
             <td class="positive">
                 +0.00%
             </td>
+
 
             <td class="desktop-column">
                 90
             </td>
 
+
             <td class="desktop-column">
                 61
             </td>
+
 
             <td class="desktop-column">
                 69
             </td>
 
+
             <td class="desktop-column">
                 75
             </td>
 
+
             <td class="score">
                 74
             </td>
+
 
             <td>
 
@@ -4823,6 +5349,7 @@ td {
                 </span>
 
             </td>
+
 
             <td>
 
@@ -4845,47 +5372,62 @@ td {
 
             <td>
 
-                <div class="stock-name">
-                    iFAST
-                </div>
+                <a
+                    class="stock-link"
+                    href="stocks/aiy-si/"
+                >
 
-                <div class="ticker">
-                    AIY.SI
-                </div>
+                    <div class="stock-name">
+                        iFAST
+                    </div>
 
-                <div class="sector">
-                    Financial Services
-                </div>
+                    <div class="ticker">
+                        AIY.SI
+                    </div>
+
+                    <div class="sector">
+                        Financial Services
+                    </div>
+
+                </a>
 
             </td>
+
 
             <td>
                 S$9.57
             </td>
 
+
             <td class="positive">
                 +0.31%
             </td>
+
 
             <td class="desktop-column">
                 83
             </td>
 
+
             <td class="desktop-column">
                 49
             </td>
+
 
             <td class="desktop-column">
                 85
             </td>
 
+
             <td class="desktop-column">
                 48
             </td>
 
+
             <td class="score">
                 72
             </td>
+
 
             <td>
 
@@ -4897,6 +5439,7 @@ td {
                 </span>
 
             </td>
+
 
             <td>
 
@@ -4919,47 +5462,62 @@ td {
 
             <td>
 
-                <div class="stock-name">
-                    Thai Beverage
-                </div>
+                <a
+                    class="stock-link"
+                    href="stocks/y92-si/"
+                >
 
-                <div class="ticker">
-                    Y92.SI
-                </div>
+                    <div class="stock-name">
+                        Thai Beverage
+                    </div>
 
-                <div class="sector">
-                    Consumer
-                </div>
+                    <div class="ticker">
+                        Y92.SI
+                    </div>
+
+                    <div class="sector">
+                        Consumer
+                    </div>
+
+                </a>
 
             </td>
+
 
             <td>
                 S$0.46
             </td>
 
+
             <td class="positive">
                 +3.41%
             </td>
+
 
             <td class="desktop-column">
                 90
             </td>
 
+
             <td class="desktop-column">
                 56
             </td>
+
 
             <td class="desktop-column">
                 63
             </td>
 
+
             <td class="desktop-column">
                 80
             </td>
 
+
             <td class="score">
                 71
             </td>
+
 
             <td>
 
@@ -4971,6 +5529,7 @@ td {
                 </span>
 
             </td>
+
 
             <td>
 
@@ -4993,47 +5552,62 @@ td {
 
             <td>
 
-                <div class="stock-name">
-                    Yangzijiang Shipbuilding
-                </div>
+                <a
+                    class="stock-link"
+                    href="stocks/bs6-si/"
+                >
 
-                <div class="ticker">
-                    BS6.SI
-                </div>
+                    <div class="stock-name">
+                        Yangzijiang Shipbuilding
+                    </div>
 
-                <div class="sector">
-                    Industrials
-                </div>
+                    <div class="ticker">
+                        BS6.SI
+                    </div>
+
+                    <div class="sector">
+                        Industrials
+                    </div>
+
+                </a>
 
             </td>
+
 
             <td>
                 S$3.63
             </td>
 
+
             <td class="negative">
                 -0.55%
             </td>
+
 
             <td class="desktop-column">
                 65
             </td>
 
+
             <td class="desktop-column">
                 36
             </td>
+
 
             <td class="desktop-column">
                 86
             </td>
 
+
             <td class="desktop-column">
                 80
             </td>
 
+
             <td class="score">
                 70
             </td>
+
 
             <td>
 
@@ -5045,6 +5619,7 @@ td {
                 </span>
 
             </td>
+
 
             <td>
 
@@ -5067,47 +5642,62 @@ td {
 
             <td>
 
-                <div class="stock-name">
-                    Singapore Exchange
-                </div>
+                <a
+                    class="stock-link"
+                    href="stocks/s68-si/"
+                >
 
-                <div class="ticker">
-                    S68.SI
-                </div>
+                    <div class="stock-name">
+                        Singapore Exchange
+                    </div>
 
-                <div class="sector">
-                    Financial Services
-                </div>
+                    <div class="ticker">
+                        S68.SI
+                    </div>
+
+                    <div class="sector">
+                        Financial Services
+                    </div>
+
+                </a>
 
             </td>
+
 
             <td>
                 S$23.88
             </td>
 
+
             <td class="positive">
                 +0.08%
             </td>
+
 
             <td class="desktop-column">
                 70
             </td>
 
+
             <td class="desktop-column">
                 78
             </td>
+
 
             <td class="desktop-column">
                 75
             </td>
 
+
             <td class="desktop-column">
                 38
             </td>
 
+
             <td class="score">
                 69
             </td>
+
 
             <td>
 
@@ -5119,6 +5709,7 @@ td {
                 </span>
 
             </td>
+
 
             <td>
 
@@ -5141,47 +5732,62 @@ td {
 
             <td>
 
-                <div class="stock-name">
-                    Singapore Airlines
-                </div>
+                <a
+                    class="stock-link"
+                    href="stocks/c6l-si/"
+                >
 
-                <div class="ticker">
-                    C6L.SI
-                </div>
+                    <div class="stock-name">
+                        Singapore Airlines
+                    </div>
 
-                <div class="sector">
-                    Transport
-                </div>
+                    <div class="ticker">
+                        C6L.SI
+                    </div>
+
+                    <div class="sector">
+                        Transport
+                    </div>
+
+                </a>
 
             </td>
+
 
             <td>
                 S$7.65
             </td>
 
+
             <td class="positive">
                 +0.53%
             </td>
+
 
             <td class="desktop-column">
                 85
             </td>
 
+
             <td class="desktop-column">
                 84
             </td>
+
 
             <td class="desktop-column">
                 47
             </td>
 
+
             <td class="desktop-column">
                 75
             </td>
 
+
             <td class="score">
                 68
             </td>
+
 
             <td>
 
@@ -5193,6 +5799,7 @@ td {
                 </span>
 
             </td>
+
 
             <td>
 
@@ -5215,47 +5822,62 @@ td {
 
             <td>
 
-                <div class="stock-name">
-                    SATS
-                </div>
+                <a
+                    class="stock-link"
+                    href="stocks/s58-si/"
+                >
 
-                <div class="ticker">
-                    S58.SI
-                </div>
+                    <div class="stock-name">
+                        SATS
+                    </div>
 
-                <div class="sector">
-                    Transport
-                </div>
+                    <div class="ticker">
+                        S58.SI
+                    </div>
+
+                    <div class="sector">
+                        Transport
+                    </div>
+
+                </a>
 
             </td>
+
 
             <td>
                 S$4.63
             </td>
 
+
             <td class="positive">
                 +0.87%
             </td>
+
 
             <td class="desktop-column">
                 78
             </td>
 
+
             <td class="desktop-column">
                 85
             </td>
+
 
             <td class="desktop-column">
                 53
             </td>
 
+
             <td class="desktop-column">
                 68
             </td>
 
+
             <td class="score">
                 68
             </td>
+
 
             <td>
 
@@ -5267,6 +5889,7 @@ td {
                 </span>
 
             </td>
+
 
             <td>
 
@@ -5289,47 +5912,62 @@ td {
 
             <td>
 
-                <div class="stock-name">
-                    CapitaLand Integrated Commercial Trust
-                </div>
+                <a
+                    class="stock-link"
+                    href="stocks/c38u-si/"
+                >
 
-                <div class="ticker">
-                    C38U.SI
-                </div>
+                    <div class="stock-name">
+                        CapitaLand Integrated Commercial Trust
+                    </div>
 
-                <div class="sector">
-                    REIT
-                </div>
+                    <div class="ticker">
+                        C38U.SI
+                    </div>
+
+                    <div class="sector">
+                        REIT
+                    </div>
+
+                </a>
 
             </td>
+
 
             <td>
                 S$2.47
             </td>
 
+
             <td class="positive">
                 +0.82%
             </td>
+
 
             <td class="desktop-column">
                 83
             </td>
 
+
             <td class="desktop-column">
                 62
             </td>
+
 
             <td class="desktop-column">
                 56
             </td>
 
+
             <td class="desktop-column">
                 75
             </td>
 
+
             <td class="score">
                 67
             </td>
+
 
             <td>
 
@@ -5341,6 +5979,7 @@ td {
                 </span>
 
             </td>
+
 
             <td>
 
@@ -5363,47 +6002,62 @@ td {
 
             <td>
 
-                <div class="stock-name">
-                    Keppel
-                </div>
+                <a
+                    class="stock-link"
+                    href="stocks/bn4-si/"
+                >
 
-                <div class="ticker">
-                    BN4.SI
-                </div>
+                    <div class="stock-name">
+                        Keppel
+                    </div>
 
-                <div class="sector">
-                    Industrials
-                </div>
+                    <div class="ticker">
+                        BN4.SI
+                    </div>
+
+                    <div class="sector">
+                        Industrials
+                    </div>
+
+                </a>
 
             </td>
+
 
             <td>
                 S$11.30
             </td>
 
+
             <td class="negative">
                 -1.40%
             </td>
+
 
             <td class="desktop-column">
                 90
             </td>
 
+
             <td class="desktop-column">
                 49
             </td>
+
 
             <td class="desktop-column">
                 56
             </td>
 
+
             <td class="desktop-column">
                 68
             </td>
 
+
             <td class="score">
                 65
             </td>
+
 
             <td>
 
@@ -5415,6 +6069,7 @@ td {
                 </span>
 
             </td>
+
 
             <td>
 
@@ -5437,47 +6092,62 @@ td {
 
             <td>
 
-                <div class="stock-name">
-                    Frasers Centrepoint Trust
-                </div>
+                <a
+                    class="stock-link"
+                    href="stocks/j69u-si/"
+                >
 
-                <div class="ticker">
-                    J69U.SI
-                </div>
+                    <div class="stock-name">
+                        Frasers Centrepoint Trust
+                    </div>
 
-                <div class="sector">
-                    REIT
-                </div>
+                    <div class="ticker">
+                        J69U.SI
+                    </div>
+
+                    <div class="sector">
+                        REIT
+                    </div>
+
+                </a>
 
             </td>
+
 
             <td>
                 S$2.26
             </td>
 
+
             <td class="positive">
                 +0.44%
             </td>
 
+
             <td class="desktop-column">
                 65
             </td>
+
 
             <td class="desktop-column">
                 44
             </td>
 
+
             <td class="desktop-column">
                 72
             </td>
+
 
             <td class="desktop-column">
                 75
             </td>
 
+
             <td class="score">
                 65
             </td>
+
 
             <td>
 
@@ -5489,6 +6159,7 @@ td {
                 </span>
 
             </td>
+
 
             <td>
 
@@ -5511,47 +6182,62 @@ td {
 
             <td>
 
-                <div class="stock-name">
-                    Hongkong Land
-                </div>
+                <a
+                    class="stock-link"
+                    href="stocks/h78-si/"
+                >
 
-                <div class="ticker">
-                    H78.SI
-                </div>
+                    <div class="stock-name">
+                        Hongkong Land
+                    </div>
 
-                <div class="sector">
-                    Property
-                </div>
+                    <div class="ticker">
+                        H78.SI
+                    </div>
+
+                    <div class="sector">
+                        Property
+                    </div>
+
+                </a>
 
             </td>
+
 
             <td>
                 S$7.65
             </td>
 
+
             <td class="positive">
                 +1.46%
             </td>
+
 
             <td class="desktop-column">
                 100
             </td>
 
+
             <td class="desktop-column">
                 41
             </td>
+
 
             <td class="desktop-column">
                 54
             </td>
 
+
             <td class="desktop-column">
                 65
             </td>
 
+
             <td class="score">
                 65
             </td>
+
 
             <td>
 
@@ -5563,6 +6249,7 @@ td {
                 </span>
 
             </td>
+
 
             <td>
 
@@ -5585,47 +6272,62 @@ td {
 
             <td>
 
-                <div class="stock-name">
-                    Mapletree Pan Asia Commercial Trust
-                </div>
+                <a
+                    class="stock-link"
+                    href="stocks/n2iu-si/"
+                >
 
-                <div class="ticker">
-                    N2IU.SI
-                </div>
+                    <div class="stock-name">
+                        Mapletree Pan Asia Commercial Trust
+                    </div>
 
-                <div class="sector">
-                    REIT
-                </div>
+                    <div class="ticker">
+                        N2IU.SI
+                    </div>
+
+                    <div class="sector">
+                        REIT
+                    </div>
+
+                </a>
 
             </td>
+
 
             <td>
                 S$1.34
             </td>
 
+
             <td class="positive">
                 +0.75%
             </td>
+
 
             <td class="desktop-column">
                 58
             </td>
 
+
             <td class="desktop-column">
                 40
             </td>
+
 
             <td class="desktop-column">
                 64
             </td>
 
+
             <td class="desktop-column">
                 82
             </td>
 
+
             <td class="score">
                 60
             </td>
+
 
             <td>
 
@@ -5637,6 +6339,7 @@ td {
                 </span>
 
             </td>
+
 
             <td>
 
@@ -5659,47 +6362,62 @@ td {
 
             <td>
 
-                <div class="stock-name">
-                    Mapletree Industrial Trust
-                </div>
+                <a
+                    class="stock-link"
+                    href="stocks/me8u-si/"
+                >
 
-                <div class="ticker">
-                    ME8U.SI
-                </div>
+                    <div class="stock-name">
+                        Mapletree Industrial Trust
+                    </div>
 
-                <div class="sector">
-                    REIT
-                </div>
+                    <div class="ticker">
+                        ME8U.SI
+                    </div>
+
+                    <div class="sector">
+                        REIT
+                    </div>
+
+                </a>
 
             </td>
+
 
             <td>
                 S$1.94
             </td>
 
+
             <td class="positive">
                 +1.04%
             </td>
+
 
             <td class="desktop-column">
                 65
             </td>
 
+
             <td class="desktop-column">
                 30
             </td>
+
 
             <td class="desktop-column">
                 64
             </td>
 
+
             <td class="desktop-column">
                 82
             </td>
 
+
             <td class="score">
                 60
             </td>
+
 
             <td>
 
@@ -5711,6 +6429,7 @@ td {
                 </span>
 
             </td>
+
 
             <td>
 
@@ -5733,47 +6452,62 @@ td {
 
             <td>
 
-                <div class="stock-name">
-                    ComfortDelGro
-                </div>
+                <a
+                    class="stock-link"
+                    href="stocks/c52-si/"
+                >
 
-                <div class="ticker">
-                    C52.SI
-                </div>
+                    <div class="stock-name">
+                        ComfortDelGro
+                    </div>
 
-                <div class="sector">
-                    Transport
-                </div>
+                    <div class="ticker">
+                        C52.SI
+                    </div>
+
+                    <div class="sector">
+                        Transport
+                    </div>
+
+                </a>
 
             </td>
+
 
             <td>
                 S$1.34
             </td>
 
+
             <td class="positive">
                 +0.00%
             </td>
+
 
             <td class="desktop-column">
                 65
             </td>
 
+
             <td class="desktop-column">
                 34
             </td>
 
+
             <td class="desktop-column">
                 59
             </td>
+
 
             <td class="desktop-column">
                 82
             </td>
 
+
             <td class="score">
                 59
             </td>
+
 
             <td>
 
@@ -5785,6 +6519,7 @@ td {
                 </span>
 
             </td>
+
 
             <td>
 
@@ -5807,47 +6542,62 @@ td {
 
             <td>
 
-                <div class="stock-name">
-                    UOL Group
-                </div>
+                <a
+                    class="stock-link"
+                    href="stocks/u14-si/"
+                >
 
-                <div class="ticker">
-                    U14.SI
-                </div>
+                    <div class="stock-name">
+                        UOL Group
+                    </div>
 
-                <div class="sector">
-                    Property
-                </div>
+                    <div class="ticker">
+                        U14.SI
+                    </div>
+
+                    <div class="sector">
+                        Property
+                    </div>
+
+                </a>
 
             </td>
+
 
             <td>
                 S$9.60
             </td>
 
+
             <td class="negative">
                 -0.83%
             </td>
+
 
             <td class="desktop-column">
                 40
             </td>
 
+
             <td class="desktop-column">
                 34
             </td>
+
 
             <td class="desktop-column">
                 75
             </td>
 
+
             <td class="desktop-column">
                 82
             </td>
 
+
             <td class="score">
                 59
             </td>
+
 
             <td>
 
@@ -5859,6 +6609,7 @@ td {
                 </span>
 
             </td>
+
 
             <td>
 
@@ -5881,47 +6632,62 @@ td {
 
             <td>
 
-                <div class="stock-name">
-                    Genting Singapore
-                </div>
+                <a
+                    class="stock-link"
+                    href="stocks/g13-si/"
+                >
 
-                <div class="ticker">
-                    G13.SI
-                </div>
+                    <div class="stock-name">
+                        Genting Singapore
+                    </div>
 
-                <div class="sector">
-                    Consumer / Leisure
-                </div>
+                    <div class="ticker">
+                        G13.SI
+                    </div>
+
+                    <div class="sector">
+                        Consumer / Leisure
+                    </div>
+
+                </a>
 
             </td>
+
 
             <td>
                 S$0.63
             </td>
 
+
             <td class="positive">
                 +0.00%
             </td>
+
 
             <td class="desktop-column">
                 65
             </td>
 
+
             <td class="desktop-column">
                 30
             </td>
+
 
             <td class="desktop-column">
                 62
             </td>
 
+
             <td class="desktop-column">
                 82
             </td>
 
+
             <td class="score">
                 59
             </td>
+
 
             <td>
 
@@ -5933,6 +6699,7 @@ td {
                 </span>
 
             </td>
+
 
             <td>
 
@@ -5955,47 +6722,62 @@ td {
 
             <td>
 
-                <div class="stock-name">
-                    CapitaLand Ascendas REIT
-                </div>
+                <a
+                    class="stock-link"
+                    href="stocks/a17u-si/"
+                >
 
-                <div class="ticker">
-                    A17U.SI
-                </div>
+                    <div class="stock-name">
+                        CapitaLand Ascendas REIT
+                    </div>
 
-                <div class="sector">
-                    REIT
-                </div>
+                    <div class="ticker">
+                        A17U.SI
+                    </div>
+
+                    <div class="sector">
+                        REIT
+                    </div>
+
+                </a>
 
             </td>
+
 
             <td>
                 S$2.51
             </td>
 
+
             <td class="positive">
                 +1.21%
             </td>
+
 
             <td class="desktop-column">
                 50
             </td>
 
+
             <td class="desktop-column">
                 35
             </td>
+
 
             <td class="desktop-column">
                 59
             </td>
 
+
             <td class="desktop-column">
                 82
             </td>
 
+
             <td class="score">
                 55
             </td>
+
 
             <td>
 
@@ -6007,6 +6789,7 @@ td {
                 </span>
 
             </td>
+
 
             <td>
 
@@ -6029,47 +6812,62 @@ td {
 
             <td>
 
-                <div class="stock-name">
-                    Jardine Matheson
-                </div>
+                <a
+                    class="stock-link"
+                    href="stocks/j36-si/"
+                >
 
-                <div class="ticker">
-                    J36.SI
-                </div>
+                    <div class="stock-name">
+                        Jardine Matheson
+                    </div>
 
-                <div class="sector">
-                    Conglomerate
-                </div>
+                    <div class="ticker">
+                        J36.SI
+                    </div>
+
+                    <div class="sector">
+                        Conglomerate
+                    </div>
+
+                </a>
 
             </td>
+
 
             <td>
                 S$63.23
             </td>
 
+
             <td class="positive">
                 +1.57%
             </td>
+
 
             <td class="desktop-column">
                 45
             </td>
 
+
             <td class="desktop-column">
                 28
             </td>
+
 
             <td class="desktop-column">
                 59
             </td>
 
+
             <td class="desktop-column">
                 88
             </td>
 
+
             <td class="score">
                 54
             </td>
+
 
             <td>
 
@@ -6081,6 +6879,7 @@ td {
                 </span>
 
             </td>
+
 
             <td>
 
@@ -6103,47 +6902,62 @@ td {
 
             <td>
 
-                <div class="stock-name">
-                    Seatrium
-                </div>
+                <a
+                    class="stock-link"
+                    href="stocks/5e2-si/"
+                >
 
-                <div class="ticker">
-                    5E2.SI
-                </div>
+                    <div class="stock-name">
+                        Seatrium
+                    </div>
 
-                <div class="sector">
-                    Industrials
-                </div>
+                    <div class="ticker">
+                        5E2.SI
+                    </div>
+
+                    <div class="sector">
+                        Industrials
+                    </div>
+
+                </a>
 
             </td>
+
 
             <td>
                 S$1.99
             </td>
 
+
             <td class="negative">
                 -0.50%
             </td>
+
 
             <td class="desktop-column">
                 45
             </td>
 
+
             <td class="desktop-column">
                 20
             </td>
+
 
             <td class="desktop-column">
                 61
             </td>
 
+
             <td class="desktop-column">
                 82
             </td>
 
+
             <td class="score">
                 52
             </td>
+
 
             <td>
 
@@ -6155,6 +6969,7 @@ td {
                 </span>
 
             </td>
+
 
             <td>
 
@@ -6177,47 +6992,62 @@ td {
 
             <td>
 
-                <div class="stock-name">
-                    Mapletree Logistics Trust
-                </div>
+                <a
+                    class="stock-link"
+                    href="stocks/m44u-si/"
+                >
 
-                <div class="ticker">
-                    M44U.SI
-                </div>
+                    <div class="stock-name">
+                        Mapletree Logistics Trust
+                    </div>
 
-                <div class="sector">
-                    REIT
-                </div>
+                    <div class="ticker">
+                        M44U.SI
+                    </div>
+
+                    <div class="sector">
+                        REIT
+                    </div>
+
+                </a>
 
             </td>
+
 
             <td>
                 S$1.21
             </td>
 
+
             <td class="positive">
                 +0.00%
             </td>
 
-            <td class="desktop-column">
-                35
-            </td>
 
             <td class="desktop-column">
                 35
             </td>
+
+
+            <td class="desktop-column">
+                35
+            </td>
+
 
             <td class="desktop-column">
                 62
             </td>
 
+
             <td class="desktop-column">
                 75
             </td>
 
+
             <td class="score">
                 52
             </td>
+
 
             <td>
 
@@ -6229,6 +7059,7 @@ td {
                 </span>
 
             </td>
+
 
             <td>
 
@@ -6251,47 +7082,62 @@ td {
 
             <td>
 
-                <div class="stock-name">
-                    Jardine Cycle &amp; Carriage
-                </div>
+                <a
+                    class="stock-link"
+                    href="stocks/c07-si/"
+                >
 
-                <div class="ticker">
-                    C07.SI
-                </div>
+                    <div class="stock-name">
+                        Jardine Cycle &amp; Carriage
+                    </div>
 
-                <div class="sector">
-                    Consumer
-                </div>
+                    <div class="ticker">
+                        C07.SI
+                    </div>
+
+                    <div class="sector">
+                        Consumer
+                    </div>
+
+                </a>
 
             </td>
+
 
             <td>
                 S$27.12
             </td>
 
+
             <td class="negative">
                 -0.15%
             </td>
+
 
             <td class="desktop-column">
                 45
             </td>
 
+
             <td class="desktop-column">
                 12
             </td>
+
 
             <td class="desktop-column">
                 63
             </td>
 
+
             <td class="desktop-column">
                 88
             </td>
 
+
             <td class="score">
                 52
             </td>
+
 
             <td>
 
@@ -6303,6 +7149,7 @@ td {
                 </span>
 
             </td>
+
 
             <td>
 
@@ -6333,8 +7180,8 @@ td {
 
     <br>
 
-    Opportunity screens apply additional filters
-    and may rank stocks differently from the main overall score.
+    Individual stock pages use the same scoring engine
+    as the main market rankings.
 
 </div>
 
