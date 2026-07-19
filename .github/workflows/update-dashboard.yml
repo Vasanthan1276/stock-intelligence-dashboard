@@ -39,7 +39,7 @@ jobs:
           mkdir -p docs/micron
           cp docs/index.html docs/micron/index.html
 
-      - name: Generate main market dashboard
+      - name: Generate main dashboard and stock detail pages
         run: |
           python dashboard.py
 
@@ -48,8 +48,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          git add docs/index.html
-          git add docs/micron/index.html
+          git add docs/
 
           git diff --staged --quiet || git commit -m "Update stock intelligence dashboards"
 
