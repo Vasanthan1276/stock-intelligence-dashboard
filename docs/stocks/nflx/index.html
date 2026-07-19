@@ -1,495 +1,119 @@
 
 <!DOCTYPE html>
-
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
-
-<meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
->
-
-<title>
-V Stock Intelligence · NFLX
-</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>V Stock Intelligence · NFLX</title>
 <style>
-
-* {
-    box-sizing: border-box;
-}
-
-body {
-    margin: 0;
-    background: #07111f;
-    color: #edf4ff;
-    font-family: Arial, Helvetica, sans-serif;
-}
-
-.container {
-    width: min(1100px, 94%);
-    margin: auto;
-    padding: 30px 0 60px;
-}
-
-.top-nav {
-    display: flex;
-    gap: 20px;
-    flex-wrap: wrap;
-}
-
-.top-nav a {
-    color: #68b9ff;
-    text-decoration: none;
-    font-size: 13px;
-}
-
-.header {
-    margin-top: 24px;
-}
-
-.title {
-    font-size: 34px;
-    font-weight: 800;
-}
-
-.subtitle {
-    color: #8ca5c4;
-    margin-top: 6px;
-}
-
-.card {
-    background: #111e31;
-    border: 1px solid #263c5b;
-    border-radius: 16px;
-    padding: 21px;
-}
-
-.section {
-    margin-top: 20px;
-}
-
-.hero {
-    display: grid;
-    grid-template-columns:
-        repeat(auto-fit, minmax(190px, 1fr));
-    gap: 14px;
-    margin-top: 24px;
-}
-
-.label {
-    color: #8ba4c3;
-    font-size: 11px;
-    text-transform: uppercase;
-}
-
-.big {
-    font-size: 32px;
-    font-weight: 800;
-    margin-top: 7px;
-}
-
-.grid {
-    display: grid;
-    grid-template-columns:
-        repeat(auto-fit, minmax(180px, 1fr));
-    gap: 13px;
-}
-
-.metric {
-    background: #0b1728;
-    border-radius: 12px;
-    padding: 17px;
-}
-
-.metric-value {
-    font-size: 25px;
-    font-weight: 800;
-    margin-top: 7px;
-}
-
-.section-title {
-    font-size: 21px;
-    font-weight: 800;
-    margin-bottom: 15px;
-}
-
-.comment {
-    color: #aebfd4;
-    font-size: 13px;
-    line-height: 1.5;
-    margin-top: 8px;
-}
-
-.positive {
-    color: #51e0a0;
-}
-
-.negative {
-    color: #ff7183;
-}
-
-.rating-badge,
-.quality-badge {
-    display: inline-block;
-    padding: 5px 8px;
-    border-radius: 7px;
-    font-size: 10px;
-    font-weight: 800;
-}
-
-.strong-buy {
-    color: #51e5a0;
-    background: rgba(55,219,143,0.15);
-}
-
-.buy {
-    color: #66bdff;
-    background: rgba(86,184,255,0.15);
-}
-
-.hold {
-    color: #f4cd69;
-}
-
-.watch {
-    color: #ffa165;
-}
-
-.caution {
-    color: #ff7183;
-}
-
-.quality-good {
-    color: #55dea0;
-}
-
-.quality-medium {
-    color: #f3c968;
-}
-
-.quality-low {
-    color: #ff7a87;
-}
-
-.footer {
-    text-align: center;
-    color: #6f88a8;
-    margin-top: 30px;
-    font-size: 12px;
-}
-
+*{box-sizing:border-box}body{margin:0;background:#07111f;color:#edf4ff;font-family:Arial,Helvetica,sans-serif}.container{width:min(1180px,94%);margin:auto;padding:30px 0 60px}.top-nav{display:flex;gap:20px;flex-wrap:wrap}.top-nav a{color:#68b9ff;text-decoration:none;font-size:13px}.header{margin-top:24px}.title{font-size:34px;font-weight:800}.subtitle{color:#8ca5c4;margin-top:6px}.card{background:#111e31;border:1px solid #263c5b;border-radius:16px;padding:21px}.section{margin-top:20px}.hero{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin-top:24px}.label{color:#8ba4c3;font-size:11px;text-transform:uppercase}.big{font-size:32px;font-weight:800;margin-top:7px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:13px}.metric{background:#0b1728;border-radius:12px;padding:17px}.metric-value{font-size:24px;font-weight:800;margin-top:7px}.section-title{font-size:21px;font-weight:800;margin-bottom:15px}.comment{color:#aebfd4;font-size:13px;line-height:1.5;margin-top:8px}.positive{color:#51e0a0}.negative{color:#ff7183}.rating-badge,.quality-badge{display:inline-block;padding:5px 8px;border-radius:7px;font-size:10px;font-weight:800}.strong-buy{color:#51e5a0;background:rgba(55,219,143,.15)}.buy{color:#66bdff;background:rgba(86,184,255,.15)}.hold{color:#f4cd69}.watch{color:#ffa165}.caution{color:#ff7183}.quality-good{color:#55dea0}.quality-medium{color:#f3c968}.quality-low{color:#ff7a87}.price-chart{width:100%;height:300px;background:#0b1728;border-radius:12px;display:block}.chart-scale{display:flex;justify-content:space-between;gap:12px;color:#718ba9;font-size:11px;margin-top:9px;flex-wrap:wrap}.footer{text-align:center;color:#6f88a8;margin-top:30px;font-size:12px;line-height:1.6}
 </style>
-
 </head>
-
 <body>
-
 <div class="container">
 
-
 <div class="top-nav">
-
-    <a href="../../">
-        ← Back to Market Dashboard
-    </a>
-
-    <a href="../../guide/">
-        How to Read This Dashboard
-    </a>
-
+    <a href="../../">← Back to Market Dashboard</a>
+    <a href="../../guide/">How to Read This Dashboard</a>
 </div>
-
 
 <div class="header">
-
-    <div class="title">
-        Netflix
-    </div>
-
-    <div class="subtitle">
-
-        NFLX
-
-        ·
-
-        Communication Services
-
-        ·
-
-        US
-
-    </div>
-
+    <div class="title">Netflix</div>
+    <div class="subtitle">NFLX · Communication Services · US</div>
 </div>
-
 
 <div class="hero">
-
-
-<div class="card">
-
-    <div class="label">
-        Current Price
-    </div>
-
-    <div class="big">
-        $68.95
-    </div>
-
-    <div class="negative">
-        -7.26%
-    </div>
-
+    <div class="card"><div class="label">Current Price</div><div class="big">$68.95</div><div class="negative">-7.26%</div></div>
+    <div class="card"><div class="label">Dashboard Rating</div><div class="big">45/100</div><div style="margin-top:8px"><span class="rating-badge watch">WATCH</span></div></div>
+    <div class="card"><div class="label">Value Opportunity</div><div class="big">62/100</div><div class="comment">Valuation + fundamentals</div></div>
+    <div class="card"><div class="label">Data Quality</div><div class="big">100%</div><div style="margin-top:8px"><span class="quality-badge quality-good">High</span></div></div>
 </div>
-
-
-<div class="card">
-
-    <div class="label">
-        Dashboard Rating
-    </div>
-
-    <div class="big">
-        45/100
-    </div>
-
-    <div style="margin-top:8px;">
-
-        <span class="
-            rating-badge
-            watch
-        ">
-            WATCH
-        </span>
-
-    </div>
-
-</div>
-
-
-<div class="card">
-
-    <div class="label">
-        Value Opportunity
-    </div>
-
-    <div class="big">
-        62/100
-    </div>
-
-    <div class="comment">
-        Valuation + fundamentals
-    </div>
-
-</div>
-
-
-<div class="card">
-
-    <div class="label">
-        Data Quality
-    </div>
-
-    <div class="big">
-        100%
-    </div>
-
-    <div style="margin-top:8px;">
-
-        <span class="
-            quality-badge
-            quality-good
-        ">
-            High
-        </span>
-
-    </div>
-
-</div>
-
-
-</div>
-
 
 <div class="card section">
-
-    <div class="section-title">
-        Core Investment Scores
+    <div class="section-title">Six-Month Price Trend</div>
+    
+    <svg class="price-chart" viewBox="0 0 1000 300" preserveAspectRatio="none" role="img" aria-label="Six month price trend">
+        <polyline
+            fill="none"
+            stroke="#ff7183"
+            stroke-width="4"
+            points="20.00,152.14 27.68,152.48 35.36,157.43 43.04,170.15 50.72,182.33 58.40,165.06 66.08,167.87 73.76,168.68 81.44,174.97 89.12,184.88 96.80,182.67 104.48,187.55 112.16,206.43 119.84,204.96 127.52,200.21 135.20,191.30 142.88,196.19 150.56,191.24 158.24,208.57 165.92,233.74 173.60,226.98 181.28,226.11 188.96,219.49 196.64,226.11 204.32,214.93 212.00,232.67 219.68,219.15 227.36,187.96 235.04,175.30 242.72,97.32 250.40,91.63 258.08,87.54 265.76,81.12 273.44,77.70 281.12,78.71 288.80,83.39 296.48,92.63 304.16,106.35 311.84,110.24 319.52,103.54 327.20,104.28 334.88,109.90 342.56,107.63 350.24,127.44 357.92,126.91 365.60,116.46 373.28,132.93 380.96,123.83 388.64,116.86 396.32,116.13 404.00,119.21 411.68,97.92 419.36,101.94 427.04,81.12 434.72,79.31 442.40,80.05 450.08,76.23 457.76,58.42 465.44,52.00 473.12,50.99 480.80,30.11 488.48,20.54 496.16,20.00 503.84,90.15 511.52,106.76 519.20,121.82 526.88,117.40 534.56,120.21 542.24,122.75 549.92,129.92 557.60,123.89 565.28,124.90 572.96,114.92 580.64,125.30 588.32,132.26 596.00,153.21 603.68,150.67 611.36,150.80 619.04,155.89 626.72,169.55 634.40,154.75 642.08,155.42 649.76,159.57 657.44,159.04 665.12,141.43 672.80,143.57 680.48,151.87 688.16,143.77 695.84,148.46 703.52,154.62 711.20,156.83 718.88,163.46 726.56,165.73 734.24,166.87 741.92,183.74 749.60,195.85 757.28,195.59 764.96,191.44 772.64,188.36 780.32,196.59 788.00,192.64 795.68,197.53 803.36,203.75 811.04,194.85 818.72,214.60 826.40,226.38 834.08,223.57 841.76,253.69 849.44,254.09 857.12,260.65 864.80,266.95 872.48,247.47 880.16,247.67 887.84,263.60 895.52,244.92 903.20,221.76 910.88,232.67 918.56,231.60 926.24,235.55 933.92,236.35 941.60,250.41 949.28,247.33 956.96,249.34 964.64,248.34 972.32,243.85 980.00,280.00"
+        />
+    </svg>
+    <div class="chart-scale">
+        <span>6 months ago</span>
+        <span>Low $68.95</span>
+        <span>High $107.79</span>
+        <span>Latest</span>
     </div>
-
-    <div class="grid">
-
-
-        <div class="metric">
-
-            <div class="label">
-                Technical
-            </div>
-
-            <div class="metric-value">
-                23/100
-            </div>
-
-            <div class="comment">
-                Technical conditions are currently very weak.
-            </div>
-
-        </div>
-
-
-        <div class="metric">
-
-            <div class="label">
-                Momentum
-            </div>
-
-            <div class="metric-value">
-                6/100
-            </div>
-
-            <div class="comment">
-                Momentum conditions are currently very weak.
-            </div>
-
-        </div>
-
-
-        <div class="metric">
-
-            <div class="label">
-                Fundamentals
-            </div>
-
-            <div class="metric-value">
-                77/100
-            </div>
-
-            <div class="comment">
-                Fundamental conditions are currently positive.
-            </div>
-
-        </div>
-
-
-        <div class="metric">
-
-            <div class="label">
-                Valuation
-            </div>
-
-            <div class="metric-value">
-                48/100
-            </div>
-
-            <div class="comment">
-                Valuation conditions are currently weak.
-            </div>
-
-        </div>
-
-
-    </div>
-
+    
 </div>
-
 
 <div class="card section">
-
-    <div class="section-title">
-        Opportunity Signals
-    </div>
-
+    <div class="section-title">Core Investment Scores</div>
     <div class="grid">
-
-
-        <div class="metric">
-
-            <div class="label">
-                RSI
-            </div>
-
-            <div class="metric-value">
-
-                30.7
-
-            </div>
-
-            <div class="comment">
-
-                Currently in the Oversold Watch screen.
-
-            </div>
-
-        </div>
-
-
-        <div class="metric">
-
-            <div class="label">
-                Balanced Score
-            </div>
-
-            <div class="metric-value">
-                27/100
-            </div>
-
-            <div class="comment">
-                Rewards strength across several factors
-                while penalising large score differences.
-            </div>
-
-        </div>
-
-
-        <div class="metric">
-
-            <div class="label">
-                Value Opportunity
-            </div>
-
-            <div class="metric-value">
-                62/100
-            </div>
-
-            <div class="comment">
-
-                Valuation:
-                48/100
-
-                ·
-
-                Fundamentals:
-                77/100
-
-            </div>
-
-        </div>
-
-
+        <div class="metric"><div class="label">Technical</div><div class="metric-value">23/100</div><div class="comment">Technical conditions are currently very weak.</div></div>
+        <div class="metric"><div class="label">Momentum</div><div class="metric-value">6/100</div><div class="comment">Momentum conditions are currently very weak.</div></div>
+        <div class="metric"><div class="label">Fundamentals</div><div class="metric-value">77/100</div><div class="comment">Fundamental conditions are currently positive.</div></div>
+        <div class="metric"><div class="label">Valuation</div><div class="metric-value">48/100</div><div class="comment">Valuation conditions are currently weak.</div></div>
     </div>
-
 </div>
 
+<div class="card section">
+    <div class="section-title">Price & Technical Context</div>
+    <div class="grid">
+        <div class="metric"><div class="label">RSI</div><div class="metric-value">30.7</div></div>
+        <div class="metric"><div class="label">20 Day MA</div><div class="metric-value">$73.88</div></div>
+        <div class="metric"><div class="label">50 Day MA</div><div class="metric-value">$80.56</div></div>
+        <div class="metric"><div class="label">200 Day MA</div><div class="metric-value">$93.74</div></div>
+        <div class="metric"><div class="label">52 Week Low</div><div class="metric-value">$65.08</div></div>
+        <div class="metric"><div class="label">52 Week High</div><div class="metric-value">$126.71</div></div>
+        <div class="metric"><div class="label">Support</div><div class="metric-value">$65.08</div></div>
+        <div class="metric"><div class="label">Resistance</div><div class="metric-value">$94.70</div></div>
+    </div>
+</div>
+
+<div class="card section">
+    <div class="section-title">Recent Performance</div>
+    <div class="grid">
+        <div class="metric"><div class="label">1 Month</div><div class="metric-value">-12.41%</div></div>
+        <div class="metric"><div class="label">3 Months</div><div class="metric-value">-36.03%</div></div>
+        <div class="metric"><div class="label">6 Months</div><div class="metric-value">-22.13%</div></div>
+        <div class="metric"><div class="label">Balanced Score</div><div class="metric-value">28/100</div></div>
+    </div>
+</div>
+
+<div class="card section">
+    <div class="section-title">Fundamental Snapshot</div>
+    <div class="grid">
+        <div class="metric"><div class="label">Market Cap</div><div class="metric-value">$290.33B</div></div>
+        <div class="metric"><div class="label">Trailing P/E</div><div class="metric-value">21.7</div></div>
+        <div class="metric"><div class="label">Forward P/E</div><div class="metric-value">18.1</div></div>
+        <div class="metric"><div class="label">Price / Book</div><div class="metric-value">9.3</div></div>
+        <div class="metric"><div class="label">Revenue Growth</div><div class="metric-value">+13.40%</div></div>
+        <div class="metric"><div class="label">Earnings Growth</div><div class="metric-value">+11.30%</div></div>
+        <div class="metric"><div class="label">Gross Margin</div><div class="metric-value">49.1%</div></div>
+        <div class="metric"><div class="label">Operating Margin</div><div class="metric-value">33.4%</div></div>
+    </div>
+</div>
+
+<div class="card section">
+    <div class="section-title">Analyst View</div>
+    <div class="grid">
+        <div class="metric"><div class="label">Consensus</div><div class="metric-value">BUY</div></div>
+        <div class="metric"><div class="label">Mean Target</div><div class="metric-value">$97.91</div></div>
+        <div class="metric"><div class="label">Target Upside / Downside</div><div class="metric-value positive">+42.00%</div></div>
+        <div class="metric"><div class="label">Analyst Opinions</div><div class="metric-value">43</div></div>
+        <div class="metric"><div class="label">Low Target</div><div class="metric-value">$70.00</div></div>
+        <div class="metric"><div class="label">High Target</div><div class="metric-value">$136.32</div></div>
+    </div>
+</div>
 
 <div class="footer">
-
-    Last updated:
-    19 July 2026, 03:30 UTC
-
-    <br><br>
-
-    Dashboard ratings are automated quantitative indicators.
-    They are not financial advice or analyst recommendations.
-
+    Last updated: 19 July 2026, 11:46 SGT<br><br>
+    Dashboard ratings are automated quantitative indicators. They are not analyst recommendations or financial advice.
 </div>
 
-
 </div>
-
 </body>
-
 </html>
