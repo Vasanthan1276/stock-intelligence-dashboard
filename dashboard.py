@@ -6,15 +6,23 @@ import json
 import re
 
 from scanner import run_scanner
+from scoring import SCORING_MODEL_VERSION
 
 
 # ============================================================
 # HISTORY + WATCHLIST SETTINGS
 # ============================================================
 
-HISTORY_PATH = Path("docs/data/score-history.json")
-WATCHLIST_PATH = Path("watchlist.json")
+HISTORY_PATH = Path(
+    "docs/data/score-history.json"
+)
+
+WATCHLIST_PATH = Path(
+    "watchlist.json"
+)
+
 MAX_HISTORY_SNAPSHOTS = 365
+
 
 DEFAULT_WATCHLIST = [
     "MU",
@@ -31,6 +39,7 @@ DEFAULT_WATCHLIST = [
 # ============================================================
 
 def escape(value):
+
     if value is None:
         return ""
 
@@ -40,6 +49,7 @@ def escape(value):
 
 
 def ticker_slug(ticker):
+
     value = ticker.lower()
 
     value = re.sub(
@@ -48,16 +58,21 @@ def ticker_slug(ticker):
         value,
     )
 
-    return value.strip("-")
+    return value.strip(
+        "-"
+    )
 
 
 def stock_url(stock):
+
     return (
         "stocks/"
-        + ticker_slug(
+        +
+        ticker_slug(
             stock["ticker"]
         )
-        + "/"
+        +
+        "/"
     )
 
 
@@ -65,61 +80,106 @@ def format_price(
     price,
     market,
 ):
+
     if price is None:
         return "N/A"
 
-    if market == "Singapore":
-        return f"S${price:,.2f}"
 
-    return f"${price:,.2f}"
+    if market == "Singapore":
+
+        return (
+            f"S${price:,.2f}"
+        )
+
+
+    return (
+        f"${price:,.2f}"
+    )
 
 
 def format_percent(
     value,
     signed=True,
 ):
+
     if value is None:
         return "N/A"
+
 
     if signed:
-        return f"{value * 100:+.2f}%"
 
-    return f"{value * 100:.1f}%"
+        return (
+            f"{value * 100:+.2f}%"
+        )
 
 
-def format_large_number(value):
+    return (
+        f"{value * 100:.1f}%"
+    )
+
+
+def format_large_number(
+    value,
+):
+
     if value is None:
         return "N/A"
 
-    if abs(value) >= 1_000_000_000_000:
+
+    if (
+        abs(value)
+        >=
+        1_000_000_000_000
+    ):
+
         return (
             f"${value / 1_000_000_000_000:.2f}T"
         )
 
-    if abs(value) >= 1_000_000_000:
+
+    if (
+        abs(value)
+        >=
+        1_000_000_000
+    ):
+
         return (
             f"${value / 1_000_000_000:.2f}B"
         )
 
-    if abs(value) >= 1_000_000:
+
+    if (
+        abs(value)
+        >=
+        1_000_000
+    ):
+
         return (
             f"${value / 1_000_000:.2f}M"
         )
 
-    return f"${value:,.0f}"
+
+    return (
+        f"${value:,.0f}"
+    )
 
 
 def format_number(
     value,
     decimals=1,
 ):
+
     if value is None:
         return "N/A"
 
-    return f"{value:,.{decimals}f}"
+
+    return (
+        f"{value:,.{decimals}f}"
+    )
 
 
 def rating_class(value):
+
     return (
         value
         .lower()
@@ -131,6 +191,7 @@ def rating_class(value):
 
 
 def quality_class(score):
+
     if score >= 80:
         return "quality-good"
 
@@ -141,6 +202,7 @@ def quality_class(score):
 
 
 def quality_label(score):
+
     if score >= 80:
         return "High"
 
@@ -150,13 +212,22 @@ def quality_label(score):
     return "Limited"
 
 
-def value_opportunity_score(stock):
+def value_opportunity_score(
+    stock,
+):
+
     return round(
+
         stock["valuation"]
-        * 0.50
+        *
+        0.50
+
         +
+
         stock["fundamental"]
-        * 0.50
+        *
+        0.50
+
     )
 
 
@@ -164,29 +235,38 @@ def score_commentary(
     score,
     category,
 ):
+
     if score >= 80:
+
         return (
             f"{category} conditions "
             f"are currently strong."
         )
 
+
     if score >= 65:
+
         return (
             f"{category} conditions "
             f"are currently positive."
         )
 
+
     if score >= 50:
+
         return (
             f"{category} conditions "
             f"are broadly neutral."
         )
 
+
     if score >= 35:
+
         return (
             f"{category} conditions "
             f"are currently weak."
         )
+
 
     return (
         f"{category} conditions "
@@ -195,34 +275,43 @@ def score_commentary(
 
 
 # ============================================================
-# HISTORY + WATCHLIST HELPERS
+# HISTORY + WATCHLIST
 # ============================================================
 
 def load_watchlist():
 
     if not WATCHLIST_PATH.exists():
+
         return DEFAULT_WATCHLIST
+
 
     try:
 
         data = json.loads(
+
             WATCHLIST_PATH.read_text(
                 encoding="utf-8"
             )
+
         )
+
 
         tickers = data.get(
             "tickers",
             [],
         )
 
+
         if not isinstance(
             tickers,
             list,
         ):
+
             return DEFAULT_WATCHLIST
 
+
         return [
+
             str(ticker)
             .strip()
             .upper()
@@ -232,14 +321,18 @@ def load_watchlist():
 
             if str(ticker)
             .strip()
+
         ]
+
 
     except Exception as error:
 
         print(
+
             "Could not read "
             "watchlist.json: "
             f"{error}"
+
         )
 
         return DEFAULT_WATCHLIST
@@ -248,29 +341,39 @@ def load_watchlist():
 def load_history():
 
     if not HISTORY_PATH.exists():
+
         return []
+
 
     try:
 
         data = json.loads(
+
             HISTORY_PATH.read_text(
                 encoding="utf-8"
             )
+
         )
+
 
         if isinstance(
             data,
             list,
         ):
+
             return data
+
 
     except Exception as error:
 
         print(
+
             "Could not read "
             "score history: "
             f"{error}"
+
         )
+
 
     return []
 
@@ -281,6 +384,7 @@ def make_history_snapshot(
 ):
 
     stock_data = {}
+
 
     for stock in stocks:
 
@@ -296,6 +400,12 @@ def make_history_snapshot(
 
             "sector":
                 stock["sector"],
+
+            "scoring_model":
+                stock.get(
+                    "scoring_model",
+                    "General Company",
+                ),
 
             "overall":
                 stock["overall"],
@@ -325,15 +435,21 @@ def make_history_snapshot(
                     stock["price"],
                     4,
                 ),
+
         }
+
 
     return {
 
         "timestamp":
             updated_iso,
 
+        "scoring_model_version":
+            SCORING_MODEL_VERSION,
+
         "stocks":
             stock_data,
+
     }
 
 
@@ -346,14 +462,20 @@ def save_history(
         snapshot
     )
 
+
     history = history[
         -MAX_HISTORY_SNAPSHOTS:
     ]
 
+
     HISTORY_PATH.parent.mkdir(
+
         parents=True,
+
         exist_ok=True,
+
     )
+
 
     HISTORY_PATH.write_text(
 
@@ -363,7 +485,9 @@ def save_history(
         ),
 
         encoding="utf-8",
+
     )
+
 
     return history
 
@@ -371,9 +495,44 @@ def save_history(
 def previous_snapshot(history):
 
     if not history:
+
         return None
 
-    return history[-1]
+
+    latest = history[-1]
+
+
+    previous_version = (
+
+        latest.get(
+            "scoring_model_version"
+        )
+
+    )
+
+
+    if (
+
+        previous_version
+
+        !=
+
+        SCORING_MODEL_VERSION
+
+    ):
+
+        print(
+
+            "Previous score history uses "
+            "a different scoring methodology. "
+            "Starting a new comparison baseline."
+
+        )
+
+        return None
+
+
+    return latest
 
 
 def get_stock_changes(
@@ -382,20 +541,25 @@ def get_stock_changes(
 ):
 
     if not previous:
+
         return []
+
 
     old_stocks = previous.get(
         "stocks",
         {},
     )
 
+
     changes = []
+
 
     for stock in stocks:
 
         old = old_stocks.get(
             stock["ticker"]
         )
+
 
         if not old:
 
@@ -415,6 +579,7 @@ def get_stock_changes(
 
                 "old_rating":
                     "NEW",
+
             })
 
             continue
@@ -430,6 +595,7 @@ def get_stock_changes(
                 "overall",
                 stock["overall"],
             )
+
         )
 
 
@@ -443,6 +609,7 @@ def get_stock_changes(
                 "rating",
                 stock["rating"],
             )
+
         )
 
 
@@ -494,6 +661,7 @@ def get_stock_changes(
                     "valuation",
                     stock["valuation"],
                 ),
+
         }
 
 
@@ -512,7 +680,6 @@ def get_stock_changes(
                 value != 0
 
                 for value
-
                 in component_changes.values()
 
             )
@@ -548,6 +715,7 @@ def get_stock_changes(
 
                 "component_changes":
                     component_changes,
+
             })
 
 
@@ -589,6 +757,7 @@ def get_stock_changes(
         ),
 
         reverse=True,
+
     )
 
 
@@ -609,8 +778,8 @@ def get_watchlist_stocks(
         stock
 
         for stock
-
         in stocks
+
     }
 
 
@@ -621,12 +790,11 @@ def get_watchlist_stocks(
         ]
 
         for ticker
-
         in watchlist_tickers
 
         if ticker
-
         in stock_map
+
     ]
 
 
@@ -646,7 +814,9 @@ def signed_score_change(value):
     if value > 0:
         return f"+{value}"
 
-    return str(value)
+    return str(
+        value
+    )
 
 
 def changes_panel(
@@ -660,10 +830,16 @@ def changes_panel(
         return """
         <div class="empty-state">
 
-            Score history starts with this run.
+            The scoring methodology has changed
+            or score history is starting fresh.
 
-            The next dashboard update will show
-            what changed.
+            <br><br>
+
+            This run is being used as the new baseline.
+
+            The next successful dashboard update will
+            show genuine changes under the same
+            scoring methodology.
 
         </div>
         """
@@ -692,6 +868,7 @@ def changes_panel(
             "stock"
         ]
 
+
         overall_change = item[
             "overall_change"
         ]
@@ -712,6 +889,7 @@ def changes_panel(
             else
 
             "muted"
+
         )
 
 
@@ -724,11 +902,13 @@ def changes_panel(
                 "the tracked universe"
             )
 
+
         else:
 
             old_overall = item.get(
                 "old_overall"
             )
+
 
             summary = (
 
@@ -740,6 +920,7 @@ def changes_panel(
                 f'('
                 f'{signed_score_change(overall_change)}'
                 f')'
+
             )
 
 
@@ -763,6 +944,7 @@ def changes_panel(
                 f'{escape(stock["rating"])}'
 
                 '</div>'
+
             )
 
 
@@ -773,6 +955,7 @@ def changes_panel(
 
 
         component_text = (
+
             " · ".join(
 
                 f'{name} '
@@ -780,11 +963,12 @@ def changes_panel(
                 f'{signed_score_change(value)}'
 
                 for name, value
-
                 in components.items()
 
                 if value != 0
+
             )
+
         )
 
 
@@ -871,16 +1055,14 @@ TOOLTIPS = {
     "overall":
 
         "The combined dashboard score. "
-        "It uses Technical 25%, Momentum 20%, "
-        "Fundamentals 40% and Valuation 15%.",
+        "The weighting depends on the scoring model "
+        "used for the company.",
 
 
     "technical":
 
         "Measures the stock's current price trend "
-        "using moving averages, RSI and MACD. "
-        "A higher score indicates stronger "
-        "technical conditions.",
+        "using moving averages, RSI and MACD.",
 
 
     "momentum":
@@ -892,41 +1074,35 @@ TOOLTIPS = {
 
     "fundamental":
 
-        "Measures available business strength "
-        "using revenue growth, earnings growth, "
-        "margins, return on equity, debt "
-        "and liquidity.",
+        "Measures business strength using metrics "
+        "selected for the company's scoring model.",
 
 
     "valuation":
 
-        "Measures how attractively the stock "
-        "appears priced using available valuation "
-        "indicators such as forward P/E "
-        "and price-to-book.",
+        "Measures how attractively the stock appears "
+        "priced using valuation indicators appropriate "
+        "to the scoring model.",
 
 
     "data_quality":
 
         "Shows how much of the fundamental scoring "
-        "model had usable data. Lower data quality "
-        "means the score should be interpreted "
-        "more cautiously.",
+        "model had usable data.",
 
 
     "oversold":
 
         "Stocks with RSI below 35. "
         "This indicates weak recent price momentum, "
-        "but does not guarantee that the stock "
-        "will rebound.",
+        "but does not guarantee a rebound.",
 
 
     "momentum_leaders":
 
         "Stocks with strong recent price performance "
-        "that also meet minimum fundamental "
-        "and data-quality requirements.",
+        "that also meet minimum fundamental and "
+        "data-quality requirements.",
 
 
     "value_opportunity":
@@ -939,16 +1115,15 @@ TOOLTIPS = {
 
         "Rewards stocks that perform consistently "
         "across Technical, Momentum, Fundamentals "
-        "and Valuation while penalising large "
-        "score differences.",
+        "and Valuation.",
 
 
     "dashboard_rating":
 
         "An automated quantitative rating generated "
-        "by V Stock Intelligence. It is not an "
-        "analyst recommendation and is not "
-        "financial advice.",
+        "by V Stock Intelligence. It is not an analyst "
+        "recommendation or financial advice.",
+
 }
 
 
@@ -958,6 +1133,7 @@ def info_icon(key):
         key,
         "",
     )
+
 
     return f"""
     <span
@@ -977,7 +1153,7 @@ def info_icon(key):
 
 
 # ============================================================
-# OPPORTUNITY / RANKING HELPERS
+# OPPORTUNITY CARDS
 # ============================================================
 
 def opportunity_cards(
@@ -1003,6 +1179,7 @@ def opportunity_cards(
             else
 
             "negative"
+
         )
 
 
@@ -1029,27 +1206,21 @@ def opportunity_cards(
 
             href="{stock_url(stock)}"
 
-            data-market="
-                {escape(stock["market"])}
-            "
+            data-market="{escape(stock["market"])}"
 
-            data-sector="
-                {escape(stock["sector"])}
-            "
+            data-sector="{escape(stock["sector"])}"
 
-            data-search="
-                {
-                    escape(
-                        (
-                            stock["ticker"]
-                            +
-                            " "
-                            +
-                            stock["name"]
-                        ).lower()
-                    )
-                }
-            "
+            data-search="{
+                escape(
+                    (
+                        stock["ticker"]
+                        +
+                        " "
+                        +
+                        stock["name"]
+                    ).lower()
+                )
+            }"
         >
 
             <div class="opportunity-top">
@@ -1081,9 +1252,11 @@ def opportunity_cards(
                     rating-badge
                     {css_rating}
                 ">
+
                     {escape(
                         stock["rating"]
                     )}
+
                 </div>
 
             </div>
@@ -1092,12 +1265,15 @@ def opportunity_cards(
             <div class="opportunity-price">
 
                 {format_price(
+
                     stock[
                         "price"
                     ],
+
                     stock[
                         "market"
                     ],
+
                 )}
 
             </div>
@@ -1202,6 +1378,10 @@ def opportunity_cards(
     return output
 
 
+# ============================================================
+# STOCK RANKING TABLE
+# ============================================================
+
 def stock_rows(
     stocks,
     limit=100,
@@ -1231,6 +1411,7 @@ def stock_rows(
             else
 
             "negative"
+
         )
 
 
@@ -1275,17 +1456,11 @@ def stock_rows(
         <tr
             class="filterable-row"
 
-            data-market="
-                {escape(stock["market"])}
-            "
+            data-market="{escape(stock["market"])}"
 
-            data-sector="
-                {escape(stock["sector"])}
-            "
+            data-sector="{escape(stock["sector"])}"
 
-            data-search="
-                {search_text}
-            "
+            data-search="{search_text}"
         >
 
             <td>
@@ -1426,7 +1601,13 @@ def stock_rows(
     return output
 
 
-def find_micron(us_results):
+# ============================================================
+# MICRON
+# ============================================================
+
+def find_micron(
+    us_results,
+):
 
     for stock in us_results:
 
@@ -1436,10 +1617,13 @@ def find_micron(us_results):
 
             return stock
 
+
     return None
 
 
-def micron_focus(micron):
+def micron_focus(
+    micron,
+):
 
     if micron is None:
 
@@ -1461,6 +1645,7 @@ def micron_focus(micron):
         else
 
         "negative"
+
     )
 
 
@@ -1496,10 +1681,13 @@ def micron_focus(micron):
             <div class="micron-price">
 
                 {format_price(
+
                     micron[
                         "price"
                     ],
+
                     "US",
+
                 )}
 
             </div>
@@ -1558,14 +1746,19 @@ def micron_focus(micron):
     """
 
 
-def get_oversold(stocks):
+# ============================================================
+# OPPORTUNITY SCREENS
+# ============================================================
+
+def get_oversold(
+    stocks,
+):
 
     results = [
 
         stock
 
         for stock
-
         in stocks
 
         if (
@@ -1598,14 +1791,15 @@ def get_oversold(stocks):
     )
 
 
-def get_momentum_leaders(stocks):
+def get_momentum_leaders(
+    stocks,
+):
 
     eligible = [
 
         stock
 
         for stock
-
         in stocks
 
         if (
@@ -1646,14 +1840,15 @@ def get_momentum_leaders(stocks):
     )
 
 
-def get_value_opportunities(stocks):
+def get_value_opportunities(
+    stocks,
+):
 
     eligible = [
 
         stock
 
         for stock
-
         in stocks
 
         if stock[
@@ -1674,14 +1869,15 @@ def get_value_opportunities(stocks):
     )
 
 
-def get_balanced_opportunities(stocks):
+def get_balanced_opportunities(
+    stocks,
+):
 
     eligible = [
 
         stock
 
         for stock
-
         in stocks
 
         if stock[
@@ -1732,42 +1928,55 @@ def mini_list(
         if mode == "oversold":
 
             main_detail = (
+
                 f'RSI '
                 f'{stock["rsi"]:.1f}'
+
             )
 
+
             secondary = (
+
                 f'Overall '
                 f'{stock["overall"]}/100'
+
             )
 
 
         elif mode == "momentum":
 
             main_detail = (
+
                 f'Momentum '
                 f'{stock["momentum"]}/100'
+
             )
 
+
             secondary = (
+
                 f'Fundamentals '
                 f'{stock["fundamental"]}/100'
+
             )
 
 
         elif mode == "value":
 
+            value_score = (
+                value_opportunity_score(
+                    stock
+                )
+            )
+
+
             main_detail = (
 
                 f'Value Opportunity '
-
-                f'{
-                    value_opportunity_score(
-                        stock
-                    )
-                }/100'
+                f'{value_score}/100'
 
             )
+
 
             secondary = (
 
@@ -1785,9 +1994,12 @@ def mini_list(
         else:
 
             main_detail = (
+
                 f'Balance '
                 f'{stock["balanced_score"]}/100'
+
             )
+
 
             secondary = (
 
@@ -1851,14 +2063,18 @@ def mini_list(
 
 
 # ============================================================
-# PRICE CHART
+# STOCK DETAIL CHART
 # ============================================================
 
 def chart_svg(stock):
 
-    prices = stock.get(
-        "chart_prices"
-    ) or []
+    prices = (
+        stock.get(
+            "chart_prices"
+        )
+        or
+        []
+    )
 
 
     if len(
@@ -1883,6 +2099,7 @@ def chart_svg(stock):
         prices
     )
 
+
     maximum = max(
         prices
     )
@@ -1896,6 +2113,7 @@ def chart_svg(stock):
 
 
     if price_range == 0:
+
         price_range = 1
 
 
@@ -1921,8 +2139,7 @@ def chart_svg(stock):
                 (
                     width
                     -
-                    padding
-                    * 2
+                    padding * 2
                 )
 
                 /
@@ -1967,8 +2184,7 @@ def chart_svg(stock):
             (
                 height
                 -
-                padding
-                * 2
+                padding * 2
             )
 
         )
@@ -2007,36 +2223,48 @@ def chart_svg(stock):
 
     </svg>
 
+
     <div class="chart-scale">
 
         <span>
+
             Low:
+
             {format_price(
                 minimum,
                 stock[
                     "market"
                 ],
             )}
+
         </span>
 
+
         <span>
+
             Latest:
+
             {format_price(
                 prices[-1],
                 stock[
                     "market"
                 ],
             )}
+
         </span>
 
+
         <span>
+
             High:
+
             {format_price(
                 maximum,
                 stock[
                     "market"
                 ],
             )}
+
         </span>
 
     </div>
@@ -2077,11 +2305,14 @@ def generate_stock_detail_page(
         else
 
         "negative"
+
     )
 
 
-    value_score = value_opportunity_score(
-        stock
+    value_score = (
+        value_opportunity_score(
+            stock
+        )
     )
 
 
@@ -2093,12 +2324,23 @@ def generate_stock_detail_page(
             stock.get(
                 "analyst_upside"
             )
-            or 0
+            or
+            0
         ) >= 0
 
         else
 
         "negative"
+
+    )
+
+
+    scoring_model = stock.get(
+
+        "scoring_model",
+
+        "General Company",
+
     )
 
 
@@ -2120,10 +2362,8 @@ def generate_stock_detail_page(
 >
 
 <title>
-
 V Stock Intelligence ·
 {escape(stock["ticker"])}
-
 </title>
 
 <style>
@@ -2204,6 +2444,37 @@ body {{
 
     margin-top:
         6px;
+}}
+
+.model-badge {{
+    display:
+        inline-block;
+
+    margin-top:
+        10px;
+
+    padding:
+        6px 9px;
+
+    border-radius:
+        7px;
+
+    background:
+        rgba(
+            86,
+            184,
+            255,
+            0.15
+        );
+
+    color:
+        #66bdff;
+
+    font-size:
+        11px;
+
+    font-weight:
+        800;
 }}
 
 .card {{
@@ -2506,6 +2777,7 @@ body {{
         )}
     </div>
 
+
     <div class="subtitle">
 
         {escape(
@@ -2528,6 +2800,17 @@ body {{
             stock[
                 "market"
             ]
+        )}
+
+    </div>
+
+
+    <div class="model-badge">
+
+        Scoring Model:
+
+        {escape(
+            scoring_model
         )}
 
     </div>
@@ -3433,6 +3716,20 @@ body {{
 
 <div class="footer">
 
+    Scoring Model:
+    {escape(
+        scoring_model
+    )}
+
+    <br>
+
+    Model Version:
+    {escape(
+        SCORING_MODEL_VERSION
+    )}
+
+    <br><br>
+
     Last updated:
     {updated}
 
@@ -3506,7 +3803,9 @@ body {{
 # GUIDE PAGE
 # ============================================================
 
-def generate_guide_page(updated):
+def generate_guide_page(
+    updated,
+):
 
     page = f"""
 <!DOCTYPE html>
@@ -3661,34 +3960,6 @@ body {{
         6px;
 }}
 
-.score-table {{
-    width:
-        100%;
-
-    border-collapse:
-        collapse;
-}}
-
-.score-table td {{
-    padding:
-        12px 8px;
-
-    border-bottom:
-        1px solid
-        #263a55;
-}}
-
-.weight {{
-    color:
-        #68b9ff;
-
-    font-weight:
-        800;
-
-    text-align:
-        right;
-}}
-
 .note {{
     background:
         #0b1728;
@@ -3746,8 +4017,8 @@ body {{
 <div class="subtitle">
 
     This guide explains the terminology,
-    scores and opportunity screens used
-    throughout the dashboard.
+    scoring models and opportunity screens
+    used throughout the dashboard.
 
 </div>
 
@@ -3755,297 +4026,127 @@ body {{
 <div class="card">
 
     <div class="section-title">
-        Dashboard Rating
+        Sector-Specific Scoring Models
+    </div>
+
+
+    <div class="term">
+
+        <div class="term-name">
+            General Company
+        </div>
+
+        <div class="term-description">
+
+            Used for companies that do not fall
+            into one of the specialised models.
+
+            Technical 25% · Momentum 20% ·
+            Fundamentals 40% · Valuation 15%.
+
+        </div>
+
+    </div>
+
+
+    <div class="term">
+
+        <div class="term-name">
+            Semiconductor
+        </div>
+
+        <div class="term-description">
+
+            Places more emphasis on growth,
+            margins and momentum because the
+            semiconductor industry is cyclical.
+
+            Technical 20% · Momentum 25% ·
+            Fundamentals 40% · Valuation 15%.
+
+        </div>
+
+    </div>
+
+
+    <div class="term">
+
+        <div class="term-name">
+            Bank
+        </div>
+
+        <div class="term-description">
+
+            Places greater emphasis on
+            profitability, return on equity,
+            return on assets, price-to-book
+            and valuation.
+
+            Technical 15% · Momentum 15% ·
+            Fundamentals 45% · Valuation 25%.
+
+        </div>
+
+    </div>
+
+
+    <div class="term">
+
+        <div class="term-name">
+            REIT
+        </div>
+
+        <div class="term-description">
+
+            Places greater emphasis on valuation,
+            distribution yield and financial
+            strength.
+
+            Technical 15% · Momentum 10% ·
+            Fundamentals 40% · Valuation 35%.
+
+            REIT leverage metrics remain proxy
+            measures because the standard market
+            data feed does not provide full
+            Singapore REIT regulatory leverage data.
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+<div class="card">
+
+    <div class="section-title">
+        Score History
     </div>
 
     <div class="note">
 
-        Ratings such as Strong Buy,
-        Buy, Hold, Watch and Caution are
-        automated quantitative ratings
-        created by this dashboard.
+        Score comparisons are only made between
+        dashboard runs using the same scoring
+        methodology version.
 
         <br><br>
 
-        They are not analyst recommendations
-        and should be used as a starting point
-        for further research rather than as
-        instructions to buy or sell a stock.
+        When the scoring model changes, the dashboard
+        automatically starts a new comparison baseline.
 
-    </div>
+        This prevents methodology changes from appearing
+        as false day-to-day stock movements.
 
-</div>
+        <br><br>
 
+        Current Model Version:
 
-<div class="card">
-
-    <div class="section-title">
-        Overall Score Methodology
-    </div>
-
-    <table class="score-table">
-
-        <tr>
-            <td>
-                Technical Score
-            </td>
-
-            <td class="weight">
-                25%
-            </td>
-        </tr>
-
-        <tr>
-            <td>
-                Momentum Score
-            </td>
-
-            <td class="weight">
-                20%
-            </td>
-        </tr>
-
-        <tr>
-            <td>
-                Fundamental Score
-            </td>
-
-            <td class="weight">
-                40%
-            </td>
-        </tr>
-
-        <tr>
-            <td>
-                Valuation Score
-            </td>
-
-            <td class="weight">
-                15%
-            </td>
-        </tr>
-
-    </table>
-
-</div>
-
-
-<div class="card">
-
-    <div class="section-title">
-        Core Investment Scores
-    </div>
-
-
-    <div class="term">
-
-        <div class="term-name">
-            Technical Score
-        </div>
-
-        <div class="term-description">
-
-            Measures the current share-price
-            trend using indicators such as
-            moving averages, RSI and MACD.
-
-        </div>
-
-    </div>
-
-
-    <div class="term">
-
-        <div class="term-name">
-            Momentum Score
-        </div>
-
-        <div class="term-description">
-
-            Measures recent price performance
-            across several time periods.
-
-        </div>
-
-    </div>
-
-
-    <div class="term">
-
-        <div class="term-name">
-            Fundamental Score
-        </div>
-
-        <div class="term-description">
-
-            Evaluates available business and
-            financial information including
-            growth, margins and balance-sheet
-            measures.
-
-        </div>
-
-    </div>
-
-
-    <div class="term">
-
-        <div class="term-name">
-            Valuation Score
-        </div>
-
-        <div class="term-description">
-
-            Estimates how attractively a stock
-            appears priced using available
-            valuation metrics.
-
-        </div>
-
-    </div>
-
-
-    <div class="term">
-
-        <div class="term-name">
-            Data Quality
-        </div>
-
-        <div class="term-description">
-
-            Shows how much of the scoring model
-            had usable fundamental information.
-
-        </div>
-
-    </div>
-
-
-</div>
-
-
-<div class="card">
-
-    <div class="section-title">
-        Market Opportunity Screens
-    </div>
-
-
-    <div class="term">
-
-        <div class="term-name">
-            Oversold Watch
-        </div>
-
-        <div class="term-description">
-
-            Shows stocks with RSI below 35.
-
-            Being oversold does not mean that
-            a share price will automatically
-            recover.
-
-        </div>
-
-    </div>
-
-
-    <div class="term">
-
-        <div class="term-name">
-            Momentum Leaders
-        </div>
-
-        <div class="term-description">
-
-            Highlights stocks with stronger
-            recent price performance while
-            requiring minimum fundamental
-            strength and sufficient data quality.
-
-        </div>
-
-    </div>
-
-
-    <div class="term">
-
-        <div class="term-name">
-            Value Opportunities
-        </div>
-
-        <div class="term-description">
-
-            Combines the Valuation Score and
-            Fundamental Score equally.
-
-        </div>
-
-    </div>
-
-
-    <div class="term">
-
-        <div class="term-name">
-            Best Balanced
-        </div>
-
-        <div class="term-description">
-
-            Looks for stocks that perform
-            consistently across Technical,
-            Momentum, Fundamentals and Valuation.
-
-        </div>
-
-    </div>
-
-
-</div>
-
-
-<div class="card">
-
-    <div class="section-title">
-        Score History & What's Changed
-    </div>
-
-    <div class="term">
-
-        <div class="term-name">
-            Score History
-        </div>
-
-        <div class="term-description">
-
-            Each successful dashboard scan saves
-            the current scores for every tracked
-            stock.
-
-            Up to 365 scan snapshots are retained.
-
-        </div>
-
-    </div>
-
-
-    <div class="term">
-
-        <div class="term-name">
-            What's Changed
-        </div>
-
-        <div class="term-description">
-
-            Compares the latest dashboard scan
-            against the previous saved scan.
-
-            It highlights changes in the Overall,
-            Technical, Momentum, Fundamental and
-            Valuation scores, as well as changes
-            in Dashboard Rating.
-
-        </div>
+        <strong>
+            {escape(
+                SCORING_MODEL_VERSION
+            )}
+        </strong>
 
     </div>
 
@@ -4140,7 +4241,7 @@ body {{
 
 
 # ============================================================
-# MAIN DASHBOARD
+# MAIN
 # ============================================================
 
 def main():
@@ -4180,7 +4281,7 @@ def main():
 
 
     # ========================================================
-    # HISTORY AND WATCHLIST
+    # HISTORY
     # ========================================================
 
     history = load_history()
@@ -4199,6 +4300,10 @@ def main():
 
     )
 
+
+    # ========================================================
+    # WATCHLIST
+    # ========================================================
 
     watchlist_tickers = (
         load_watchlist()
@@ -4251,14 +4356,18 @@ def main():
     # ========================================================
 
     now_sgt = datetime.now(
+
         ZoneInfo(
             "Asia/Singapore"
         )
+
     )
 
 
     updated = now_sgt.strftime(
+
         "%d %B %Y, %H:%M SGT"
+
     )
 
 
@@ -4267,8 +4376,8 @@ def main():
     )
 
 
-    # Save the current scan
-    # after comparing with the previous one.
+    # Save current scan after comparing
+    # with the previous compatible scan.
 
     snapshot = make_history_snapshot(
 
@@ -4289,7 +4398,7 @@ def main():
 
 
     # ========================================================
-    # GENERATE DETAIL PAGES
+    # DETAIL PAGES
     # ========================================================
 
     for stock in all_results:
@@ -4308,6 +4417,10 @@ def main():
     )
 
 
+    # ========================================================
+    # FILTER OPTIONS
+    # ========================================================
+
     sectors = sorted({
 
         stock[
@@ -4315,7 +4428,6 @@ def main():
         ]
 
         for stock
-
         in all_results
 
     })
@@ -4328,11 +4440,14 @@ def main():
         f'</option>'
 
         for sector
-
         in sectors
 
     )
 
+
+    # ========================================================
+    # WATCHLIST HTML
+    # ========================================================
 
     watchlist_html = "".join(
 
@@ -4351,6 +4466,15 @@ def main():
             <div class="watch-name">
                 {escape(
                     stock["name"]
+                )}
+            </div>
+
+            <div class="watch-model">
+                {escape(
+                    stock.get(
+                        "scoring_model",
+                        "General Company",
+                    )
                 )}
             </div>
 
@@ -4384,7 +4508,6 @@ def main():
         """
 
         for stock
-
         in watchlist_stocks
 
     )
@@ -4401,6 +4524,10 @@ def main():
         </div>
         """
 
+
+    # ========================================================
+    # MAIN PAGE
+    # ========================================================
 
     page = f"""
 <!DOCTYPE html>
@@ -4519,6 +4646,17 @@ body {{
 
     font-weight:
         700;
+}}
+
+.model-version {{
+    margin-top:
+        6px;
+
+    color:
+        #607c9f;
+
+    font-size:
+        10px;
 }}
 
 .card {{
@@ -4868,6 +5006,17 @@ body {{
         28px;
 }}
 
+.watch-model {{
+    color:
+        #5e7999;
+
+    font-size:
+        9px;
+
+    margin-top:
+        4px;
+}}
+
 .watch-score {{
     font-size:
         24px;
@@ -5024,6 +5173,9 @@ body {{
 
     font-size:
         13px;
+
+    line-height:
+        1.5;
 }}
 
 .opportunity-grid {{
@@ -5576,6 +5728,15 @@ td {{
 
         </div>
 
+        <div class="model-version">
+
+            Scoring methodology:
+            {escape(
+                SCORING_MODEL_VERSION
+            )}
+
+        </div>
+
     </div>
 
 
@@ -5603,17 +5764,11 @@ td {{
             placeholder="
                 Search ticker or company...
             "
-            aria-label="
-                Search ticker or company
-            "
         >
 
 
         <select
             id="marketFilter"
-            aria-label="
-                Filter by market
-            "
         >
 
             <option value="All">
@@ -5633,9 +5788,6 @@ td {{
 
         <select
             id="sectorFilter"
-            aria-label="
-                Filter by sector
-            "
         >
 
             <option value="All">
@@ -5721,9 +5873,9 @@ td {{
 
     <div class="section-subtitle">
 
-        Highlights the largest score movements,
-        component changes and rating changes
-        since the last saved dashboard run.
+        Comparisons are only made against
+        a previous scan using the same
+        scoring methodology version.
 
     </div>
 
@@ -5760,8 +5912,8 @@ td {{
     <div class="section-subtitle">
 
         Highest-ranked US stocks using
-        the dashboard's combined
-        quantitative score.
+        the dashboard's sector-specific
+        quantitative scoring models.
 
     </div>
 
@@ -5792,8 +5944,8 @@ td {{
     <div class="section-subtitle">
 
         Highest-ranked SGX stocks using
-        the same quantitative scoring
-        methodology.
+        sector-specific quantitative
+        scoring models.
 
     </div>
 
@@ -5817,11 +5969,9 @@ td {{
 
     <div class="section-subtitle">
 
-        Alternative ways of finding potential
-        opportunities.
-
-        These screens may rank stocks differently
-        from the main Overall Score.
+        Alternative ways of identifying
+        potential opportunities beyond
+        the Overall Score.
 
     </div>
 
@@ -5844,8 +5994,8 @@ td {{
             <div class="screen-description">
 
                 Stocks with RSI below 35
-                that have experienced unusually
-                weak recent price momentum.
+                that have experienced weak
+                recent price momentum.
 
             </div>
 
@@ -5872,8 +6022,8 @@ td {{
             <div class="screen-description">
 
                 Strong recent price performers
-                that also meet minimum fundamental
-                and data-quality requirements.
+                with adequate fundamental and
+                data-quality scores.
 
             </div>
 
@@ -5899,9 +6049,9 @@ td {{
 
             <div class="screen-description">
 
-                Stocks combining relatively
-                attractive valuation with
-                stronger underlying fundamentals.
+                Stocks combining stronger
+                fundamentals with attractive
+                valuation scores.
 
             </div>
 
@@ -5950,13 +6100,6 @@ td {{
 
     <div class="section-title">
         US Stock Rankings
-    </div>
-
-    <div class="section-subtitle">
-
-        Search and filters above apply to
-        this table and the Singapore table below.
-
     </div>
 
 
@@ -6079,13 +6222,6 @@ td {{
         Singapore Stock Rankings
     </div>
 
-    <div class="section-subtitle">
-
-        Search by ticker or company,
-        or filter by market and sector.
-
-    </div>
-
 
     <div class="table-wrapper">
 
@@ -6203,13 +6339,19 @@ td {{
 <div class="footer">
 
     V Stock Intelligence uses
-    automated quantitative scoring.
+    automated sector-specific quantitative scoring.
 
     <br>
 
-    Dashboard ratings are not
-    analyst recommendations
-    and are not financial advice.
+    Current methodology:
+    {escape(
+        SCORING_MODEL_VERSION
+    )}
+
+    <br>
+
+    Dashboard ratings are not analyst
+    recommendations and are not financial advice.
 
 </div>
 
@@ -6384,10 +6526,13 @@ td {{
 
 
                 if (visible) {{
+
                     visibleRows += 1;
+
                 }}
 
             }}
+
         );
 
 
@@ -6500,6 +6645,7 @@ td {{
                 );
 
             }}
+
         );
 
 
@@ -6633,13 +6779,13 @@ td {{
 
     print(
 
-        "Main dashboard, watchlist, "
-        "score history, change tracking, "
-        "guide and stock detail pages "
-        "generated successfully."
+        "Main dashboard, sector-specific scoring labels, "
+        "model-version-aware history, watchlist, guide "
+        "and stock detail pages generated successfully."
 
     )
 
 
 if __name__ == "__main__":
+
     main()
