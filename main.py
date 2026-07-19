@@ -9,6 +9,15 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import yfinance as yf
 
+from scoring import (
+    fundamental_score as shared_fundamental_score,
+    momentum_score as shared_momentum_score,
+    overall_score as shared_overall_score,
+    rating as shared_rating,
+    technical_score as shared_technical_score,
+    valuation_score as shared_valuation_score,
+)
+
 
 TICKER = "MU"
 COMPANY_NAME = "Micron Technology"
@@ -375,30 +384,16 @@ def analyze_momentum(history):
         126,
     )
 
-    score = 50
-
-    weighted_returns = [
-        (
-            week_1,
-            10,
-        ),
-        (
-            month_1,
-            20,
-        ),
-        (
-            month_3,
-            30,
-        ),
-        (
-            month_6,
-            40,
-        ),
+    periods = [
+        (week_1, 10),
+        (month_1, 20),
+        (month_3, 30),
+        (month_6, 40),
     ]
 
     score = 0
 
-    for value, weight in weighted_returns:
+    for value, weight in periods:
         if value is None:
             continue
 
@@ -444,11 +439,11 @@ def analyze_momentum(history):
 
 
 # ============================================================
-# FUNDAMENTAL ANALYSIS
+# FUNDAMENTAL DATA
 # ============================================================
 
 def analyze_fundamentals(info):
-    values = {
+    return {
         "market_cap": safe_number(
             info.get(
                 "marketCap"
@@ -533,334 +528,6 @@ def analyze_fundamentals(info):
             )
         ),
     }
-
-    components = {}
-
-    # ------------------------------------------
-    # Revenue growth: 15 points
-    # ------------------------------------------
-
-    revenue_growth = values[
-        "revenue_growth"
-    ]
-
-    if revenue_growth is None:
-        components[
-            "Revenue Growth"
-        ] = 7
-
-    elif revenue_growth >= 0.40:
-        components[
-            "Revenue Growth"
-        ] = 15
-
-    elif revenue_growth >= 0.20:
-        components[
-            "Revenue Growth"
-        ] = 13
-
-    elif revenue_growth >= 0.10:
-        components[
-            "Revenue Growth"
-        ] = 10
-
-    elif revenue_growth > 0:
-        components[
-            "Revenue Growth"
-        ] = 7
-
-    else:
-        components[
-            "Revenue Growth"
-        ] = 2
-
-
-    # ------------------------------------------
-    # Earnings growth: 15 points
-    # ------------------------------------------
-
-    earnings_growth = values[
-        "earnings_growth"
-    ]
-
-    if earnings_growth is None:
-        components[
-            "Earnings Growth"
-        ] = 7
-
-    elif earnings_growth >= 0.50:
-        components[
-            "Earnings Growth"
-        ] = 15
-
-    elif earnings_growth >= 0.25:
-        components[
-            "Earnings Growth"
-        ] = 13
-
-    elif earnings_growth >= 0.10:
-        components[
-            "Earnings Growth"
-        ] = 10
-
-    elif earnings_growth > 0:
-        components[
-            "Earnings Growth"
-        ] = 7
-
-    else:
-        components[
-            "Earnings Growth"
-        ] = 2
-
-
-    # ------------------------------------------
-    # Forward valuation: 15 points
-    # ------------------------------------------
-
-    forward_pe = values[
-        "forward_pe"
-    ]
-
-    if forward_pe is None:
-        components[
-            "Forward Valuation"
-        ] = 7
-
-    elif 0 < forward_pe <= 12:
-        components[
-            "Forward Valuation"
-        ] = 15
-
-    elif forward_pe <= 18:
-        components[
-            "Forward Valuation"
-        ] = 13
-
-    elif forward_pe <= 25:
-        components[
-            "Forward Valuation"
-        ] = 10
-
-    elif forward_pe <= 35:
-        components[
-            "Forward Valuation"
-        ] = 6
-
-    else:
-        components[
-            "Forward Valuation"
-        ] = 2
-
-
-    # ------------------------------------------
-    # Gross margin: 15 points
-    # ------------------------------------------
-
-    gross_margin = values[
-        "gross_margin"
-    ]
-
-    if gross_margin is None:
-        components[
-            "Gross Margin"
-        ] = 7
-
-    elif gross_margin >= 0.50:
-        components[
-            "Gross Margin"
-        ] = 15
-
-    elif gross_margin >= 0.40:
-        components[
-            "Gross Margin"
-        ] = 13
-
-    elif gross_margin >= 0.30:
-        components[
-            "Gross Margin"
-        ] = 10
-
-    elif gross_margin >= 0.20:
-        components[
-            "Gross Margin"
-        ] = 7
-
-    else:
-        components[
-            "Gross Margin"
-        ] = 3
-
-
-    # ------------------------------------------
-    # Operating margin: 10 points
-    # ------------------------------------------
-
-    operating_margin = values[
-        "operating_margin"
-    ]
-
-    if operating_margin is None:
-        components[
-            "Operating Margin"
-        ] = 5
-
-    elif operating_margin >= 0.30:
-        components[
-            "Operating Margin"
-        ] = 10
-
-    elif operating_margin >= 0.20:
-        components[
-            "Operating Margin"
-        ] = 8
-
-    elif operating_margin >= 0.10:
-        components[
-            "Operating Margin"
-        ] = 6
-
-    elif operating_margin > 0:
-        components[
-            "Operating Margin"
-        ] = 4
-
-    else:
-        components[
-            "Operating Margin"
-        ] = 1
-
-
-    # ------------------------------------------
-    # ROE: 10 points
-    # ------------------------------------------
-
-    roe = values[
-        "return_on_equity"
-    ]
-
-    if roe is None:
-        components[
-            "Return on Equity"
-        ] = 5
-
-    elif roe >= 0.25:
-        components[
-            "Return on Equity"
-        ] = 10
-
-    elif roe >= 0.15:
-        components[
-            "Return on Equity"
-        ] = 8
-
-    elif roe >= 0.08:
-        components[
-            "Return on Equity"
-        ] = 6
-
-    elif roe > 0:
-        components[
-            "Return on Equity"
-        ] = 4
-
-    else:
-        components[
-            "Return on Equity"
-        ] = 1
-
-
-    # ------------------------------------------
-    # Debt: 10 points
-    # Yahoo often reports D/E as percentage
-    # ------------------------------------------
-
-    debt_to_equity = values[
-        "debt_to_equity"
-    ]
-
-    if debt_to_equity is None:
-        components[
-            "Balance Sheet"
-        ] = 5
-
-    elif debt_to_equity <= 30:
-        components[
-            "Balance Sheet"
-        ] = 10
-
-    elif debt_to_equity <= 60:
-        components[
-            "Balance Sheet"
-        ] = 8
-
-    elif debt_to_equity <= 100:
-        components[
-            "Balance Sheet"
-        ] = 6
-
-    elif debt_to_equity <= 150:
-        components[
-            "Balance Sheet"
-        ] = 4
-
-    else:
-        components[
-            "Balance Sheet"
-        ] = 2
-
-
-    # ------------------------------------------
-    # Liquidity: 10 points
-    # ------------------------------------------
-
-    current_ratio = values[
-        "current_ratio"
-    ]
-
-    if current_ratio is None:
-        components[
-            "Liquidity"
-        ] = 5
-
-    elif current_ratio >= 2:
-        components[
-            "Liquidity"
-        ] = 10
-
-    elif current_ratio >= 1.5:
-        components[
-            "Liquidity"
-        ] = 8
-
-    elif current_ratio >= 1:
-        components[
-            "Liquidity"
-        ] = 6
-
-    else:
-        components[
-            "Liquidity"
-        ] = 2
-
-
-    score = clamp(
-        round(
-            sum(
-                components.values()
-            )
-        )
-    )
-
-    values[
-        "score"
-    ] = score
-
-    values[
-        "components"
-    ] = components
-
-    return values
 
 
 # ============================================================
@@ -1182,24 +849,8 @@ def create_chart(
 
 
 # ============================================================
-# RATING HELPERS
+# SCORE DESCRIPTION
 # ============================================================
-
-def rating_from_score(score):
-    if score >= 80:
-        return "STRONG BUY"
-
-    if score >= 65:
-        return "BUY"
-
-    if score >= 50:
-        return "HOLD"
-
-    if score >= 35:
-        return "WATCH"
-
-    return "CAUTION"
-
 
 def score_description(score):
     if score >= 80:
@@ -1217,92 +868,6 @@ def score_description(score):
     return "VERY WEAK"
 
 
-def get_short_term_view(
-    technical_score,
-    momentum_score,
-):
-    score = round(
-        technical_score
-        * 0.65
-        +
-        momentum_score
-        * 0.35
-    )
-
-    return (
-        score,
-        rating_from_score(
-            score
-        ),
-    )
-
-
-def get_long_term_view(
-    fundamental_score,
-    analyst_upside,
-    technical_score,
-):
-    analyst_score = 50
-
-    if analyst_upside is not None:
-
-        if analyst_upside >= 0.40:
-            analyst_score = 90
-
-        elif analyst_upside >= 0.20:
-            analyst_score = 80
-
-        elif analyst_upside >= 0.10:
-            analyst_score = 70
-
-        elif analyst_upside >= 0:
-            analyst_score = 60
-
-        elif analyst_upside >= -0.10:
-            analyst_score = 40
-
-        else:
-            analyst_score = 25
-
-    score = round(
-        fundamental_score
-        * 0.60
-        +
-        analyst_score
-        * 0.25
-        +
-        technical_score
-        * 0.15
-    )
-
-    return (
-        score,
-        rating_from_score(
-            score
-        ),
-    )
-
-
-def get_overall_view(
-    short_term_score,
-    long_term_score,
-):
-    score = round(
-        short_term_score
-        * 0.35
-        +
-        long_term_score
-        * 0.65
-    )
-
-    return (
-        score,
-        rating_from_score(
-            score
-        ),
-    )
-
-
 # ============================================================
 # INVESTMENT COMMENTARY
 # ============================================================
@@ -1317,7 +882,11 @@ def create_investment_view(
     bear_points = []
     watch_points = []
 
-    if technical["price"] > technical["ma200"]:
+    if technical[
+        "price"
+    ] > technical[
+        "ma200"
+    ]:
         bull_points.append(
             "The longer-term price trend remains above the 200-day moving average."
         )
@@ -1327,12 +896,22 @@ def create_investment_view(
             "The share price is below its 200-day moving average."
         )
 
-    if technical["rsi"] < 30:
+    if technical[
+        "rsi"
+    ] < 30:
         bull_points.append(
             "The stock is currently oversold on RSI, creating potential for a technical rebound."
         )
 
-    if technical["macd"] > technical["macd_signal"]:
+    if (
+        technical[
+            "macd"
+        ]
+        >
+        technical[
+            "macd_signal"
+        ]
+    ):
         bull_points.append(
             "MACD currently supports improving short-term momentum."
         )
@@ -1539,6 +1118,13 @@ def intelligence_cards(categories):
 
 
 def score_component_rows(components):
+    if not components:
+        return """
+        <div class="muted">
+            Fundamental component data is currently unavailable.
+        </div>
+        """
+
     output = ""
 
     for name, score in components.items():
@@ -1587,6 +1173,62 @@ def main():
 
     info = stock.info or {}
 
+
+    # ========================================================
+    # SHARED SCORING ENGINE
+    # Keeps the Micron report and main dashboard consistent
+    # ========================================================
+
+    shared_technical, shared_rsi = (
+        shared_technical_score(
+            history
+        )
+    )
+
+    shared_momentum = (
+        shared_momentum_score(
+            history
+        )
+    )
+
+    shared_fundamental_data = (
+        shared_fundamental_score(
+            info
+        )
+    )
+
+    shared_fundamental = (
+        shared_fundamental_data[
+            "score"
+        ]
+    )
+
+    shared_valuation = (
+        shared_valuation_score(
+            info
+        )
+    )
+
+    shared_overall = (
+        shared_overall_score(
+            shared_technical,
+            shared_momentum,
+            shared_fundamental,
+            shared_valuation,
+        )
+    )
+
+    shared_overall_rating = (
+        shared_rating(
+            shared_overall
+        )
+    )
+
+
+    # ========================================================
+    # DETAILED MICRON ANALYSIS
+    # ========================================================
+
     technical = analyze_technical(
         history
     )
@@ -1601,7 +1243,9 @@ def main():
 
     analysts = analyze_analysts(
         info,
-        technical["price"],
+        technical[
+            "price"
+        ],
     )
 
     news_items = get_news(
@@ -1624,27 +1268,92 @@ def main():
         technical,
     )
 
-    short_term_score, short_term_rating = (
-        get_short_term_view(
-            technical["score"],
-            momentum["score"],
+
+    # ========================================================
+    # USE SHARED SCORES
+    # ========================================================
+
+    technical[
+        "score"
+    ] = shared_technical
+
+    momentum[
+        "score"
+    ] = shared_momentum
+
+    fundamentals[
+        "score"
+    ] = shared_fundamental
+
+    fundamentals[
+        "components"
+    ] = shared_fundamental_data[
+        "components"
+    ]
+
+    fundamentals[
+        "data_quality"
+    ] = shared_fundamental_data[
+        "data_quality"
+    ]
+
+    overall_score = (
+        shared_overall
+    )
+
+    overall_rating = (
+        shared_overall_rating
+    )
+
+
+    # Short-term view still focuses on
+    # technical and momentum factors.
+
+    short_term_score = round(
+
+        shared_technical
+        * 0.65
+
+        +
+
+        shared_momentum
+        * 0.35
+
+    )
+
+    short_term_rating = (
+        shared_rating(
+            short_term_score
         )
     )
 
-    long_term_score, long_term_rating = (
-        get_long_term_view(
-            fundamentals["score"],
-            analysts["upside"],
-            technical["score"],
+
+    # Long-term view uses the same fundamentals
+    # and valuation model as the scanner.
+
+    long_term_score = round(
+
+        shared_fundamental
+        * 0.65
+
+        +
+
+        shared_valuation
+        * 0.25
+
+        +
+
+        shared_technical
+        * 0.10
+
+    )
+
+    long_term_rating = (
+        shared_rating(
+            long_term_score
         )
     )
 
-    overall_score, overall_rating = (
-        get_overall_view(
-            short_term_score,
-            long_term_score,
-        )
-    )
 
     close = history[
         "Close"
@@ -1710,7 +1419,8 @@ def main():
         else "negative"
     )
 
-    html_page = f"""
+
+    page = f"""
 <!DOCTYPE html>
 
 <html lang="en">
@@ -2118,7 +1828,7 @@ li {{
     </div>
 
     <div class="small">
-        Fundamentals + analyst expectations
+        Fundamentals + valuation + trend
     </div>
 
 </div>
@@ -2139,7 +1849,7 @@ li {{
     </div>
 
     <div class="small">
-        Weighted toward long-term investment
+        Same scoring model as market dashboard
     </div>
 
 </div>
@@ -2166,12 +1876,12 @@ li {{
     </div>
 
     <div class="metric-value">
-        {technical["score"]}/100
+        {shared_technical}/100
     </div>
 
     <div class="small">
         {score_description(
-            technical["score"]
+            shared_technical
         )}
     </div>
 
@@ -2185,12 +1895,12 @@ li {{
     </div>
 
     <div class="metric-value">
-        {momentum["score"]}/100
+        {shared_momentum}/100
     </div>
 
     <div class="small">
         {score_description(
-            momentum["score"]
+            shared_momentum
         )}
     </div>
 
@@ -2204,12 +1914,31 @@ li {{
     </div>
 
     <div class="metric-value">
-        {fundamentals["score"]}/100
+        {shared_fundamental}/100
     </div>
 
     <div class="small">
         {score_description(
-            fundamentals["score"]
+            shared_fundamental
+        )}
+    </div>
+
+</div>
+
+
+<div class="metric">
+
+    <div class="metric-name">
+        Valuation
+    </div>
+
+    <div class="metric-value">
+        {shared_valuation}/100
+    </div>
+
+    <div class="small">
+        {score_description(
+            shared_valuation
         )}
     </div>
 
@@ -2421,7 +2150,9 @@ fundamentals["price_to_book"]
 </div>
 
 {score_component_rows(
-fundamentals["components"]
+    fundamentals[
+        "components"
+    ]
 )}
 
 </div>
@@ -2662,10 +2393,12 @@ news_items
 <div class="disclaimer">
 
 This dashboard is an automated research tool.
-Scores are generated from market, technical,
-fundamental and analyst data supplied by third-party
-data sources and may occasionally be delayed or incomplete.
-The investment ratings are not financial advice.
+The main market dashboard and Micron report now use
+the same technical, momentum, fundamental and valuation
+scoring engine. Fundamental scores are capped at 95/100
+using the current basic scoring model. Analyst targets are
+displayed for information but do not determine the overall
+market scanner score.
 
 </div>
 
@@ -2699,12 +2432,18 @@ Last updated:
     )
 
     output_file.write_text(
-        html_page,
+        page,
         encoding="utf-8",
     )
 
     print(
         "Micron investment dashboard generated successfully."
+    )
+
+    print(
+        f"Shared overall score: "
+        f"{overall_score}/100 "
+        f"{overall_rating}"
     )
 
 
