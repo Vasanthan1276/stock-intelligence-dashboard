@@ -7,6 +7,7 @@ from scoring import (
     momentum_score,
     overall_score,
     rating,
+    scoring_model_name,
     technical_score,
     valuation_score,
 )
@@ -460,7 +461,9 @@ def percentage_change(
         return None
 
     return (
-        current / earlier
+        current
+        /
+        earlier
     ) - 1
 
 
@@ -472,8 +475,14 @@ def get_return(
         return None
 
     return percentage_change(
-        float(close.iloc[-1]),
-        float(close.iloc[-trading_days - 1]),
+        float(
+            close.iloc[-1]
+        ),
+        float(
+            close.iloc[
+                -trading_days - 1
+            ]
+        ),
     )
 
 
@@ -483,7 +492,10 @@ def normalized_recommendation(value):
 
     return (
         str(value)
-        .replace("_", " ")
+        .replace(
+            "_",
+            " ",
+        )
         .upper()
     )
 
@@ -516,10 +528,12 @@ def analyze_stock(
         if history.empty:
             return None
 
+
         info = (
             stock.info
             or {}
         )
+
 
         close = history[
             "Close"
@@ -548,13 +562,25 @@ def analyze_stock(
 
         daily_change = (
             price
-            / previous_price
+            /
+            previous_price
         ) - 1
 
 
         # ====================================================
-        # SHARED SCORES
+        # SECTOR-SPECIFIC SCORING
         # ====================================================
+
+        sector = metadata[
+            "sector"
+        ]
+
+        scoring_model = (
+            scoring_model_name(
+                sector
+            )
+        )
+
 
         technical, rsi = (
             technical_score(
@@ -562,15 +588,21 @@ def analyze_stock(
             )
         )
 
-        momentum = momentum_score(
-            history
+
+        momentum = (
+            momentum_score(
+                history
+            )
         )
+
 
         fundamental_data = (
             fundamental_score(
-                info
+                info,
+                sector=sector,
             )
         )
+
 
         fundamental = (
             fundamental_data[
@@ -578,15 +610,23 @@ def analyze_stock(
             ]
         )
 
-        valuation = valuation_score(
-            info
+
+        valuation = (
+            valuation_score(
+                info,
+                sector=sector,
+            )
         )
 
-        final_score = overall_score(
-            technical,
-            momentum,
-            fundamental,
-            valuation,
+
+        final_score = (
+            overall_score(
+                technical,
+                momentum,
+                fundamental,
+                valuation,
+                sector=sector,
+            )
         )
 
 
@@ -601,12 +641,14 @@ def analyze_stock(
             .iloc[-1]
         )
 
+
         ma50 = safe_number(
             close
             .rolling(50)
             .mean()
             .iloc[-1]
         )
+
 
         ma200 = safe_number(
             close
@@ -615,23 +657,28 @@ def analyze_stock(
             .iloc[-1]
         )
 
+
         low_52 = safe_number(
             low.min()
         )
+
 
         high_52 = safe_number(
             high.max()
         )
 
+
         recent_60 = history.tail(
             60
         )
+
 
         support = safe_number(
             recent_60[
                 "Low"
             ].min()
         )
+
 
         resistance = safe_number(
             recent_60[
@@ -649,10 +696,12 @@ def analyze_stock(
             21,
         )
 
+
         return_3m = get_return(
             close,
             63,
         )
+
 
         return_6m = get_return(
             close,
@@ -670,11 +719,13 @@ def analyze_stock(
             )
         )
 
+
         trailing_pe = safe_number(
             info.get(
                 "trailingPE"
             )
         )
+
 
         forward_pe = safe_number(
             info.get(
@@ -682,11 +733,13 @@ def analyze_stock(
             )
         )
 
+
         price_to_book = safe_number(
             info.get(
                 "priceToBook"
             )
         )
+
 
         revenue_growth = safe_number(
             info.get(
@@ -694,17 +747,20 @@ def analyze_stock(
             )
         )
 
+
         earnings_growth = safe_number(
             info.get(
                 "earningsGrowth"
             )
         )
 
+
         gross_margin = safe_number(
             info.get(
                 "grossMargins"
             )
         )
+
 
         operating_margin = safe_number(
             info.get(
@@ -723,17 +779,20 @@ def analyze_stock(
             )
         )
 
+
         analyst_high = safe_number(
             info.get(
                 "targetHighPrice"
             )
         )
 
+
         analyst_low = safe_number(
             info.get(
                 "targetLowPrice"
             )
         )
+
 
         analyst_recommendation = (
             normalized_recommendation(
@@ -743,19 +802,24 @@ def analyze_stock(
             )
         )
 
+
         analyst_count = info.get(
             "numberOfAnalystOpinions"
         )
 
+
         analyst_upside = None
+
 
         if (
             analyst_target is not None
             and price > 0
         ):
+
             analyst_upside = (
                 analyst_target
-                / price
+                /
+                price
             ) - 1
 
 
@@ -784,14 +848,17 @@ def analyze_stock(
             valuation,
         ]
 
+
         average_score = (
             sum(
                 component_scores
             )
-            / len(
+            /
+            len(
                 component_scores
             )
         )
+
 
         score_spread = (
             max(
@@ -803,6 +870,7 @@ def analyze_stock(
             )
         )
 
+
         balanced_score = round(
             average_score
             -
@@ -813,7 +881,6 @@ def analyze_stock(
 
         # ====================================================
         # CHART DATA
-        # Use about six months for detail-page chart
         # ====================================================
 
         chart_close = (
@@ -821,12 +888,17 @@ def analyze_stock(
             .tail(126)
         )
 
+
         chart_prices = [
+
             round(
                 float(value),
                 4,
             )
-            for value in chart_close
+
+            for value
+
+            in chart_close
         ]
 
 
@@ -845,6 +917,9 @@ def analyze_stock(
                     "sector"
                 ],
 
+            "scoring_model":
+                scoring_model,
+
             "market":
                 market,
 
@@ -853,6 +928,7 @@ def analyze_stock(
 
             "daily_change":
                 daily_change,
+
 
             # Scores
             "technical":
@@ -881,6 +957,7 @@ def analyze_stock(
             "data_quality":
                 data_quality,
 
+
             # Technical detail
             "rsi":
                 rsi,
@@ -906,6 +983,7 @@ def analyze_stock(
             "resistance":
                 resistance,
 
+
             # Performance
             "return_1m":
                 return_1m,
@@ -915,6 +993,7 @@ def analyze_stock(
 
             "return_6m":
                 return_6m,
+
 
             # Fundamentals
             "market_cap":
@@ -941,6 +1020,7 @@ def analyze_stock(
             "operating_margin":
                 operating_margin,
 
+
             # Analysts
             "analyst_target":
                 analyst_target,
@@ -960,11 +1040,13 @@ def analyze_stock(
             "analyst_count":
                 analyst_count,
 
+
             # Chart
             "chart_prices":
                 chart_prices,
 
         }
+
 
     except Exception as error:
 
@@ -988,6 +1070,7 @@ def scan_market(
 
     results = []
 
+
     for ticker, metadata in stocks.items():
 
         result = analyze_stock(
@@ -996,19 +1079,26 @@ def scan_market(
             market,
         )
 
+
         if result:
 
             results.append(
                 result
             )
 
+
     results.sort(
+
         key=lambda stock:
+
             stock[
                 "overall"
             ],
+
         reverse=True,
+
     )
+
 
     return results
 
@@ -1020,17 +1110,21 @@ def run_scanner():
         "US",
     )
 
+
     singapore_results = scan_market(
         SINGAPORE_STOCKS,
         "Singapore",
     )
 
+
     return {
+
         "us":
             us_results,
 
         "singapore":
             singapore_results,
+
     }
 
 
@@ -1038,42 +1132,62 @@ if __name__ == "__main__":
 
     data = run_scanner()
 
+
     print(
         "\nTop US stocks:"
     )
+
 
     for stock in data[
         "us"
     ][:10]:
 
         print(
+
             stock[
                 "ticker"
             ],
+
             stock[
                 "overall"
             ],
+
             stock[
                 "rating"
             ],
+
+            stock[
+                "scoring_model"
+            ],
+
         )
+
 
     print(
         "\nTop Singapore stocks:"
     )
+
 
     for stock in data[
         "singapore"
     ][:10]:
 
         print(
+
             stock[
                 "ticker"
             ],
+
             stock[
                 "overall"
             ],
+
             stock[
                 "rating"
             ],
+
+            stock[
+                "scoring_model"
+            ],
+
         )
