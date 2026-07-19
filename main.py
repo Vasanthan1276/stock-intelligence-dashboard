@@ -2,11 +2,11 @@ import base64
 import html
 import io
 import math
-from datetime import datetime, timezone
+from datetime import datetime
 from pathlib import Path
+from zoneinfo import ZoneInfo
 
 import matplotlib.pyplot as plt
-import pandas as pd
 import yfinance as yf
 
 from scoring import (
@@ -21,77 +21,132 @@ from scoring import (
 
 TICKER = "MU"
 COMPANY_NAME = "Micron Technology"
+SECTOR = "Semiconductors"
 
 
 # ============================================================
 # BASIC HELPERS
 # ============================================================
 
-def safe_number(value, default=None):
+def safe_number(
+    value,
+    default=None,
+):
     try:
+
         if value is None:
             return default
 
-        value = float(value)
+        value = float(
+            value
+        )
 
-        if math.isnan(value):
+        if math.isnan(
+            value
+        ):
             return default
 
         return value
 
-    except (TypeError, ValueError):
+    except (
+        TypeError,
+        ValueError,
+    ):
+
         return default
 
 
-def format_money(value, decimals=2):
-    value = safe_number(value)
+def format_money(
+    value,
+    decimals=2,
+):
+    value = safe_number(
+        value
+    )
 
     if value is None:
         return "N/A"
 
-    return f"${value:,.{decimals}f}"
+    return (
+        f"${value:,.{decimals}f}"
+    )
 
 
-def format_large_number(value):
-    value = safe_number(value)
+def format_large_number(
+    value,
+):
+    value = safe_number(
+        value
+    )
 
     if value is None:
         return "N/A"
 
     if abs(value) >= 1_000_000_000_000:
-        return f"${value / 1_000_000_000_000:.2f}T"
+
+        return (
+            f"${value / 1_000_000_000_000:.2f}T"
+        )
 
     if abs(value) >= 1_000_000_000:
-        return f"${value / 1_000_000_000:.2f}B"
+
+        return (
+            f"${value / 1_000_000_000:.2f}B"
+        )
 
     if abs(value) >= 1_000_000:
-        return f"${value / 1_000_000:.2f}M"
 
-    return f"${value:,.0f}"
+        return (
+            f"${value / 1_000_000:.2f}M"
+        )
+
+    return (
+        f"${value:,.0f}"
+    )
 
 
-def format_percent(value, signed=True):
-    value = safe_number(value)
+def format_percent(
+    value,
+    signed=True,
+):
+    value = safe_number(
+        value
+    )
 
     if value is None:
         return "N/A"
 
     if signed:
-        return f"{value * 100:+.1f}%"
 
-    return f"{value * 100:.1f}%"
+        return (
+            f"{value * 100:+.1f}%"
+        )
+
+    return (
+        f"{value * 100:.1f}%"
+    )
 
 
-def format_ratio(value):
-    value = safe_number(value)
+def format_ratio(
+    value,
+):
+    value = safe_number(
+        value
+    )
 
     if value is None:
         return "N/A"
 
-    return f"{value:.1f}"
+    return (
+        f"{value:.1f}"
+    )
 
 
-def clamp(value, minimum=0, maximum=100):
+def clamp(
+    value,
+    minimum=0,
+    maximum=100,
+):
     return max(
         minimum,
         min(
@@ -101,7 +156,9 @@ def clamp(value, minimum=0, maximum=100):
     )
 
 
-def escape_text(value):
+def escape_text(
+    value,
+):
     if value is None:
         return ""
 
@@ -114,7 +171,11 @@ def escape_text(value):
 # RSI
 # ============================================================
 
-def calculate_rsi(series, period=14):
+def calculate_rsi(
+    series,
+    period=14,
+):
+
     delta = series.diff()
 
     gains = delta.clip(
@@ -141,17 +202,28 @@ def calculate_rsi(series, period=14):
 
     rs = (
         average_gain
-        / average_loss
+        /
+        average_loss
     )
 
     return (
+
         100
-        - (
+
+        -
+
+        (
             100
-            / (
-                1 + rs
+
+            /
+
+            (
+                1
+                +
+                rs
             )
         )
+
     )
 
 
@@ -159,8 +231,13 @@ def calculate_rsi(series, period=14):
 # TECHNICAL ANALYSIS
 # ============================================================
 
-def analyze_technical(history):
-    close = history["Close"]
+def analyze_technical(
+    history,
+):
+
+    close = history[
+        "Close"
+    ]
 
     price = float(
         close.iloc[-1]
@@ -216,7 +293,8 @@ def analyze_technical(history):
 
     macd_series = (
         ema12
-        - ema26
+        -
+        ema26
     )
 
     macd_signal_series = (
@@ -237,104 +315,167 @@ def analyze_technical(history):
     )
 
     score = 0
+
     reasons = []
 
+
     if price > ma20:
+
         score += 15
+
         reasons.append(
             "Price is above the 20-day moving average."
         )
+
     else:
+
         reasons.append(
             "Price is below the 20-day moving average."
         )
 
+
     if price > ma50:
+
         score += 20
+
         reasons.append(
             "Price is above the 50-day moving average."
         )
+
     else:
+
         reasons.append(
             "Price is below the 50-day moving average."
         )
 
+
     if price > ma200:
+
         score += 25
+
         reasons.append(
             "The long-term trend remains above the 200-day moving average."
         )
+
     else:
+
         reasons.append(
             "Price is below the 200-day moving average."
         )
 
+
     if ma50 > ma200:
+
         score += 10
+
         reasons.append(
             "The 50-day average remains above the 200-day average."
         )
+
     else:
+
         reasons.append(
             "The medium-term trend is below the long-term trend."
         )
 
+
     if macd > macd_signal:
+
         score += 15
+
         reasons.append(
             "MACD momentum is bullish."
         )
+
     else:
+
         reasons.append(
             "MACD momentum is bearish."
         )
 
+
     if 40 <= rsi <= 65:
+
         score += 15
+
         reasons.append(
             "RSI is in a healthy momentum range."
         )
 
     elif rsi < 30:
+
         score += 10
+
         reasons.append(
             "RSI indicates oversold conditions."
         )
 
     elif 30 <= rsi < 40:
+
         score += 8
+
         reasons.append(
             "RSI is weak but approaching oversold territory."
         )
 
     elif 65 < rsi <= 75:
+
         score += 8
+
         reasons.append(
             "RSI shows strong momentum but is becoming elevated."
         )
 
     else:
+
         reasons.append(
             "RSI is at an extreme level."
         )
+
 
     score = clamp(
         round(score)
     )
 
+
     return {
-        "price": price,
-        "ma20": ma20,
-        "ma50": ma50,
-        "ma200": ma200,
-        "rsi": rsi,
-        "macd": macd,
-        "macd_signal": macd_signal,
-        "score": score,
-        "reasons": reasons,
-        "ma20_series": ma20_series,
-        "ma50_series": ma50_series,
-        "ma200_series": ma200_series,
+
+        "price":
+            price,
+
+        "ma20":
+            ma20,
+
+        "ma50":
+            ma50,
+
+        "ma200":
+            ma200,
+
+        "rsi":
+            rsi,
+
+        "macd":
+            macd,
+
+        "macd_signal":
+            macd_signal,
+
+        "score":
+            score,
+
+        "reasons":
+            reasons,
+
+        "ma20_series":
+            ma20_series,
+
+        "ma50_series":
+            ma50_series,
+
+        "ma200_series":
+            ma200_series,
+
     }
 
 
@@ -342,9 +483,17 @@ def analyze_technical(history):
 # MOMENTUM
 # ============================================================
 
-def calculate_return(close, trading_days):
-    if len(close) <= trading_days:
+def calculate_return(
+    close,
+    trading_days,
+):
+
+    if len(
+        close
+    ) <= trading_days:
+
         return None
+
 
     start = float(
         close.iloc[
@@ -356,13 +505,24 @@ def calculate_return(close, trading_days):
         close.iloc[-1]
     )
 
+
     return (
-        end / start
+
+        end
+        /
+        start
+
     ) - 1
 
 
-def analyze_momentum(history):
-    close = history["Close"]
+def analyze_momentum(
+    history,
+):
+
+    close = history[
+        "Close"
+    ]
+
 
     week_1 = calculate_return(
         close,
@@ -384,57 +544,21 @@ def analyze_momentum(history):
         126,
     )
 
-    periods = [
-        (week_1, 10),
-        (month_1, 20),
-        (month_3, 30),
-        (month_6, 40),
-    ]
-
-    score = 0
-
-    for value, weight in periods:
-        if value is None:
-            continue
-
-        if value > 0.20:
-            score += weight
-
-        elif value > 0.10:
-            score += (
-                weight * 0.85
-            )
-
-        elif value > 0.03:
-            score += (
-                weight * 0.70
-            )
-
-        elif value >= 0:
-            score += (
-                weight * 0.55
-            )
-
-        elif value > -0.05:
-            score += (
-                weight * 0.40
-            )
-
-        elif value > -0.15:
-            score += (
-                weight * 0.20
-            )
-
-    score = clamp(
-        round(score)
-    )
 
     return {
-        "week_1": week_1,
-        "month_1": month_1,
-        "month_3": month_3,
-        "month_6": month_6,
-        "score": score,
+
+        "week_1":
+            week_1,
+
+        "month_1":
+            month_1,
+
+        "month_3":
+            month_3,
+
+        "month_6":
+            month_6,
+
     }
 
 
@@ -442,91 +566,155 @@ def analyze_momentum(history):
 # FUNDAMENTAL DATA
 # ============================================================
 
-def analyze_fundamentals(info):
+def analyze_fundamentals(
+    info,
+):
+
     return {
-        "market_cap": safe_number(
-            info.get(
-                "marketCap"
-            )
-        ),
 
-        "trailing_pe": safe_number(
-            info.get(
-                "trailingPE"
-            )
-        ),
+        "market_cap":
 
-        "forward_pe": safe_number(
-            info.get(
-                "forwardPE"
-            )
-        ),
+            safe_number(
+                info.get(
+                    "marketCap"
+                )
+            ),
 
-        "price_to_book": safe_number(
-            info.get(
-                "priceToBook"
-            )
-        ),
 
-        "eps": safe_number(
-            info.get(
-                "trailingEps"
-            )
-        ),
+        "trailing_pe":
 
-        "forward_eps": safe_number(
-            info.get(
-                "forwardEps"
-            )
-        ),
+            safe_number(
+                info.get(
+                    "trailingPE"
+                )
+            ),
 
-        "revenue_growth": safe_number(
-            info.get(
-                "revenueGrowth"
-            )
-        ),
 
-        "earnings_growth": safe_number(
-            info.get(
-                "earningsGrowth"
-            )
-        ),
+        "forward_pe":
 
-        "gross_margin": safe_number(
-            info.get(
-                "grossMargins"
-            )
-        ),
+            safe_number(
+                info.get(
+                    "forwardPE"
+                )
+            ),
 
-        "operating_margin": safe_number(
-            info.get(
-                "operatingMargins"
-            )
-        ),
 
-        "profit_margin": safe_number(
-            info.get(
-                "profitMargins"
-            )
-        ),
+        "price_to_book":
 
-        "return_on_equity": safe_number(
-            info.get(
-                "returnOnEquity"
-            )
-        ),
+            safe_number(
+                info.get(
+                    "priceToBook"
+                )
+            ),
 
-        "debt_to_equity": safe_number(
-            info.get(
-                "debtToEquity"
-            )
-        ),
 
-        "current_ratio": safe_number(
-            info.get(
-                "currentRatio"
-            )
-        ),
+        "price_to_sales":
+
+            safe_number(
+                info.get(
+                    "priceToSalesTrailing12Months"
+                )
+            ),
+
+
+        "peg_ratio":
+
+            safe_number(
+                info.get(
+                    "pegRatio"
+                )
+            ),
+
+
+        "eps":
+
+            safe_number(
+                info.get(
+                    "trailingEps"
+                )
+            ),
+
+
+        "forward_eps":
+
+            safe_number(
+                info.get(
+                    "forwardEps"
+                )
+            ),
+
+
+        "revenue_growth":
+
+            safe_number(
+                info.get(
+                    "revenueGrowth"
+                )
+            ),
+
+
+        "earnings_growth":
+
+            safe_number(
+                info.get(
+                    "earningsGrowth"
+                )
+            ),
+
+
+        "gross_margin":
+
+            safe_number(
+                info.get(
+                    "grossMargins"
+                )
+            ),
+
+
+        "operating_margin":
+
+            safe_number(
+                info.get(
+                    "operatingMargins"
+                )
+            ),
+
+
+        "profit_margin":
+
+            safe_number(
+                info.get(
+                    "profitMargins"
+                )
+            ),
+
+
+        "return_on_equity":
+
+            safe_number(
+                info.get(
+                    "returnOnEquity"
+                )
+            ),
+
+
+        "debt_to_equity":
+
+            safe_number(
+                info.get(
+                    "debtToEquity"
+                )
+            ),
+
+
+        "current_ratio":
+
+            safe_number(
+                info.get(
+                    "currentRatio"
+                )
+            ),
+
     }
 
 
@@ -538,11 +726,13 @@ def analyze_analysts(
     info,
     price,
 ):
+
     mean_target = safe_number(
         info.get(
             "targetMeanPrice"
         )
     )
+
 
     high_target = safe_number(
         info.get(
@@ -550,50 +740,82 @@ def analyze_analysts(
         )
     )
 
+
     low_target = safe_number(
         info.get(
             "targetLowPrice"
         )
     )
 
+
     recommendation = (
         info.get(
             "recommendationKey"
         )
-        or "N/A"
+        or
+        "N/A"
     )
 
+
     recommendation = (
+
         recommendation
         .replace(
             "_",
             " ",
         )
         .upper()
+
     )
+
 
     analyst_count = info.get(
         "numberOfAnalystOpinions"
     )
 
+
     upside = None
 
+
     if (
+
         mean_target is not None
-        and price > 0
+
+        and
+
+        price > 0
+
     ):
+
         upside = (
+
             mean_target
-            / price
+            /
+            price
+
         ) - 1
 
+
     return {
-        "mean_target": mean_target,
-        "high_target": high_target,
-        "low_target": low_target,
-        "recommendation": recommendation,
-        "analyst_count": analyst_count,
-        "upside": upside,
+
+        "mean_target":
+            mean_target,
+
+        "high_target":
+            high_target,
+
+        "low_target":
+            low_target,
+
+        "recommendation":
+            recommendation,
+
+        "analyst_count":
+            analyst_count,
+
+        "upside":
+            upside,
+
     }
 
 
@@ -601,64 +823,96 @@ def analyze_analysts(
 # NEWS
 # ============================================================
 
-def get_news(stock):
+def get_news(
+    stock,
+):
+
     results = []
 
+
     try:
-        raw_news = stock.news or []
+
+        raw_news = (
+            stock.news
+            or
+            []
+        )
 
     except Exception:
+
         raw_news = []
 
-    for item in raw_news[:12]:
+
+    for item in raw_news[
+        :12
+    ]:
+
         content = item.get(
             "content",
             item,
         )
 
+
         title = (
             content.get(
                 "title"
             )
-            or ""
+            or
+            ""
         )
+
 
         provider = (
             content.get(
                 "provider"
             )
-            or {}
+            or
+            {}
         )
+
 
         publisher = (
             provider.get(
                 "displayName"
             )
-            or ""
+            or
+            ""
         )
+
 
         canonical_url = (
             content.get(
                 "canonicalUrl"
             )
-            or {}
+            or
+            {}
         )
+
 
         url = (
             canonical_url.get(
                 "url"
             )
-            or "#"
+            or
+            "#"
         )
 
+
         if title:
-            results.append(
-                {
-                    "title": title,
-                    "publisher": publisher,
-                    "url": url,
-                }
-            )
+
+            results.append({
+
+                "title":
+                    title,
+
+                "publisher":
+                    publisher,
+
+                "url":
+                    url,
+
+            })
+
 
     return results
 
@@ -667,35 +921,69 @@ def get_news(stock):
 # MICRON NEWS INTELLIGENCE
 # ============================================================
 
-def classify_news(news_items):
+def classify_news(
+    news_items,
+):
+
     categories = {
-        "HBM & AI": [],
-        "DRAM": [],
-        "NAND": [],
-        "Earnings & Outlook": [],
-        "Company Developments": [],
+
+        "HBM & AI":
+            [],
+
+        "DRAM":
+            [],
+
+        "NAND":
+            [],
+
+        "Earnings & Outlook":
+            [],
+
+        "Company Developments":
+            [],
+
     }
 
+
     for item in news_items:
+
         title = (
-            item["title"]
+            item[
+                "title"
+            ]
             .lower()
         )
 
+
         assigned = False
 
+
         if any(
+
             word in title
-            for word in [
+
+            for word
+
+            in [
+
                 "hbm",
+
                 "high bandwidth",
+
                 "ai",
+
                 "data center",
+
                 "datacenter",
+
                 "nvidia",
+
                 "accelerator",
+
             ]
+
         ):
+
             categories[
                 "HBM & AI"
             ].append(
@@ -704,14 +992,25 @@ def classify_news(news_items):
 
             assigned = True
 
+
         if any(
+
             word in title
-            for word in [
+
+            for word
+
+            in [
+
                 "dram",
+
                 "memory price",
+
                 "memory pricing",
+
             ]
+
         ):
+
             categories[
                 "DRAM"
             ].append(
@@ -720,7 +1019,9 @@ def classify_news(news_items):
 
             assigned = True
 
+
         if "nand" in title:
+
             categories[
                 "NAND"
             ].append(
@@ -729,19 +1030,35 @@ def classify_news(news_items):
 
             assigned = True
 
+
         if any(
+
             word in title
-            for word in [
+
+            for word
+
+            in [
+
                 "earnings",
+
                 "revenue",
+
                 "profit",
+
                 "guidance",
+
                 "forecast",
+
                 "outlook",
+
                 "quarter",
+
                 "results",
+
             ]
+
         ):
+
             categories[
                 "Earnings & Outlook"
             ].append(
@@ -750,12 +1067,15 @@ def classify_news(news_items):
 
             assigned = True
 
+
         if not assigned:
+
             categories[
                 "Company Developments"
             ].append(
                 item
             )
+
 
     return categories
 
@@ -768,6 +1088,7 @@ def create_chart(
     history,
     technical,
 ):
+
     plt.figure(
         figsize=(
             12,
@@ -775,69 +1096,112 @@ def create_chart(
         )
     )
 
-    plt.plot(
-        history.index,
-        history["Close"],
-        linewidth=2,
-        label="MU Price",
-    )
 
     plt.plot(
+
         history.index,
+
+        history[
+            "Close"
+        ],
+
+        linewidth=2,
+
+        label="MU Price",
+
+    )
+
+
+    plt.plot(
+
+        history.index,
+
         technical[
             "ma20_series"
         ],
+
         linewidth=1,
+
         label="20 Day MA",
+
     )
 
+
     plt.plot(
+
         history.index,
+
         technical[
             "ma50_series"
         ],
+
         linewidth=1,
+
         label="50 Day MA",
+
     )
 
+
     plt.plot(
+
         history.index,
+
         technical[
             "ma200_series"
         ],
+
         linewidth=1,
+
         label="200 Day MA",
+
     )
+
 
     plt.title(
         "Micron Technology · 1 Year Price Trend"
     )
 
+
     plt.ylabel(
         "Price (USD)"
     )
 
+
     plt.legend()
+
 
     plt.grid(
         alpha=0.2
     )
 
+
     plt.tight_layout()
+
 
     buffer = io.BytesIO()
 
+
     plt.savefig(
+
         buffer,
+
         format="png",
+
         dpi=140,
+
     )
+
 
     plt.close()
 
-    buffer.seek(0)
+
+    buffer.seek(
+        0
+    )
+
 
     return (
+
         base64
         .b64encode(
             buffer.read()
@@ -845,6 +1209,7 @@ def create_chart(
         .decode(
             "utf-8"
         )
+
     )
 
 
@@ -852,7 +1217,10 @@ def create_chart(
 # SCORE DESCRIPTION
 # ============================================================
 
-def score_description(score):
+def score_description(
+    score,
+):
+
     if score >= 80:
         return "STRONG"
 
@@ -874,158 +1242,275 @@ def score_description(score):
 
 def create_investment_view(
     technical,
-    momentum,
     fundamentals,
     analysts,
 ):
-    bull_points = []
-    bear_points = []
-    watch_points = []
 
-    if technical[
-        "price"
-    ] > technical[
-        "ma200"
-    ]:
+    bull_points = []
+
+    bear_points = []
+
+
+    if (
+
+        technical[
+            "price"
+        ]
+
+        >
+
+        technical[
+            "ma200"
+        ]
+
+    ):
+
         bull_points.append(
-            "The longer-term price trend remains above the 200-day moving average."
+
+            "The longer-term price trend remains above "
+            "the 200-day moving average."
+
         )
 
     else:
+
         bear_points.append(
-            "The share price is below its 200-day moving average."
+
+            "The share price is below its "
+            "200-day moving average."
+
         )
+
 
     if technical[
         "rsi"
     ] < 30:
+
         bull_points.append(
-            "The stock is currently oversold on RSI, creating potential for a technical rebound."
+
+            "The stock is currently oversold on RSI, "
+            "creating potential for a technical rebound."
+
         )
 
+
     if (
+
         technical[
             "macd"
         ]
+
         >
+
         technical[
             "macd_signal"
         ]
+
     ):
+
         bull_points.append(
-            "MACD currently supports improving short-term momentum."
+
+            "MACD currently supports improving "
+            "short-term momentum."
+
         )
 
     else:
+
         bear_points.append(
-            "MACD remains bearish and indicates weak near-term momentum."
+
+            "MACD remains bearish and indicates "
+            "weak near-term momentum."
+
         )
+
 
     revenue_growth = fundamentals[
         "revenue_growth"
     ]
 
+
     if revenue_growth is not None:
 
         if revenue_growth > 0.20:
+
             bull_points.append(
                 "Revenue growth remains strong."
             )
 
         elif revenue_growth < 0:
+
             bear_points.append(
                 "Revenue growth is currently negative."
             )
+
 
     earnings_growth = fundamentals[
         "earnings_growth"
     ]
 
+
     if earnings_growth is not None:
 
         if earnings_growth > 0.20:
+
             bull_points.append(
                 "Earnings growth remains strong."
             )
 
         elif earnings_growth < 0:
+
             bear_points.append(
                 "Recent earnings growth is negative."
             )
+
 
     gross_margin = fundamentals[
         "gross_margin"
     ]
 
+
     if gross_margin is not None:
 
         if gross_margin >= 0.40:
+
             bull_points.append(
                 "Gross margins are at a healthy level."
             )
 
         elif gross_margin < 0.25:
+
             bear_points.append(
                 "Gross margins remain relatively weak."
             )
+
 
     forward_pe = fundamentals[
         "forward_pe"
     ]
 
+
     if forward_pe is not None:
 
         if forward_pe <= 18:
+
             bull_points.append(
-                "Forward valuation appears reasonable relative to expected earnings."
+
+                "Forward valuation appears reasonable "
+                "relative to expected earnings."
+
             )
 
         elif forward_pe > 35:
+
             bear_points.append(
+
                 "The forward valuation appears demanding."
+
             )
+
 
     analyst_upside = analysts[
         "upside"
     ]
 
+
     if analyst_upside is not None:
 
         if analyst_upside > 0.20:
+
             bull_points.append(
-                "The analyst consensus target indicates significant potential upside."
+
+                "The analyst consensus target indicates "
+                "significant potential upside."
+
             )
 
         elif analyst_upside < -0.10:
+
             bear_points.append(
-                "The share price is above the current analyst consensus target."
+
+                "The share price is above the current "
+                "analyst consensus target."
+
             )
 
+
     watch_points = [
-        "HBM demand and Micron's ability to increase high-bandwidth memory supply.",
-        "Micron's competitive position in HBM relative to SK hynix and Samsung.",
-        "DRAM contract pricing and overall memory industry supply discipline.",
-        "NAND pricing and demand recovery.",
-        "AI data-center capital spending by major hyperscale customers.",
-        "Gross margin improvement and manufacturing cost reductions.",
-        "Customer concentration and changes in demand from major AI accelerator platforms.",
-        "Future earnings guidance and analyst earnings estimate revisions.",
+
+        (
+            "HBM demand and Micron's ability to increase "
+            "high-bandwidth memory supply."
+        ),
+
+        (
+            "Micron's competitive position in HBM relative "
+            "to SK hynix and Samsung."
+        ),
+
+        (
+            "DRAM contract pricing and overall memory "
+            "industry supply discipline."
+        ),
+
+        (
+            "NAND pricing and demand recovery."
+        ),
+
+        (
+            "AI data-center capital spending by major "
+            "hyperscale customers."
+        ),
+
+        (
+            "Gross margin improvement and manufacturing "
+            "cost reductions."
+        ),
+
+        (
+            "Customer concentration and changes in demand "
+            "from major AI accelerator platforms."
+        ),
+
+        (
+            "Future earnings guidance and analyst earnings "
+            "estimate revisions."
+        ),
+
     ]
 
+
     if not bull_points:
+
         bull_points.append(
-            "No major quantitative bull factor is currently strong enough to highlight."
+
+            "No major quantitative bull factor is "
+            "currently strong enough to highlight."
+
         )
+
 
     if not bear_points:
+
         bear_points.append(
-            "No major quantitative bear factor is currently strong enough to highlight."
+
+            "No major quantitative bear factor is "
+            "currently strong enough to highlight."
+
         )
 
+
     return {
-        "bull_points": bull_points,
-        "bear_points": bear_points,
-        "watch_points": watch_points,
+
+        "bull_points":
+            bull_points,
+
+        "bear_points":
+            bear_points,
+
+        "watch_points":
+            watch_points,
+
     }
 
 
@@ -1033,29 +1518,52 @@ def create_investment_view(
 # HTML HELPERS
 # ============================================================
 
-def bullet_list(items):
+def bullet_list(
+    items,
+):
+
     return "".join(
-        f"<li>{escape_text(item)}</li>"
-        for item in items
+
+        f"""
+        <li>
+            {escape_text(item)}
+        </li>
+        """
+
+        for item
+
+        in items
+
     )
 
 
-def news_cards(news_items):
+def news_cards(
+    news_items,
+):
+
     if not news_items:
+
         return """
+
         <div class="muted">
             No relevant headlines were returned.
         </div>
+
         """
+
 
     output = ""
 
-    for item in news_items[:8]:
+
+    for item in news_items[
+        :8
+    ]:
 
         output += f"""
+
         <a
             class="news-item"
-            href="{escape_text(item['url'])}"
+            href="{escape_text(item["url"])}"
             target="_blank"
             rel="noopener noreferrer"
         >
@@ -1064,84 +1572,136 @@ def news_cards(news_items):
                 {escape_text(item["title"])}
             </div>
 
-            <div class="news-source">
+            <div class="news-publisher">
                 {escape_text(item["publisher"])}
             </div>
 
         </a>
+
         """
+
 
     return output
 
 
-def intelligence_cards(categories):
+def intelligence_cards(
+    categories,
+):
+
     output = ""
 
-    for category, items in categories.items():
+
+    for (
+        category,
+        items,
+    ) in categories.items():
+
 
         output += f"""
-        <div class="intel-card">
 
-            <div class="intel-title">
+        <div class="intelligence-card">
+
+            <div class="intelligence-title">
                 {escape_text(category)}
             </div>
+
         """
+
 
         if not items:
 
             output += """
-            <div class="muted">
+
+            <div class="muted small">
                 No major headline detected.
             </div>
+
             """
+
 
         else:
 
-            for item in items[:3]:
+            for item in items[
+                :3
+            ]:
 
                 output += f"""
+
                 <a
-                    class="intel-item"
-                    href="{escape_text(item['url'])}"
+                    class="intelligence-link"
+                    href="{escape_text(item["url"])}"
                     target="_blank"
                     rel="noopener noreferrer"
                 >
+
                     {escape_text(item["title"])}
+
                 </a>
+
                 """
 
+
         output += """
+
         </div>
+
         """
+
 
     return output
 
 
-def score_component_rows(components):
+def score_component_rows(
+    components,
+):
+
     if not components:
+
         return """
+
         <div class="muted">
             Fundamental component data is currently unavailable.
         </div>
+
         """
+
 
     output = ""
 
-    for name, score in components.items():
+
+    for (
+        name,
+        score,
+    ) in components.items():
+
+
+        display_score = (
+
+            "N/A"
+
+            if score is None
+
+            else score
+
+        )
+
 
         output += f"""
+
         <div class="component-row">
 
-            <div>
+            <span>
                 {escape_text(name)}
-            </div>
+            </span>
 
-            <div class="component-score">
-                {score}
-            </div>
+            <strong>
+                {display_score}
+            </strong>
 
         </div>
+
         """
+
 
     return output
 
@@ -1156,27 +1716,46 @@ def main():
         "Downloading Micron market data..."
     )
 
+
     stock = yf.Ticker(
         TICKER
     )
 
+
     history = stock.history(
+
         period="1y",
+
         interval="1d",
+
         auto_adjust=False,
+
     )
 
+
     if history.empty:
+
         raise RuntimeError(
             "No market data returned for MU."
         )
 
-    info = stock.info or {}
+
+    info = (
+        stock.info
+        or
+        {}
+    )
 
 
     # ========================================================
-    # SHARED SCORING ENGINE
-    # Keeps the Micron report and main dashboard consistent
+    # SHARED SECTOR-SPECIFIC SCORING ENGINE
+    #
+    # Micron is scored using the Semiconductor model:
+    #
+    # Technical      20%
+    # Momentum       25%
+    # Fundamentals   40%
+    # Valuation      15%
     # ========================================================
 
     shared_technical, shared_rsi = (
@@ -1185,17 +1764,24 @@ def main():
         )
     )
 
+
     shared_momentum = (
         shared_momentum_score(
             history
         )
     )
 
+
     shared_fundamental_data = (
         shared_fundamental_score(
-            info
+
+            info,
+
+            sector=SECTOR,
+
         )
     )
+
 
     shared_fundamental = (
         shared_fundamental_data[
@@ -1203,20 +1789,34 @@ def main():
         ]
     )
 
+
     shared_valuation = (
         shared_valuation_score(
-            info
+
+            info,
+
+            sector=SECTOR,
+
         )
     )
 
+
     shared_overall = (
         shared_overall_score(
+
             shared_technical,
+
             shared_momentum,
+
             shared_fundamental,
+
             shared_valuation,
+
+            sector=SECTOR,
+
         )
     )
+
 
     shared_overall_rating = (
         shared_rating(
@@ -1233,39 +1833,55 @@ def main():
         history
     )
 
+
     momentum = analyze_momentum(
         history
     )
+
 
     fundamentals = analyze_fundamentals(
         info
     )
 
+
     analysts = analyze_analysts(
+
         info,
+
         technical[
             "price"
         ],
+
     )
+
 
     news_items = get_news(
         stock
     )
 
+
     news_categories = classify_news(
         news_items
     )
 
+
     investment_view = create_investment_view(
+
         technical,
-        momentum,
+
         fundamentals,
+
         analysts,
+
     )
 
+
     chart_base64 = create_chart(
+
         history,
+
         technical,
+
     )
 
 
@@ -1277,37 +1893,43 @@ def main():
         "score"
     ] = shared_technical
 
+
     momentum[
         "score"
     ] = shared_momentum
+
 
     fundamentals[
         "score"
     ] = shared_fundamental
 
+
     fundamentals[
         "components"
     ] = shared_fundamental_data[
         "components"
     ]
 
+
     fundamentals[
         "data_quality"
     ] = shared_fundamental_data[
         "data_quality"
     ]
+
 
     overall_score = (
         shared_overall
     )
+
 
     overall_rating = (
         shared_overall_rating
     )
 
 
-    # Short-term view still focuses on
-    # technical and momentum factors.
+    # Short-term view:
+    # technical + momentum.
 
     short_term_score = round(
 
@@ -1321,6 +1943,7 @@ def main():
 
     )
 
+
     short_term_rating = (
         shared_rating(
             short_term_score
@@ -1328,8 +1951,9 @@ def main():
     )
 
 
-    # Long-term view uses the same fundamentals
-    # and valuation model as the scanner.
+    # Long-term view:
+    # semiconductor fundamentals,
+    # valuation and technical trend.
 
     long_term_score = round(
 
@@ -1348,6 +1972,7 @@ def main():
 
     )
 
+
     long_term_rating = (
         shared_rating(
             long_term_score
@@ -1359,24 +1984,38 @@ def main():
         "Close"
     ]
 
+
     price = float(
         close.iloc[-1]
     )
+
 
     previous_close = float(
         close.iloc[-2]
     )
 
+
     daily_change = (
         price
-        - previous_close
+        -
+        previous_close
     )
 
+
     daily_change_pct = (
+
         daily_change
-        / previous_close
-        * 100
+
+        /
+
+        previous_close
+
+        *
+
+        100
+
     )
+
 
     low_52 = float(
         history[
@@ -1384,16 +2023,18 @@ def main():
         ].min()
     )
 
+
     high_52 = float(
         history[
             "High"
         ].max()
     )
 
-    recent_60 = (
-        history
-        .tail(60)
+
+    recent_60 = history.tail(
+        60
     )
+
 
     support = float(
         recent_60[
@@ -1401,22 +2042,37 @@ def main():
         ].min()
     )
 
+
     resistance = float(
         recent_60[
             "High"
         ].max()
     )
 
+
     updated = datetime.now(
-        timezone.utc
+
+        ZoneInfo(
+            "Asia/Singapore"
+        )
+
     ).strftime(
-        "%d %B %Y, %H:%M UTC"
+
+        "%d %B %Y, %H:%M SGT"
+
     )
 
+
     price_change_class = (
+
         "positive"
+
         if daily_change >= 0
-        else "negative"
+
+        else
+
+        "negative"
+
     )
 
 
@@ -1452,18 +2108,28 @@ body {{
 }}
 
 .container {{
-    width: min(1280px, 94%);
-    margin: 0 auto;
-    padding: 28px 0 60px;
+    width: min(1220px, 94%);
+    margin: auto;
+    padding: 30px 0 60px;
+}}
+
+.back {{
+    color: #68b9ff;
+    text-decoration: none;
+    font-size: 13px;
+}}
+
+.header {{
+    margin-top: 25px;
 }}
 
 .title {{
-    font-size: 35px;
+    font-size: 38px;
     font-weight: 800;
 }}
 
 .subtitle {{
-    color: #91a9c8;
+    color: #8ca5c4;
     margin-top: 6px;
 }}
 
@@ -1471,120 +2137,158 @@ body {{
     background: #111e31;
     border: 1px solid #263c5b;
     border-radius: 16px;
-    padding: 21px;
+    padding: 22px;
 }}
 
 .section {{
     margin-top: 20px;
 }}
 
-.hero {{
+.grid {{
     display: grid;
     grid-template-columns:
-        repeat(auto-fit, minmax(220px, 1fr));
+        repeat(auto-fit, minmax(200px, 1fr));
     gap: 14px;
-    margin-top: 25px;
+}}
+
+.hero {{
+    margin-top: 24px;
+}}
+
+.metric {{
+    background: #0b1728;
+    border-radius: 12px;
+    padding: 18px;
 }}
 
 .label {{
+    color: #8ba4c3;
     font-size: 11px;
-    color: #91a8c6;
     text-transform: uppercase;
-    letter-spacing: 0.8px;
 }}
 
 .big {{
-    font-size: 37px;
+    font-size: 32px;
     font-weight: 800;
     margin-top: 8px;
 }}
 
-.rating {{
-    font-size: 27px;
+.section-title {{
+    font-size: 22px;
     font-weight: 800;
-    margin-top: 8px;
-    color: #62b8ff;
+    margin-bottom: 16px;
 }}
 
 .small {{
-    color: #96abc5;
-    margin-top: 5px;
+    font-size: 12px;
+}}
+
+.muted {{
+    color: #8ca5c4;
 }}
 
 .positive {{
-    color: #4fe2a0;
+    color: #51e0a0;
 }}
 
 .negative {{
     color: #ff7183;
 }}
 
-.section-title {{
-    font-size: 21px;
+.model-badge {{
+    display: inline-block;
+    margin-top: 10px;
+    padding: 6px 9px;
+    border-radius: 7px;
+    background: rgba(86,184,255,0.15);
+    color: #66bdff;
+    font-size: 11px;
     font-weight: 800;
-    margin-bottom: 16px;
 }}
 
-.view-grid {{
+.score-grid {{
     display: grid;
     grid-template-columns:
-        repeat(auto-fit, minmax(250px, 1fr));
-    gap: 13px;
+        repeat(4, 1fr);
+    gap: 14px;
 }}
 
-.view-card {{
-    background: #0b1728;
-    border-radius: 13px;
-    padding: 18px;
-}}
-
-.view-score {{
-    font-size: 30px;
+.score-number {{
+    font-size: 28px;
     font-weight: 800;
-    margin-top: 7px;
+    margin-top: 8px;
 }}
 
-.grid {{
-    display: grid;
-    grid-template-columns:
-        repeat(auto-fit, minmax(170px, 1fr));
-    gap: 12px;
-}}
-
-.metric {{
-    background: #0b1728;
-    padding: 15px;
-    border-radius: 12px;
-}}
-
-.metric-name {{
-    color: #8ca4c2;
-    font-size: 12px;
-}}
-
-.metric-value {{
+.score-description {{
     margin-top: 6px;
-    font-size: 20px;
-    font-weight: 700;
+    color: #7f99b9;
+    font-size: 12px;
 }}
 
 .chart {{
     width: 100%;
+    border-radius: 12px;
     display: block;
-    border-radius: 11px;
 }}
 
-.two-column {{
+.component-row {{
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 10px 0;
+    border-bottom: 1px solid #243850;
+    color: #a9bdd4;
+    font-size: 13px;
+}}
+
+.component-row:last-child {{
+    border-bottom: none;
+}}
+
+.intelligence-grid {{
     display: grid;
     grid-template-columns:
-        repeat(auto-fit, minmax(320px, 1fr));
-    gap: 17px;
+        repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
 }}
 
-.case-title {{
-    font-size: 18px;
+.intelligence-card {{
+    background: #0b1728;
+    border-radius: 12px;
+    padding: 16px;
+}}
+
+.intelligence-title {{
     font-weight: 800;
-    margin-bottom: 13px;
+    margin-bottom: 10px;
+}}
+
+.intelligence-link {{
+    display: block;
+    color: #9fc7ed;
+    text-decoration: none;
+    padding: 8px 0;
+    font-size: 12px;
+    line-height: 1.4;
+    border-bottom: 1px solid #223650;
+}}
+
+.news-item {{
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    padding: 13px 0;
+    border-bottom: 1px solid #263a55;
+}}
+
+.news-title {{
+    font-weight: 700;
+}}
+
+.news-publisher {{
+    color: #718baa;
+    font-size: 11px;
+    margin-top: 5px;
 }}
 
 ul {{
@@ -1593,93 +2297,39 @@ ul {{
 }}
 
 li {{
-    margin-bottom: 11px;
-    line-height: 1.45;
-    color: #cbd9e9;
-}}
-
-.intel-grid {{
-    display: grid;
-    grid-template-columns:
-        repeat(auto-fit, minmax(230px, 1fr));
-    gap: 13px;
-}}
-
-.intel-card {{
-    background: #0b1728;
-    border-radius: 13px;
-    padding: 17px;
-}}
-
-.intel-title {{
-    font-weight: 800;
-    font-size: 16px;
-    margin-bottom: 12px;
-    color: #62b8ff;
-}}
-
-.intel-item {{
-    display: block;
-    color: #d2dfef;
-    text-decoration: none;
-    padding: 9px 0;
-    border-bottom: 1px solid #243852;
-    line-height: 1.4;
-}}
-
-.intel-item:last-child {{
-    border-bottom: none;
-}}
-
-.news-item {{
-    display: block;
-    color: inherit;
-    text-decoration: none;
-    padding: 14px 0;
-    border-bottom: 1px solid #263a55;
-}}
-
-.news-title {{
-    font-weight: 650;
-    line-height: 1.4;
-}}
-
-.news-source {{
-    color: #8099b8;
-    font-size: 12px;
-    margin-top: 5px;
-}}
-
-.component-row {{
-    display: flex;
-    justify-content: space-between;
-    padding: 11px 0;
-    border-bottom: 1px solid #263953;
-    color: #cbd9e9;
-}}
-
-.component-score {{
-    font-weight: 800;
-    color: #62b8ff;
-}}
-
-.muted {{
-    color: #7f98b7;
-    line-height: 1.4;
-}}
-
-.disclaimer {{
-    margin-top: 25px;
-    color: #7189a8;
-    font-size: 12px;
+    margin: 9px 0;
+    color: #b2c4d8;
     line-height: 1.5;
 }}
 
 .footer {{
     text-align: center;
-    color: #7189a8;
+    color: #6f88a8;
+    margin-top: 30px;
     font-size: 12px;
-    margin-top: 25px;
+    line-height: 1.6;
+}}
+
+@media (
+    max-width: 800px
+) {{
+
+    .score-grid {{
+        grid-template-columns:
+            repeat(2, 1fr);
+    }}
+
+}}
+
+@media (
+    max-width: 520px
+) {{
+
+    .score-grid {{
+        grid-template-columns:
+            1fr;
+    }}
+
 }}
 
 </style>
@@ -1691,16 +2341,32 @@ li {{
 <div class="container">
 
 
-<div class="title">
-    V Stock Intelligence
+<a
+    class="back"
+    href="../"
+>
+    ← Back to Market Dashboard
+</a>
+
+
+<div class="header">
+
+    <div class="title">
+        V Stock Intelligence
+    </div>
+
+    <div class="subtitle">
+        Micron Technology · NASDAQ: MU
+    </div>
+
+    <div class="model-badge">
+        Scoring Model: Semiconductor
+    </div>
+
 </div>
 
-<div class="subtitle">
-    Micron Technology · NASDAQ: MU
-</div>
 
-
-<div class="hero">
+<div class="grid hero">
 
 
 <div class="card">
@@ -1714,8 +2380,15 @@ li {{
     </div>
 
     <div class="{price_change_class}">
+
         {daily_change:+,.2f}
-        ({daily_change_pct:+.2f}%)
+
+        (
+
+        {daily_change_pct:+.2f}%
+
+        )
+
     </div>
 
 </div>
@@ -1727,13 +2400,12 @@ li {{
         Overall Investment View
     </div>
 
-    <div class="rating">
-        {overall_rating}
+    <div class="big">
+        {overall_score}/100
     </div>
 
-    <div class="small">
-        Score:
-        {overall_score}/100
+    <div>
+        {overall_rating}
     </div>
 
 </div>
@@ -1745,17 +2417,20 @@ li {{
         Analyst Consensus
     </div>
 
-    <div class="rating">
+    <div class="big">
         {escape_text(
             analysts["recommendation"]
         )}
     </div>
 
-    <div class="small">
+    <div class="muted">
+
         Target:
+
         {format_money(
             analysts["mean_target"]
         )}
+
     </div>
 
 </div>
@@ -1768,12 +2443,14 @@ li {{
     </div>
 
     <div class="big">
+
         {format_percent(
             analysts["upside"]
         )}
+
     </div>
 
-    <div class="small">
+    <div class="muted">
         Consensus price target
     </div>
 
@@ -1785,628 +2462,756 @@ li {{
 
 <div class="card section">
 
-<div class="section-title">
-    Investment Time Horizon
-</div>
-
-<div class="view-grid">
-
-
-<div class="view-card">
-
-    <div class="label">
-        Short-Term View
+    <div class="section-title">
+        Investment Time Horizon
     </div>
 
-    <div class="view-score">
-        {short_term_score}/100
+    <div class="grid">
+
+
+        <div class="metric">
+
+            <div class="label">
+                Short-Term View
+            </div>
+
+            <div class="big">
+                {short_term_score}/100
+            </div>
+
+            <div>
+                {short_term_rating}
+            </div>
+
+            <div class="score-description">
+                Technical + price momentum
+            </div>
+
+        </div>
+
+
+        <div class="metric">
+
+            <div class="label">
+                Long-Term Investment View
+            </div>
+
+            <div class="big">
+                {long_term_score}/100
+            </div>
+
+            <div>
+                {long_term_rating}
+            </div>
+
+            <div class="score-description">
+                Semiconductor fundamentals + valuation + trend
+            </div>
+
+        </div>
+
+
+        <div class="metric">
+
+            <div class="label">
+                Overall View
+            </div>
+
+            <div class="big">
+                {overall_score}/100
+            </div>
+
+            <div>
+                {overall_rating}
+            </div>
+
+            <div class="score-description">
+                Same Semiconductor model as the market dashboard
+            </div>
+
+        </div>
+
+
     </div>
-
-    <div class="rating">
-        {short_term_rating}
-    </div>
-
-    <div class="small">
-        Technical + price momentum
-    </div>
-
-</div>
-
-
-<div class="view-card">
-
-    <div class="label">
-        Long-Term Investment View
-    </div>
-
-    <div class="view-score">
-        {long_term_score}/100
-    </div>
-
-    <div class="rating">
-        {long_term_rating}
-    </div>
-
-    <div class="small">
-        Fundamentals + valuation + trend
-    </div>
-
-</div>
-
-
-<div class="view-card">
-
-    <div class="label">
-        Overall View
-    </div>
-
-    <div class="view-score">
-        {overall_score}/100
-    </div>
-
-    <div class="rating">
-        {overall_rating}
-    </div>
-
-    <div class="small">
-        Same scoring model as market dashboard
-    </div>
-
-</div>
-
-
-</div>
 
 </div>
 
 
 <div class="card section">
 
-<div class="section-title">
-    Core Investment Scores
-</div>
-
-<div class="grid">
-
-
-<div class="metric">
-
-    <div class="metric-name">
-        Technical
+    <div class="section-title">
+        Core Investment Scores
     </div>
 
-    <div class="metric-value">
-        {shared_technical}/100
+    <div class="score-grid">
+
+
+        <div class="metric">
+
+            <div class="label">
+                Technical · 20%
+            </div>
+
+            <div class="score-number">
+                {shared_technical}/100
+            </div>
+
+            <div class="score-description">
+
+                {score_description(
+                    shared_technical
+                )}
+
+            </div>
+
+        </div>
+
+
+        <div class="metric">
+
+            <div class="label">
+                Momentum · 25%
+            </div>
+
+            <div class="score-number">
+                {shared_momentum}/100
+            </div>
+
+            <div class="score-description">
+
+                {score_description(
+                    shared_momentum
+                )}
+
+            </div>
+
+        </div>
+
+
+        <div class="metric">
+
+            <div class="label">
+                Fundamentals · 40%
+            </div>
+
+            <div class="score-number">
+                {shared_fundamental}/100
+            </div>
+
+            <div class="score-description">
+
+                {score_description(
+                    shared_fundamental
+                )}
+
+            </div>
+
+        </div>
+
+
+        <div class="metric">
+
+            <div class="label">
+                Valuation · 15%
+            </div>
+
+            <div class="score-number">
+                {shared_valuation}/100
+            </div>
+
+            <div class="score-description">
+
+                {score_description(
+                    shared_valuation
+                )}
+
+            </div>
+
+        </div>
+
+
     </div>
-
-    <div class="small">
-        {score_description(
-            shared_technical
-        )}
-    </div>
-
-</div>
-
-
-<div class="metric">
-
-    <div class="metric-name">
-        Momentum
-    </div>
-
-    <div class="metric-value">
-        {shared_momentum}/100
-    </div>
-
-    <div class="small">
-        {score_description(
-            shared_momentum
-        )}
-    </div>
-
-</div>
-
-
-<div class="metric">
-
-    <div class="metric-name">
-        Fundamentals
-    </div>
-
-    <div class="metric-value">
-        {shared_fundamental}/100
-    </div>
-
-    <div class="small">
-        {score_description(
-            shared_fundamental
-        )}
-    </div>
-
-</div>
-
-
-<div class="metric">
-
-    <div class="metric-name">
-        Valuation
-    </div>
-
-    <div class="metric-value">
-        {shared_valuation}/100
-    </div>
-
-    <div class="small">
-        {score_description(
-            shared_valuation
-        )}
-    </div>
-
-</div>
-
-
-</div>
 
 </div>
 
 
 <div class="card section">
 
-<div class="section-title">
-    Micron Intelligence
+    <div class="section-title">
+        Micron Intelligence
+    </div>
+
+    <div class="intelligence-grid">
+
+        {intelligence_cards(
+            news_categories
+        )}
+
+    </div>
+
 </div>
 
-<div class="intel-grid">
 
-    {intelligence_cards(
-        news_categories
+<div class="card section">
+
+    <div class="section-title">
+        Micron Price Trend
+    </div>
+
+    <img
+        class="chart"
+        src="
+            data:image/png;base64,
+            {chart_base64}
+        "
+        alt="
+            Micron one-year price chart
+        "
+    >
+
+</div>
+
+
+<div class="card section">
+
+    <div class="section-title">
+        Fundamental Snapshot
+    </div>
+
+    <div class="grid">
+
+
+        <div class="metric">
+
+            <div class="label">
+                Market Cap
+            </div>
+
+            <div class="score-number">
+                {format_large_number(
+                    fundamentals["market_cap"]
+                )}
+            </div>
+
+        </div>
+
+
+        <div class="metric">
+
+            <div class="label">
+                Forward P/E
+            </div>
+
+            <div class="score-number">
+                {format_ratio(
+                    fundamentals["forward_pe"]
+                )}
+            </div>
+
+        </div>
+
+
+        <div class="metric">
+
+            <div class="label">
+                PEG Ratio
+            </div>
+
+            <div class="score-number">
+                {format_ratio(
+                    fundamentals["peg_ratio"]
+                )}
+            </div>
+
+        </div>
+
+
+        <div class="metric">
+
+            <div class="label">
+                Price / Sales
+            </div>
+
+            <div class="score-number">
+                {format_ratio(
+                    fundamentals["price_to_sales"]
+                )}
+            </div>
+
+        </div>
+
+
+        <div class="metric">
+
+            <div class="label">
+                Revenue Growth
+            </div>
+
+            <div class="score-number">
+                {format_percent(
+                    fundamentals["revenue_growth"]
+                )}
+            </div>
+
+        </div>
+
+
+        <div class="metric">
+
+            <div class="label">
+                Earnings Growth
+            </div>
+
+            <div class="score-number">
+                {format_percent(
+                    fundamentals["earnings_growth"]
+                )}
+            </div>
+
+        </div>
+
+
+        <div class="metric">
+
+            <div class="label">
+                Gross Margin
+            </div>
+
+            <div class="score-number">
+
+                {format_percent(
+
+                    fundamentals[
+                        "gross_margin"
+                    ],
+
+                    signed=False,
+
+                )}
+
+            </div>
+
+        </div>
+
+
+        <div class="metric">
+
+            <div class="label">
+                Operating Margin
+            </div>
+
+            <div class="score-number">
+
+                {format_percent(
+
+                    fundamentals[
+                        "operating_margin"
+                    ],
+
+                    signed=False,
+
+                )}
+
+            </div>
+
+        </div>
+
+
+        <div class="metric">
+
+            <div class="label">
+                Return on Equity
+            </div>
+
+            <div class="score-number">
+
+                {format_percent(
+
+                    fundamentals[
+                        "return_on_equity"
+                    ],
+
+                    signed=False,
+
+                )}
+
+            </div>
+
+        </div>
+
+
+        <div class="metric">
+
+            <div class="label">
+                Debt / Equity
+            </div>
+
+            <div class="score-number">
+
+                {format_ratio(
+                    fundamentals[
+                        "debt_to_equity"
+                    ]
+                )}
+
+            </div>
+
+        </div>
+
+
+        <div class="metric">
+
+            <div class="label">
+                Current Ratio
+            </div>
+
+            <div class="score-number">
+
+                {format_ratio(
+                    fundamentals[
+                        "current_ratio"
+                    ]
+                )}
+
+            </div>
+
+        </div>
+
+
+        <div class="metric">
+
+            <div class="label">
+                Price / Book
+            </div>
+
+            <div class="score-number">
+
+                {format_ratio(
+                    fundamentals[
+                        "price_to_book"
+                    ]
+                )}
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+<div class="card section">
+
+    <div class="section-title">
+        Semiconductor Fundamental Score Breakdown
+    </div>
+
+    {score_component_rows(
+        fundamentals[
+            "components"
+        ]
     )}
 
 </div>
 
-</div>
-
 
 <div class="card section">
 
-<div class="section-title">
-    Micron Price Trend
-</div>
+    <div class="section-title">
+        Technical & Momentum
+    </div>
 
-<img
-    class="chart"
-    src="data:image/png;base64,{chart_base64}"
-    alt="Micron price chart"
->
+    <div class="grid">
 
-</div>
 
+        <div class="metric">
 
-<div class="card section">
+            <div class="label">
+                RSI
+            </div>
 
-<div class="section-title">
-    Fundamental Snapshot
-</div>
+            <div class="score-number">
+                {technical["rsi"]:.1f}
+            </div>
 
-<div class="grid">
+        </div>
 
 
-<div class="metric">
-<div class="metric-name">
-Market Cap
-</div>
-<div class="metric-value">
-{format_large_number(
-fundamentals["market_cap"]
-)}
-</div>
-</div>
+        <div class="metric">
 
+            <div class="label">
+                20 Day MA
+            </div>
 
-<div class="metric">
-<div class="metric-name">
-Trailing P/E
-</div>
-<div class="metric-value">
-{format_ratio(
-fundamentals["trailing_pe"]
-)}
-</div>
-</div>
+            <div class="score-number">
+                {format_money(
+                    technical["ma20"]
+                )}
+            </div>
 
+        </div>
 
-<div class="metric">
-<div class="metric-name">
-Forward P/E
-</div>
-<div class="metric-value">
-{format_ratio(
-fundamentals["forward_pe"]
-)}
-</div>
-</div>
 
+        <div class="metric">
 
-<div class="metric">
-<div class="metric-name">
-EPS
-</div>
-<div class="metric-value">
-{format_money(
-fundamentals["eps"]
-)}
-</div>
-</div>
+            <div class="label">
+                50 Day MA
+            </div>
 
+            <div class="score-number">
+                {format_money(
+                    technical["ma50"]
+                )}
+            </div>
 
-<div class="metric">
-<div class="metric-name">
-Revenue Growth
-</div>
-<div class="metric-value">
-{format_percent(
-fundamentals["revenue_growth"]
-)}
-</div>
-</div>
+        </div>
 
 
-<div class="metric">
-<div class="metric-name">
-Earnings Growth
-</div>
-<div class="metric-value">
-{format_percent(
-fundamentals["earnings_growth"]
-)}
-</div>
-</div>
+        <div class="metric">
 
+            <div class="label">
+                200 Day MA
+            </div>
 
-<div class="metric">
-<div class="metric-name">
-Gross Margin
-</div>
-<div class="metric-value">
-{format_percent(
-fundamentals["gross_margin"],
-signed=False
-)}
-</div>
-</div>
+            <div class="score-number">
+                {format_money(
+                    technical["ma200"]
+                )}
+            </div>
 
+        </div>
 
-<div class="metric">
-<div class="metric-name">
-Operating Margin
-</div>
-<div class="metric-value">
-{format_percent(
-fundamentals["operating_margin"],
-signed=False
-)}
-</div>
-</div>
 
+        <div class="metric">
 
-<div class="metric">
-<div class="metric-name">
-Return on Equity
-</div>
-<div class="metric-value">
-{format_percent(
-fundamentals["return_on_equity"],
-signed=False
-)}
-</div>
-</div>
+            <div class="label">
+                1 Week
+            </div>
 
+            <div class="score-number">
 
-<div class="metric">
-<div class="metric-name">
-Debt / Equity
-</div>
-<div class="metric-value">
-{format_ratio(
-fundamentals["debt_to_equity"]
-)}
-</div>
-</div>
+                {format_percent(
+                    momentum["week_1"]
+                )}
 
+            </div>
 
-<div class="metric">
-<div class="metric-name">
-Current Ratio
-</div>
-<div class="metric-value">
-{format_ratio(
-fundamentals["current_ratio"]
-)}
-</div>
-</div>
+        </div>
 
 
-<div class="metric">
-<div class="metric-name">
-Price / Book
-</div>
-<div class="metric-value">
-{format_ratio(
-fundamentals["price_to_book"]
-)}
-</div>
-</div>
+        <div class="metric">
 
+            <div class="label">
+                1 Month
+            </div>
 
-</div>
+            <div class="score-number">
 
-</div>
+                {format_percent(
+                    momentum["month_1"]
+                )}
 
+            </div>
 
-<div class="card section">
+        </div>
 
-<div class="section-title">
-    Fundamental Score Breakdown
-</div>
 
-{score_component_rows(
-    fundamentals[
-        "components"
-    ]
-)}
+        <div class="metric">
 
-</div>
+            <div class="label">
+                3 Months
+            </div>
 
+            <div class="score-number">
 
-<div class="card section">
+                {format_percent(
+                    momentum["month_3"]
+                )}
 
-<div class="section-title">
-    Technical & Momentum
-</div>
+            </div>
 
-<div class="grid">
+        </div>
 
 
-<div class="metric">
-<div class="metric-name">
-RSI
-</div>
-<div class="metric-value">
-{technical["rsi"]:.1f}
-</div>
-</div>
+        <div class="metric">
 
+            <div class="label">
+                6 Months
+            </div>
 
-<div class="metric">
-<div class="metric-name">
-20 Day MA
-</div>
-<div class="metric-value">
-{format_money(
-technical["ma20"]
-)}
-</div>
-</div>
+            <div class="score-number">
 
+                {format_percent(
+                    momentum["month_6"]
+                )}
 
-<div class="metric">
-<div class="metric-name">
-50 Day MA
-</div>
-<div class="metric-value">
-{format_money(
-technical["ma50"]
-)}
-</div>
-</div>
+            </div>
 
+        </div>
 
-<div class="metric">
-<div class="metric-name">
-200 Day MA
-</div>
-<div class="metric-value">
-{format_money(
-technical["ma200"]
-)}
-</div>
-</div>
 
+        <div class="metric">
 
-<div class="metric">
-<div class="metric-name">
-1 Week
-</div>
-<div class="metric-value">
-{format_percent(
-momentum["week_1"]
-)}
-</div>
-</div>
+            <div class="label">
+                Support
+            </div>
 
+            <div class="score-number">
+                {format_money(
+                    support
+                )}
+            </div>
 
-<div class="metric">
-<div class="metric-name">
-1 Month
-</div>
-<div class="metric-value">
-{format_percent(
-momentum["month_1"]
-)}
-</div>
-</div>
+        </div>
 
 
-<div class="metric">
-<div class="metric-name">
-3 Months
-</div>
-<div class="metric-value">
-{format_percent(
-momentum["month_3"]
-)}
-</div>
-</div>
+        <div class="metric">
 
+            <div class="label">
+                Resistance
+            </div>
 
-<div class="metric">
-<div class="metric-name">
-6 Months
-</div>
-<div class="metric-value">
-{format_percent(
-momentum["month_6"]
-)}
-</div>
-</div>
+            <div class="score-number">
+                {format_money(
+                    resistance
+                )}
+            </div>
 
+        </div>
 
-<div class="metric">
-<div class="metric-name">
-Support
-</div>
-<div class="metric-value">
-{format_money(
-support
-)}
-</div>
-</div>
 
+        <div class="metric">
 
-<div class="metric">
-<div class="metric-name">
-Resistance
-</div>
-<div class="metric-value">
-{format_money(
-resistance
-)}
-</div>
-</div>
+            <div class="label">
+                52 Week Low
+            </div>
 
+            <div class="score-number">
+                {format_money(
+                    low_52
+                )}
+            </div>
 
-<div class="metric">
-<div class="metric-name">
-52 Week Low
-</div>
-<div class="metric-value">
-{format_money(
-low_52
-)}
-</div>
-</div>
+        </div>
 
 
-<div class="metric">
-<div class="metric-name">
-52 Week High
-</div>
-<div class="metric-value">
-{format_money(
-high_52
-)}
-</div>
-</div>
+        <div class="metric">
 
+            <div class="label">
+                52 Week High
+            </div>
 
-</div>
+            <div class="score-number">
+                {format_money(
+                    high_52
+                )}
+            </div>
+
+        </div>
+
+
+    </div>
 
 </div>
 
 
-<div class="section two-column">
+<div class="grid section">
 
 
 <div class="card">
 
-<div class="case-title">
-    Bull Case
-</div>
+    <div class="section-title">
+        Bull Case
+    </div>
 
-<ul>
+    <ul>
 
-{bullet_list(
-investment_view[
-"bull_points"
-]
-)}
+        {bullet_list(
+            investment_view[
+                "bull_points"
+            ]
+        )}
 
-</ul>
+    </ul>
 
 </div>
 
 
 <div class="card">
 
-<div class="case-title">
-    Bear Case
-</div>
+    <div class="section-title">
+        Bear Case
+    </div>
 
-<ul>
+    <ul>
 
-{bullet_list(
-investment_view[
-"bear_points"
-]
-)}
+        {bullet_list(
+            investment_view[
+                "bear_points"
+            ]
+        )}
 
-</ul>
-
-</div>
-
+    </ul>
 
 </div>
 
-
-<div class="card section">
-
-<div class="section-title">
-    What I Would Watch
-</div>
-
-<ul>
-
-{bullet_list(
-investment_view[
-"watch_points"
-]
-)}
-
-</ul>
 
 </div>
 
 
 <div class="card section">
 
-<div class="section-title">
-    Latest Micron Headlines
+    <div class="section-title">
+        What I Would Watch
+    </div>
+
+    <ul>
+
+        {bullet_list(
+            investment_view[
+                "watch_points"
+            ]
+        )}
+
+    </ul>
+
 </div>
 
-{news_cards(
-news_items
-)}
 
-</div>
+<div class="card section">
 
+    <div class="section-title">
+        Latest Micron Headlines
+    </div>
 
-<div class="disclaimer">
-
-This dashboard is an automated research tool.
-The main market dashboard and Micron report now use
-the same technical, momentum, fundamental and valuation
-scoring engine. Fundamental scores are capped at 95/100
-using the current basic scoring model. Analyst targets are
-displayed for information but do not determine the overall
-market scanner score.
+    {news_cards(
+        news_items
+    )}
 
 </div>
 
 
 <div class="footer">
 
-Last updated:
-{updated}
+    This report uses the Semiconductor-specific
+    V Stock Intelligence scoring model.
+
+    <br>
+
+    Technical 20% · Momentum 25% ·
+    Fundamentals 40% · Valuation 15%.
+
+    <br><br>
+
+    Analyst targets are displayed for information
+    but do not determine the dashboard score.
+
+    <br><br>
+
+    Last updated:
+    {updated}
 
 </div>
 
@@ -2418,34 +3223,52 @@ Last updated:
 </html>
 """
 
+
     output_folder = Path(
         "docs"
     )
+
 
     output_folder.mkdir(
         exist_ok=True
     )
 
+
     output_file = (
         output_folder
-        / "index.html"
+        /
+        "index.html"
     )
+
 
     output_file.write_text(
+
         page,
+
         encoding="utf-8",
+
     )
 
-    print(
-        "Micron investment dashboard generated successfully."
-    )
 
     print(
-        f"Shared overall score: "
+
+        "Micron investment dashboard "
+        "generated successfully."
+
+    )
+
+
+    print(
+
+        f"Semiconductor model overall score: "
+
         f"{overall_score}/100 "
+
         f"{overall_rating}"
+
     )
 
 
 if __name__ == "__main__":
+
     main()
