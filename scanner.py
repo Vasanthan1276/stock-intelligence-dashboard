@@ -13,142 +13,418 @@ from scoring import (
 US_STOCKS = {
 
     # Semiconductors
-    "MU": "Micron Technology",
-    "NVDA": "NVIDIA",
-    "AMD": "Advanced Micro Devices",
-    "AVGO": "Broadcom",
-    "QCOM": "Qualcomm",
-    "TXN": "Texas Instruments",
-    "INTC": "Intel",
-    "AMAT": "Applied Materials",
-    "LRCX": "Lam Research",
-    "KLAC": "KLA",
-    "TSM": "TSMC",
-    "ASML": "ASML",
+    "MU": {
+        "name": "Micron Technology",
+        "sector": "Semiconductors",
+    },
+    "NVDA": {
+        "name": "NVIDIA",
+        "sector": "Semiconductors",
+    },
+    "AMD": {
+        "name": "Advanced Micro Devices",
+        "sector": "Semiconductors",
+    },
+    "AVGO": {
+        "name": "Broadcom",
+        "sector": "Semiconductors",
+    },
+    "QCOM": {
+        "name": "Qualcomm",
+        "sector": "Semiconductors",
+    },
+    "TXN": {
+        "name": "Texas Instruments",
+        "sector": "Semiconductors",
+    },
+    "INTC": {
+        "name": "Intel",
+        "sector": "Semiconductors",
+    },
+    "AMAT": {
+        "name": "Applied Materials",
+        "sector": "Semiconductor Equipment",
+    },
+    "LRCX": {
+        "name": "Lam Research",
+        "sector": "Semiconductor Equipment",
+    },
+    "KLAC": {
+        "name": "KLA",
+        "sector": "Semiconductor Equipment",
+    },
+    "TSM": {
+        "name": "TSMC",
+        "sector": "Semiconductors",
+    },
+    "ASML": {
+        "name": "ASML",
+        "sector": "Semiconductor Equipment",
+    },
 
-    # Large Technology
-    "AAPL": "Apple",
-    "MSFT": "Microsoft",
-    "GOOGL": "Alphabet",
-    "AMZN": "Amazon",
-    "META": "Meta Platforms",
-    "ORCL": "Oracle",
-    "CRM": "Salesforce",
-    "ADBE": "Adobe",
+    # Technology
+    "AAPL": {
+        "name": "Apple",
+        "sector": "Technology",
+    },
+    "MSFT": {
+        "name": "Microsoft",
+        "sector": "Technology",
+    },
+    "GOOGL": {
+        "name": "Alphabet",
+        "sector": "Communication Services",
+    },
+    "AMZN": {
+        "name": "Amazon",
+        "sector": "Consumer / Technology",
+    },
+    "META": {
+        "name": "Meta Platforms",
+        "sector": "Communication Services",
+    },
+    "ORCL": {
+        "name": "Oracle",
+        "sector": "Technology",
+    },
+    "CRM": {
+        "name": "Salesforce",
+        "sector": "Technology",
+    },
+    "ADBE": {
+        "name": "Adobe",
+        "sector": "Technology",
+    },
 
     # Financials
-    "JPM": "JPMorgan Chase",
-    "BAC": "Bank of America",
-    "GS": "Goldman Sachs",
-    "MS": "Morgan Stanley",
-    "V": "Visa",
-    "MA": "Mastercard",
-    "AXP": "American Express",
-    "BLK": "BlackRock",
+    "JPM": {
+        "name": "JPMorgan Chase",
+        "sector": "Financials",
+    },
+    "BAC": {
+        "name": "Bank of America",
+        "sector": "Financials",
+    },
+    "GS": {
+        "name": "Goldman Sachs",
+        "sector": "Financials",
+    },
+    "MS": {
+        "name": "Morgan Stanley",
+        "sector": "Financials",
+    },
+    "V": {
+        "name": "Visa",
+        "sector": "Financials",
+    },
+    "MA": {
+        "name": "Mastercard",
+        "sector": "Financials",
+    },
+    "AXP": {
+        "name": "American Express",
+        "sector": "Financials",
+    },
+    "BLK": {
+        "name": "BlackRock",
+        "sector": "Financials",
+    },
 
     # Healthcare
-    "LLY": "Eli Lilly",
-    "UNH": "UnitedHealth",
-    "JNJ": "Johnson & Johnson",
-    "ABBV": "AbbVie",
-    "MRK": "Merck",
-    "TMO": "Thermo Fisher Scientific",
+    "LLY": {
+        "name": "Eli Lilly",
+        "sector": "Healthcare",
+    },
+    "UNH": {
+        "name": "UnitedHealth",
+        "sector": "Healthcare",
+    },
+    "JNJ": {
+        "name": "Johnson & Johnson",
+        "sector": "Healthcare",
+    },
+    "ABBV": {
+        "name": "AbbVie",
+        "sector": "Healthcare",
+    },
+    "MRK": {
+        "name": "Merck",
+        "sector": "Healthcare",
+    },
+    "TMO": {
+        "name": "Thermo Fisher Scientific",
+        "sector": "Healthcare",
+    },
 
     # Consumer
-    "COST": "Costco",
-    "WMT": "Walmart",
-    "HD": "Home Depot",
-    "MCD": "McDonald's",
-    "NKE": "Nike",
-    "SBUX": "Starbucks",
-    "PG": "Procter & Gamble",
-    "KO": "Coca-Cola",
+    "COST": {
+        "name": "Costco",
+        "sector": "Consumer",
+    },
+    "WMT": {
+        "name": "Walmart",
+        "sector": "Consumer",
+    },
+    "HD": {
+        "name": "Home Depot",
+        "sector": "Consumer",
+    },
+    "MCD": {
+        "name": "McDonald's",
+        "sector": "Consumer",
+    },
+    "NKE": {
+        "name": "Nike",
+        "sector": "Consumer",
+    },
+    "SBUX": {
+        "name": "Starbucks",
+        "sector": "Consumer",
+    },
+    "PG": {
+        "name": "Procter & Gamble",
+        "sector": "Consumer Staples",
+    },
+    "KO": {
+        "name": "Coca-Cola",
+        "sector": "Consumer Staples",
+    },
 
     # Industrials
-    "CAT": "Caterpillar",
-    "GE": "GE Aerospace",
-    "HON": "Honeywell",
-    "RTX": "RTX",
-    "BA": "Boeing",
-    "DE": "Deere",
-    "UPS": "UPS",
+    "CAT": {
+        "name": "Caterpillar",
+        "sector": "Industrials",
+    },
+    "GE": {
+        "name": "GE Aerospace",
+        "sector": "Industrials",
+    },
+    "HON": {
+        "name": "Honeywell",
+        "sector": "Industrials",
+    },
+    "RTX": {
+        "name": "RTX",
+        "sector": "Industrials",
+    },
+    "BA": {
+        "name": "Boeing",
+        "sector": "Industrials",
+    },
+    "DE": {
+        "name": "Deere",
+        "sector": "Industrials",
+    },
+    "UPS": {
+        "name": "UPS",
+        "sector": "Industrials",
+    },
 
     # Energy
-    "XOM": "Exxon Mobil",
-    "CVX": "Chevron",
-    "COP": "ConocoPhillips",
-    "SLB": "SLB",
+    "XOM": {
+        "name": "Exxon Mobil",
+        "sector": "Energy",
+    },
+    "CVX": {
+        "name": "Chevron",
+        "sector": "Energy",
+    },
+    "COP": {
+        "name": "ConocoPhillips",
+        "sector": "Energy",
+    },
+    "SLB": {
+        "name": "SLB",
+        "sector": "Energy",
+    },
 
-    # Communication / Media
-    "NFLX": "Netflix",
-    "DIS": "Walt Disney",
-    "TMUS": "T-Mobile",
-    "VZ": "Verizon",
+    # Media / Telecom
+    "NFLX": {
+        "name": "Netflix",
+        "sector": "Communication Services",
+    },
+    "DIS": {
+        "name": "Walt Disney",
+        "sector": "Communication Services",
+    },
+    "TMUS": {
+        "name": "T-Mobile",
+        "sector": "Communication Services",
+    },
+    "VZ": {
+        "name": "Verizon",
+        "sector": "Communication Services",
+    },
 
-    # Other Growth / High Interest
-    "TSLA": "Tesla",
-    "PLTR": "Palantir",
-    "UBER": "Uber",
-    "SHOP": "Shopify",
+    # Growth
+    "TSLA": {
+        "name": "Tesla",
+        "sector": "Consumer / Technology",
+    },
+    "PLTR": {
+        "name": "Palantir",
+        "sector": "Technology",
+    },
+    "UBER": {
+        "name": "Uber",
+        "sector": "Technology",
+    },
+    "SHOP": {
+        "name": "Shopify",
+        "sector": "Technology",
+    },
 }
 
 
 SINGAPORE_STOCKS = {
 
     # Banks
-    "D05.SI": "DBS Group",
-    "O39.SI": "OCBC",
-    "U11.SI": "UOB",
+    "D05.SI": {
+        "name": "DBS Group",
+        "sector": "Banks",
+    },
+    "O39.SI": {
+        "name": "OCBC",
+        "sector": "Banks",
+    },
+    "U11.SI": {
+        "name": "UOB",
+        "sector": "Banks",
+    },
 
     # Telecom
-    "Z74.SI": "Singtel",
-    "CC3.SI": "StarHub",
+    "Z74.SI": {
+        "name": "Singtel",
+        "sector": "Telecom",
+    },
+    "CC3.SI": {
+        "name": "StarHub",
+        "sector": "Telecom",
+    },
 
     # Industrials
-    "BN4.SI": "Keppel",
-    "U96.SI": "Sembcorp Industries",
-    "S63.SI": "ST Engineering",
-    "5E2.SI": "Seatrium",
-    "BS6.SI": "Yangzijiang Shipbuilding",
+    "BN4.SI": {
+        "name": "Keppel",
+        "sector": "Industrials",
+    },
+    "U96.SI": {
+        "name": "Sembcorp Industries",
+        "sector": "Industrials",
+    },
+    "S63.SI": {
+        "name": "ST Engineering",
+        "sector": "Industrials",
+    },
+    "5E2.SI": {
+        "name": "Seatrium",
+        "sector": "Industrials",
+    },
+    "BS6.SI": {
+        "name": "Yangzijiang Shipbuilding",
+        "sector": "Industrials",
+    },
 
     # Transport
-    "C6L.SI": "Singapore Airlines",
-    "S58.SI": "SATS",
-    "C52.SI": "ComfortDelGro",
+    "C6L.SI": {
+        "name": "Singapore Airlines",
+        "sector": "Transport",
+    },
+    "S58.SI": {
+        "name": "SATS",
+        "sector": "Transport",
+    },
+    "C52.SI": {
+        "name": "ComfortDelGro",
+        "sector": "Transport",
+    },
 
-    # Exchange / Financial Services
-    "S68.SI": "Singapore Exchange",
-    "AIY.SI": "iFAST",
+    # Financial Services
+    "S68.SI": {
+        "name": "Singapore Exchange",
+        "sector": "Financial Services",
+    },
+    "AIY.SI": {
+        "name": "iFAST",
+        "sector": "Financial Services",
+    },
 
     # REITs
-    "C38U.SI": "CapitaLand Integrated Commercial Trust",
-    "A17U.SI": "CapitaLand Ascendas REIT",
-    "M44U.SI": "Mapletree Logistics Trust",
-    "N2IU.SI": "Mapletree Pan Asia Commercial Trust",
-    "ME8U.SI": "Mapletree Industrial Trust",
-    "AJBU.SI": "Keppel DC REIT",
-    "J69U.SI": "Frasers Centrepoint Trust",
+    "C38U.SI": {
+        "name": "CapitaLand Integrated Commercial Trust",
+        "sector": "REIT",
+    },
+    "A17U.SI": {
+        "name": "CapitaLand Ascendas REIT",
+        "sector": "REIT",
+    },
+    "M44U.SI": {
+        "name": "Mapletree Logistics Trust",
+        "sector": "REIT",
+    },
+    "N2IU.SI": {
+        "name": "Mapletree Pan Asia Commercial Trust",
+        "sector": "REIT",
+    },
+    "ME8U.SI": {
+        "name": "Mapletree Industrial Trust",
+        "sector": "REIT",
+    },
+    "AJBU.SI": {
+        "name": "Keppel DC REIT",
+        "sector": "REIT",
+    },
+    "J69U.SI": {
+        "name": "Frasers Centrepoint Trust",
+        "sector": "REIT",
+    },
 
     # Property
-    "9CI.SI": "CapitaLand Investment",
-    "U14.SI": "UOL Group",
-    "H78.SI": "Hongkong Land",
-    "F34.SI": "Wilmar International",
+    "9CI.SI": {
+        "name": "CapitaLand Investment",
+        "sector": "Property",
+    },
+    "U14.SI": {
+        "name": "UOL Group",
+        "sector": "Property",
+    },
+    "H78.SI": {
+        "name": "Hongkong Land",
+        "sector": "Property",
+    },
 
-    # Consumer / Defensive
-    "D01.SI": "DFI Retail Group",
-    "C07.SI": "Jardine Cycle & Carriage",
-    "Y92.SI": "Thai Beverage",
+    # Consumer
+    "F34.SI": {
+        "name": "Wilmar International",
+        "sector": "Consumer",
+    },
+    "D01.SI": {
+        "name": "DFI Retail Group",
+        "sector": "Consumer",
+    },
+    "C07.SI": {
+        "name": "Jardine Cycle & Carriage",
+        "sector": "Consumer",
+    },
+    "Y92.SI": {
+        "name": "Thai Beverage",
+        "sector": "Consumer",
+    },
 
-    # Conglomerates / Others
-    "J36.SI": "Jardine Matheson",
-    "G13.SI": "Genting Singapore",
+    # Others
+    "J36.SI": {
+        "name": "Jardine Matheson",
+        "sector": "Conglomerate",
+    },
+    "G13.SI": {
+        "name": "Genting Singapore",
+        "sector": "Consumer / Leisure",
+    },
 }
 
 
 def analyze_stock(
     ticker,
-    name,
+    metadata,
     market,
 ):
     try:
@@ -166,60 +442,53 @@ def analyze_stock(
         if history.empty:
             return None
 
-
         info = (
             stock.info
             or {}
         )
 
-
         close = history[
             "Close"
         ]
-
 
         price = float(
             close.iloc[-1]
         )
 
-
         previous_price = float(
             close.iloc[-2]
         )
 
-
         daily_change = (
-
             price
             / previous_price
-
         ) - 1
 
-
-        technical, rsi = technical_score(
-            history
+        technical, rsi = (
+            technical_score(
+                history
+            )
         )
-
 
         momentum = momentum_score(
             history
         )
 
-
-        fundamental_data = fundamental_score(
-            info
+        fundamental_data = (
+            fundamental_score(
+                info
+            )
         )
 
-
-        fundamental = fundamental_data[
-            "score"
-        ]
-
+        fundamental = (
+            fundamental_data[
+                "score"
+            ]
+        )
 
         valuation = valuation_score(
             info
         )
-
 
         final_score = overall_score(
             technical,
@@ -228,12 +497,66 @@ def analyze_stock(
             valuation,
         )
 
+        data_quality = (
+            fundamental_data[
+                "data_quality"
+            ]
+        )
+
+        data_quality_pct = min(
+            round(
+                data_quality
+            ),
+            100,
+        )
+
+        balance_score = round(
+            (
+                technical
+                +
+                momentum
+                +
+                fundamental
+                +
+                valuation
+            )
+            / 4
+        )
+
+        score_spread = (
+            max(
+                technical,
+                momentum,
+                fundamental,
+                valuation,
+            )
+            -
+            min(
+                technical,
+                momentum,
+                fundamental,
+                valuation,
+            )
+        )
+
+        balanced_score = round(
+            balance_score
+            -
+            score_spread
+            * 0.15
+        )
 
         return {
 
             "ticker": ticker,
 
-            "name": name,
+            "name": metadata[
+                "name"
+            ],
+
+            "sector": metadata[
+                "sector"
+            ],
 
             "market": market,
 
@@ -251,6 +574,9 @@ def analyze_stock(
 
             "overall": final_score,
 
+            "balanced_score":
+                balanced_score,
+
             "rating": rating(
                 final_score
             ),
@@ -258,12 +584,9 @@ def analyze_stock(
             "rsi": rsi,
 
             "data_quality":
-                fundamental_data[
-                    "data_quality"
-                ],
+                data_quality_pct,
 
         }
-
 
     except Exception as error:
 
@@ -283,20 +606,17 @@ def scan_market(
 
     results = []
 
-
-    for ticker, name in stocks.items():
+    for ticker, metadata in stocks.items():
 
         print(
             f"Scanning {ticker}..."
         )
 
-
         result = analyze_stock(
             ticker,
-            name,
+            metadata,
             market,
         )
-
 
         if result:
 
@@ -304,16 +624,13 @@ def scan_market(
                 result
             )
 
-
     results.sort(
-
         key=lambda stock:
-            stock["overall"],
-
+            stock[
+                "overall"
+            ],
         reverse=True,
-
     )
-
 
     return results
 
@@ -325,21 +642,14 @@ def run_scanner():
         "US",
     )
 
-
     singapore_results = scan_market(
         SINGAPORE_STOCKS,
         "Singapore",
     )
 
-
     return {
-
-        "us":
-            us_results,
-
-        "singapore":
-            singapore_results,
-
+        "us": us_results,
+        "singapore": singapore_results,
     }
 
 
@@ -347,42 +657,48 @@ if __name__ == "__main__":
 
     data = run_scanner()
 
-
     print(
         "\nTop US stocks:"
     )
-
 
     for stock in data[
         "us"
     ][:10]:
 
         print(
-
-            stock["ticker"],
-
-            stock["overall"],
-
-            stock["rating"],
-
+            stock[
+                "ticker"
+            ],
+            stock[
+                "overall"
+            ],
+            stock[
+                "rating"
+            ],
+            stock[
+                "sector"
+            ],
         )
-
 
     print(
         "\nTop Singapore stocks:"
     )
-
 
     for stock in data[
         "singapore"
     ][:10]:
 
         print(
-
-            stock["ticker"],
-
-            stock["overall"],
-
-            stock["rating"],
-
+            stock[
+                "ticker"
+            ],
+            stock[
+                "overall"
+            ],
+            stock[
+                "rating"
+            ],
+            stock[
+                "sector"
+            ],
         )
