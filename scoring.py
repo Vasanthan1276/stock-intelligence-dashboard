@@ -1,5 +1,11 @@
 import math
 
+import pandas as pd
+
+
+# ============================================================
+# BASIC HELPERS
+# ============================================================
 
 def safe_number(value):
     try:
@@ -17,7 +23,11 @@ def safe_number(value):
         return None
 
 
-def clamp(value, minimum=0, maximum=100):
+def clamp(
+    value,
+    minimum=0,
+    maximum=100,
+):
     return max(
         minimum,
         min(
@@ -27,606 +37,2011 @@ def clamp(value, minimum=0, maximum=100):
     )
 
 
-def calculate_rsi(series, period=14):
-    delta = series.diff()
+# ============================================================
+# SCORING MODEL SELECTION
+# ============================================================
 
-    gains = delta.clip(lower=0)
-    losses = -delta.clip(upper=0)
+def scoring_model_name(sector):
 
-    average_gain = gains.ewm(
-        alpha=1 / period,
-        min_periods=period,
-        adjust=False,
-    ).mean()
+    sector_value = (
+        sector
+        or ""
+    ).lower()
 
-    average_loss = losses.ewm(
-        alpha=1 / period,
-        min_periods=period,
-        adjust=False,
-    ).mean()
 
-    rs = average_gain / average_loss
+    if sector_value == "banks":
+        return "Bank"
 
-    return 100 - (
-        100 / (1 + rs)
+
+    if sector_value == "reit":
+        return "REIT"
+
+
+    if (
+        "semiconductor"
+        in sector_value
+    ):
+        return "Semiconductor"
+
+
+    return "General Company"
+
+
+def scoring_weights(sector):
+
+    model = scoring_model_name(
+        sector
     )
 
 
-def calculate_return(close, days):
-    if len(close) <= days:
+    if model == "Bank":
+
+        return {
+            "technical": 0.15,
+            "momentum": 0.15,
+            "fundamental": 0.45,
+            "valuation": 0.25,
+        }
+
+
+    if model == "REIT":
+
+        return {
+            "technical": 0.10,
+            "momentum": 0.10,
+            "fundamental": 0.45,
+            "valuation": 0.35,
+        }
+
+
+    if model == "Semiconductor":
+
+        return {
+            "technical": 0.20,
+            "momentum": 0.25,
+            "fundamental": 0.40,
+            "valuation": 0.15,
+        }
+
+
+    return {
+        "technical": 0.25,
+        "momentum": 0.20,
+        "fundamental": 0.40,
+        "valuation": 0.15,
+    }
+
+
+# ============================================================
+# TECHNICAL INDICATORS
+# ============================================================
+
+def calculate_rsi(
+    close,
+    period=14,
+):
+
+    if (
+        close is None
+        or len(close) <= period
+    ):
         return None
 
-    start = float(
-        close.iloc[-days - 1]
+
+    delta = close.diff()
+
+
+    gains = delta.clip(
+        lower=0
     )
 
-    end = float(
-        close.iloc[-1]
+
+    losses = (
+        -delta.clip(
+            upper=0
+        )
     )
+
+
+    average_gain = gains.rolling(
+        period
+    ).mean()
+
+
+    average_loss = losses.rolling(
+        period
+    ).mean()
+
+
+    latest_gain = safe_number(
+        average_gain.iloc[-1]
+    )
+
+
+    latest_loss = safe_number(
+        average_loss.iloc[-1]
+    )
+
+
+    if (
+        latest_gain is None
+        or latest_loss is None
+    ):
+        return None
+
+
+    if latest_loss == 0:
+        return 100.0
+
+
+    rs = (
+        latest_gain
+        /
+        latest_loss
+    )
+
+
+    rsi = (
+        100
+        -
+        (
+            100
+            /
+            (
+                1
+                +
+                rs
+            )
+        )
+    )
+
+
+    return round(
+        rsi,
+        1,
+    )
+
+
+def calculate_return(
+    history,
+    periods,
+):
+
+    if (
+        history is None
+        or history.empty
+        or len(history) <= periods
+    ):
+        return None
+
+
+    current = safe_number(
+        history[
+            "Close"
+        ].iloc[-1]
+    )
+
+
+    previous = safe_number(
+        history[
+            "Close"
+        ].iloc[
+            -periods - 1
+        ]
+    )
+
+
+    if (
+        current is None
+        or previous is None
+        or previous == 0
+    ):
+        return None
+
 
     return (
-        end / start
+        current
+        /
+        previous
     ) - 1
 
 
-def technical_score(history):
-    close = history["Close"]
+# ============================================================
+# TECHNICAL SCORE
+# ============================================================
 
-    if len(close) < 200:
+def technical_score(history):
+
+    if (
+        history is None
+        or history.empty
+        or len(history) < 30
+    ):
         return 50, None
 
-    price = float(
+
+    close = history[
+        "Close"
+    ]
+
+
+    price = safe_number(
         close.iloc[-1]
     )
 
-    ma20 = float(
+
+    ma20 = safe_number(
         close
         .rolling(20)
         .mean()
         .iloc[-1]
     )
 
-    ma50 = float(
+
+    ma50 = safe_number(
         close
         .rolling(50)
         .mean()
         .iloc[-1]
     )
 
-    ma200 = float(
+
+    ma200 = safe_number(
         close
         .rolling(200)
         .mean()
         .iloc[-1]
     )
 
-    rsi_series = calculate_rsi(
-        close
-    )
-
-    rsi = float(
-        rsi_series.iloc[-1]
-    )
 
     ema12 = close.ewm(
         span=12,
         adjust=False,
     ).mean()
 
+
     ema26 = close.ewm(
         span=26,
         adjust=False,
     ).mean()
 
+
     macd = (
         ema12
-        - ema26
+        -
+        ema26
     )
 
-    macd_signal = macd.ewm(
+
+    signal = macd.ewm(
         span=9,
         adjust=False,
     ).mean()
 
+
+    latest_macd = safe_number(
+        macd.iloc[-1]
+    )
+
+
+    latest_signal = safe_number(
+        signal.iloc[-1]
+    )
+
+
+    rsi = calculate_rsi(
+        close
+    )
+
+
     score = 0
 
-    if price > ma20:
-        score += 15
-
-    if price > ma50:
-        score += 20
-
-    if price > ma200:
-        score += 25
-
-    if ma50 > ma200:
-        score += 10
 
     if (
-        macd.iloc[-1]
-        >
-        macd_signal.iloc[-1]
+        price is not None
+        and ma20 is not None
+        and price > ma20
     ):
         score += 15
 
-    if 40 <= rsi <= 65:
-        score += 15
 
-    elif rsi < 30:
+    if (
+        price is not None
+        and ma50 is not None
+        and price > ma50
+    ):
+        score += 20
+
+
+    if (
+        price is not None
+        and ma200 is not None
+        and price > ma200
+    ):
+        score += 25
+
+
+    if (
+        ma50 is not None
+        and ma200 is not None
+        and ma50 > ma200
+    ):
         score += 10
 
-    elif 30 <= rsi < 40:
-        score += 8
 
-    elif 65 < rsi <= 75:
-        score += 8
+    if (
+        latest_macd is not None
+        and latest_signal is not None
+        and latest_macd > latest_signal
+    ):
+        score += 15
+
+
+    if rsi is not None:
+
+        if 40 <= rsi <= 65:
+            score += 15
+
+        elif rsi < 30:
+            score += 10
+
+        elif 30 <= rsi < 40:
+            score += 8
+
+        elif 65 < rsi <= 75:
+            score += 8
+
 
     return (
-        clamp(
-            round(score)
+        round(
+            clamp(score)
         ),
         rsi,
     )
 
 
+# ============================================================
+# MOMENTUM SCORE
+# ============================================================
+
 def momentum_score(history):
-    close = history["Close"]
 
     periods = [
-        (5, 10),
-        (21, 20),
-        (63, 30),
-        (126, 40),
+
+        (
+            5,
+            10,
+        ),
+
+        (
+            21,
+            20,
+        ),
+
+        (
+            63,
+            30,
+        ),
+
+        (
+            126,
+            40,
+        ),
+
     ]
+
 
     score = 0
 
-    for days, weight in periods:
 
-        value = calculate_return(
-            close,
+    for (
+        days,
+        weight,
+    ) in periods:
+
+        performance = calculate_return(
+            history,
             days,
         )
 
-        if value is None:
+
+        if performance is None:
             continue
 
-        if value > 0.20:
-            score += weight
 
-        elif value > 0.10:
+        if performance > 0.20:
+
             score += (
-                weight * 0.85
+                weight
+                * 1.00
             )
 
-        elif value > 0.03:
+
+        elif performance > 0.10:
+
             score += (
-                weight * 0.70
+                weight
+                * 0.85
             )
 
-        elif value >= 0:
+
+        elif performance > 0.03:
+
             score += (
-                weight * 0.55
+                weight
+                * 0.70
             )
 
-        elif value > -0.05:
+
+        elif performance >= 0:
+
             score += (
-                weight * 0.40
+                weight
+                * 0.55
             )
 
-        elif value > -0.15:
+
+        elif performance > -0.05:
+
             score += (
-                weight * 0.20
+                weight
+                * 0.40
             )
 
-    return clamp(
-        round(score)
+
+        elif performance > -0.15:
+
+            score += (
+                weight
+                * 0.20
+            )
+
+
+    return round(
+        clamp(score)
     )
 
 
-def fundamental_score(info):
-    components = {}
+# ============================================================
+# GENERIC SCORING HELPERS
+# ============================================================
 
-    maximum_points = 0
+def positive_growth_score(
+    value,
+    maximum_points,
+):
 
-    revenue_growth = safe_number(
-        info.get(
-            "revenueGrowth"
+    value = safe_number(
+        value
+    )
+
+
+    if value is None:
+        return None
+
+
+    if value >= 0.30:
+        multiplier = 1.00
+
+    elif value >= 0.15:
+        multiplier = 0.85
+
+    elif value >= 0.05:
+        multiplier = 0.70
+
+    elif value >= 0:
+        multiplier = 0.50
+
+    elif value >= -0.10:
+        multiplier = 0.25
+
+    else:
+        multiplier = 0.05
+
+
+    return (
+        maximum_points
+        *
+        multiplier
+    )
+
+
+def margin_score(
+    value,
+    maximum_points,
+):
+
+    value = safe_number(
+        value
+    )
+
+
+    if value is None:
+        return None
+
+
+    if value >= 0.40:
+        multiplier = 1.00
+
+    elif value >= 0.25:
+        multiplier = 0.85
+
+    elif value >= 0.15:
+        multiplier = 0.70
+
+    elif value >= 0.08:
+        multiplier = 0.50
+
+    elif value > 0:
+        multiplier = 0.30
+
+    else:
+        multiplier = 0.05
+
+
+    return (
+        maximum_points
+        *
+        multiplier
+    )
+
+
+def roe_score(
+    value,
+    maximum_points,
+):
+
+    value = safe_number(
+        value
+    )
+
+
+    if value is None:
+        return None
+
+
+    if value >= 0.25:
+        multiplier = 1.00
+
+    elif value >= 0.15:
+        multiplier = 0.85
+
+    elif value >= 0.10:
+        multiplier = 0.70
+
+    elif value >= 0.05:
+        multiplier = 0.50
+
+    elif value > 0:
+        multiplier = 0.25
+
+    else:
+        multiplier = 0.05
+
+
+    return (
+        maximum_points
+        *
+        multiplier
+    )
+
+
+def roa_score(
+    value,
+    maximum_points,
+):
+
+    value = safe_number(
+        value
+    )
+
+
+    if value is None:
+        return None
+
+
+    if value >= 0.03:
+        multiplier = 1.00
+
+    elif value >= 0.02:
+        multiplier = 0.85
+
+    elif value >= 0.01:
+        multiplier = 0.70
+
+    elif value >= 0.005:
+        multiplier = 0.50
+
+    elif value > 0:
+        multiplier = 0.30
+
+    else:
+        multiplier = 0.05
+
+
+    return (
+        maximum_points
+        *
+        multiplier
+    )
+
+
+def dividend_yield_score(
+    value,
+    maximum_points,
+):
+
+    value = safe_number(
+        value
+    )
+
+
+    if value is None:
+        return None
+
+
+    if value >= 0.06:
+        multiplier = 1.00
+
+    elif value >= 0.04:
+        multiplier = 0.90
+
+    elif value >= 0.025:
+        multiplier = 0.75
+
+    elif value >= 0.01:
+        multiplier = 0.50
+
+    elif value > 0:
+        multiplier = 0.25
+
+    else:
+        multiplier = 0.05
+
+
+    return (
+        maximum_points
+        *
+        multiplier
+    )
+
+
+def debt_score(
+    value,
+    maximum_points,
+):
+
+    value = safe_number(
+        value
+    )
+
+
+    if value is None:
+        return None
+
+
+    if value <= 30:
+        multiplier = 1.00
+
+    elif value <= 60:
+        multiplier = 0.80
+
+    elif value <= 100:
+        multiplier = 0.60
+
+    elif value <= 150:
+        multiplier = 0.35
+
+    else:
+        multiplier = 0.10
+
+
+    return (
+        maximum_points
+        *
+        multiplier
+    )
+
+
+def liquidity_score(
+    value,
+    maximum_points,
+):
+
+    value = safe_number(
+        value
+    )
+
+
+    if value is None:
+        return None
+
+
+    if value >= 2:
+        multiplier = 1.00
+
+    elif value >= 1.5:
+        multiplier = 0.85
+
+    elif value >= 1:
+        multiplier = 0.65
+
+    elif value >= 0.75:
+        multiplier = 0.35
+
+    else:
+        multiplier = 0.10
+
+
+    return (
+        maximum_points
+        *
+        multiplier
+    )
+
+
+def normalize_components(
+    components,
+):
+
+    score = 0
+
+    available_points = 0
+
+    component_results = {}
+
+
+    for (
+        name,
+        result,
+        maximum_points,
+    ) in components:
+
+        if result is None:
+
+            component_results[
+                name
+            ] = None
+
+            continue
+
+
+        score += result
+
+        available_points += (
+            maximum_points
         )
-    )
 
-    earnings_growth = safe_number(
-        info.get(
-            "earningsGrowth"
+
+        component_results[
+            name
+        ] = round(
+            result,
+            1,
         )
-    )
 
-    forward_pe = safe_number(
-        info.get(
-            "forwardPE"
-        )
-    )
 
-    gross_margin = safe_number(
-        info.get(
-            "grossMargins"
-        )
-    )
-
-    operating_margin = safe_number(
-        info.get(
-            "operatingMargins"
-        )
-    )
-
-    roe = safe_number(
-        info.get(
-            "returnOnEquity"
-        )
-    )
-
-    debt_to_equity = safe_number(
-        info.get(
-            "debtToEquity"
-        )
-    )
-
-    current_ratio = safe_number(
-        info.get(
-            "currentRatio"
-        )
-    )
-
-
-    # Revenue growth - 15
-
-    if revenue_growth is not None:
-
-        maximum_points += 15
-
-        if revenue_growth >= 0.40:
-            score = 15
-
-        elif revenue_growth >= 0.20:
-            score = 13
-
-        elif revenue_growth >= 0.10:
-            score = 10
-
-        elif revenue_growth > 0:
-            score = 7
-
-        else:
-            score = 2
-
-        components[
-            "Revenue Growth"
-        ] = score
-
-
-    # Earnings growth - 15
-
-    if earnings_growth is not None:
-
-        maximum_points += 15
-
-        if earnings_growth >= 0.50:
-            score = 15
-
-        elif earnings_growth >= 0.25:
-            score = 13
-
-        elif earnings_growth >= 0.10:
-            score = 10
-
-        elif earnings_growth > 0:
-            score = 7
-
-        else:
-            score = 2
-
-        components[
-            "Earnings Growth"
-        ] = score
-
-
-    # Forward valuation - 15
-
-    if forward_pe is not None:
-
-        maximum_points += 15
-
-        if 0 < forward_pe <= 12:
-            score = 15
-
-        elif forward_pe <= 18:
-            score = 13
-
-        elif forward_pe <= 25:
-            score = 10
-
-        elif forward_pe <= 35:
-            score = 6
-
-        else:
-            score = 2
-
-        components[
-            "Forward Valuation"
-        ] = score
-
-
-    # Gross margin - 15
-
-    if gross_margin is not None:
-
-        maximum_points += 15
-
-        if gross_margin >= 0.50:
-            score = 15
-
-        elif gross_margin >= 0.40:
-            score = 13
-
-        elif gross_margin >= 0.30:
-            score = 10
-
-        elif gross_margin >= 0.20:
-            score = 7
-
-        else:
-            score = 3
-
-        components[
-            "Gross Margin"
-        ] = score
-
-
-    # Operating margin - 10
-
-    if operating_margin is not None:
-
-        maximum_points += 10
-
-        if operating_margin >= 0.30:
-            score = 10
-
-        elif operating_margin >= 0.20:
-            score = 8
-
-        elif operating_margin >= 0.10:
-            score = 6
-
-        elif operating_margin > 0:
-            score = 4
-
-        else:
-            score = 1
-
-        components[
-            "Operating Margin"
-        ] = score
-
-
-    # ROE - 10
-
-    if roe is not None:
-
-        maximum_points += 10
-
-        if roe >= 0.25:
-            score = 10
-
-        elif roe >= 0.15:
-            score = 8
-
-        elif roe >= 0.08:
-            score = 6
-
-        elif roe > 0:
-            score = 4
-
-        else:
-            score = 1
-
-        components[
-            "Return on Equity"
-        ] = score
-
-
-    # Debt - 10
-
-    if debt_to_equity is not None:
-
-        maximum_points += 10
-
-        if debt_to_equity <= 30:
-            score = 10
-
-        elif debt_to_equity <= 60:
-            score = 8
-
-        elif debt_to_equity <= 100:
-            score = 6
-
-        elif debt_to_equity <= 150:
-            score = 4
-
-        else:
-            score = 2
-
-        components[
-            "Balance Sheet"
-        ] = score
-
-
-    # Liquidity - 10
-
-    if current_ratio is not None:
-
-        maximum_points += 10
-
-        if current_ratio >= 2:
-            score = 10
-
-        elif current_ratio >= 1.5:
-            score = 8
-
-        elif current_ratio >= 1:
-            score = 6
-
-        else:
-            score = 2
-
-        components[
-            "Liquidity"
-        ] = score
-
-
-    if maximum_points == 0:
+    if available_points == 0:
 
         return {
             "score": 50,
-            "components": {},
+            "components":
+                component_results,
             "data_quality": 0,
         }
 
 
-    earned_points = sum(
-        components.values()
-    )
+    normalized_score = (
 
+        score
 
-    normalized = round(
+        /
 
-        earned_points
+        available_points
 
-        / maximum_points
+        *
 
-        * 100
+        100
 
-    )
-
-
-    # No stock receives a perfect fundamental
-    # score from these basic metrics alone.
-
-    normalized = min(
-        normalized,
-        95,
-    )
-
-
-    data_quality = round(
-        maximum_points
     )
 
 
     return {
-        "score": normalized,
-        "components": components,
-        "data_quality": data_quality,
+
+        "score":
+
+            round(
+                min(
+                    normalized_score,
+                    95,
+                )
+            ),
+
+
+        "components":
+
+            component_results,
+
+
+        "data_quality":
+
+            round(
+                available_points
+            ),
+
     }
 
 
-def valuation_score(info):
-    forward_pe = safe_number(
-        info.get(
-            "forwardPE"
-        )
+# ============================================================
+# GENERAL COMPANY FUNDAMENTALS
+# ============================================================
+
+def general_fundamental_score(info):
+
+    components = []
+
+
+    components.append((
+
+        "Revenue Growth",
+
+        positive_growth_score(
+
+            info.get(
+                "revenueGrowth"
+            ),
+
+            15,
+
+        ),
+
+        15,
+
+    ))
+
+
+    components.append((
+
+        "Earnings Growth",
+
+        positive_growth_score(
+
+            info.get(
+                "earningsGrowth"
+            ),
+
+            15,
+
+        ),
+
+        15,
+
+    ))
+
+
+    components.append((
+
+        "Forward Valuation",
+
+        forward_pe_component_score(
+
+            info.get(
+                "forwardPE"
+            ),
+
+            15,
+
+        ),
+
+        15,
+
+    ))
+
+
+    components.append((
+
+        "Gross Margin",
+
+        margin_score(
+
+            info.get(
+                "grossMargins"
+            ),
+
+            15,
+
+        ),
+
+        15,
+
+    ))
+
+
+    components.append((
+
+        "Operating Margin",
+
+        margin_score(
+
+            info.get(
+                "operatingMargins"
+            ),
+
+            10,
+
+        ),
+
+        10,
+
+    ))
+
+
+    components.append((
+
+        "Return on Equity",
+
+        roe_score(
+
+            info.get(
+                "returnOnEquity"
+            ),
+
+            10,
+
+        ),
+
+        10,
+
+    ))
+
+
+    components.append((
+
+        "Debt / Equity",
+
+        debt_score(
+
+            info.get(
+                "debtToEquity"
+            ),
+
+            10,
+
+        ),
+
+        10,
+
+    ))
+
+
+    components.append((
+
+        "Liquidity",
+
+        liquidity_score(
+
+            info.get(
+                "currentRatio"
+            ),
+
+            10,
+
+        ),
+
+        10,
+
+    ))
+
+
+    return normalize_components(
+        components
     )
 
-    price_to_book = safe_number(
-        info.get(
-            "priceToBook"
-        )
+
+# ============================================================
+# BANK FUNDAMENTALS
+# ============================================================
+
+def bank_fundamental_score(info):
+
+    components = []
+
+
+    components.append((
+
+        "Return on Equity",
+
+        roe_score(
+
+            info.get(
+                "returnOnEquity"
+            ),
+
+            25,
+
+        ),
+
+        25,
+
+    ))
+
+
+    components.append((
+
+        "Return on Assets",
+
+        roa_score(
+
+            info.get(
+                "returnOnAssets"
+            ),
+
+            15,
+
+        ),
+
+        15,
+
+    ))
+
+
+    components.append((
+
+        "Earnings Growth",
+
+        positive_growth_score(
+
+            info.get(
+                "earningsGrowth"
+            ),
+
+            20,
+
+        ),
+
+        20,
+
+    ))
+
+
+    components.append((
+
+        "Revenue Growth",
+
+        positive_growth_score(
+
+            info.get(
+                "revenueGrowth"
+            ),
+
+            10,
+
+        ),
+
+        10,
+
+    ))
+
+
+    components.append((
+
+        "Profit Margin",
+
+        margin_score(
+
+            info.get(
+                "profitMargins"
+            ),
+
+            20,
+
+        ),
+
+        20,
+
+    ))
+
+
+    components.append((
+
+        "Dividend Yield",
+
+        dividend_yield_score(
+
+            info.get(
+                "dividendYield"
+            ),
+
+            10,
+
+        ),
+
+        10,
+
+    ))
+
+
+    return normalize_components(
+        components
     )
 
-    scores = []
 
-    if forward_pe is not None:
+# ============================================================
+# REIT FUNDAMENTALS
+# ============================================================
 
-        if 0 < forward_pe <= 12:
-            scores.append(90)
+def reit_fundamental_score(info):
 
-        elif forward_pe <= 18:
-            scores.append(80)
-
-        elif forward_pe <= 25:
-            scores.append(65)
-
-        elif forward_pe <= 35:
-            scores.append(45)
-
-        else:
-            scores.append(25)
+    components = []
 
 
-    if price_to_book is not None:
+    components.append((
 
-        if price_to_book <= 1.5:
-            scores.append(85)
+        "Dividend Yield",
 
-        elif price_to_book <= 3:
-            scores.append(70)
+        dividend_yield_score(
 
-        elif price_to_book <= 6:
-            scores.append(50)
+            info.get(
+                "dividendYield"
+            ),
 
-        else:
-            scores.append(30)
+            25,
+
+        ),
+
+        25,
+
+    ))
 
 
-    if not scores:
+    components.append((
+
+        "Revenue Growth",
+
+        positive_growth_score(
+
+            info.get(
+                "revenueGrowth"
+            ),
+
+            15,
+
+        ),
+
+        15,
+
+    ))
+
+
+    components.append((
+
+        "Earnings Growth",
+
+        positive_growth_score(
+
+            info.get(
+                "earningsGrowth"
+            ),
+
+            10,
+
+        ),
+
+        10,
+
+    ))
+
+
+    components.append((
+
+        "Operating Margin",
+
+        margin_score(
+
+            info.get(
+                "operatingMargins"
+            ),
+
+            20,
+
+        ),
+
+        20,
+
+    ))
+
+
+    components.append((
+
+        "Profit Margin",
+
+        margin_score(
+
+            info.get(
+                "profitMargins"
+            ),
+
+            15,
+
+        ),
+
+        15,
+
+    ))
+
+
+    components.append((
+
+        "Return on Assets",
+
+        roa_score(
+
+            info.get(
+                "returnOnAssets"
+            ),
+
+            5,
+
+        ),
+
+        5,
+
+    ))
+
+
+    components.append((
+
+        "Debt / Equity",
+
+        debt_score(
+
+            info.get(
+                "debtToEquity"
+            ),
+
+            10,
+
+        ),
+
+        10,
+
+    ))
+
+
+    return normalize_components(
+        components
+    )
+
+
+# ============================================================
+# SEMICONDUCTOR FUNDAMENTALS
+# ============================================================
+
+def semiconductor_fundamental_score(info):
+
+    components = []
+
+
+    components.append((
+
+        "Revenue Growth",
+
+        positive_growth_score(
+
+            info.get(
+                "revenueGrowth"
+            ),
+
+            20,
+
+        ),
+
+        20,
+
+    ))
+
+
+    components.append((
+
+        "Earnings Growth",
+
+        positive_growth_score(
+
+            info.get(
+                "earningsGrowth"
+            ),
+
+            20,
+
+        ),
+
+        20,
+
+    ))
+
+
+    components.append((
+
+        "Gross Margin",
+
+        margin_score(
+
+            info.get(
+                "grossMargins"
+            ),
+
+            20,
+
+        ),
+
+        20,
+
+    ))
+
+
+    components.append((
+
+        "Operating Margin",
+
+        margin_score(
+
+            info.get(
+                "operatingMargins"
+            ),
+
+            15,
+
+        ),
+
+        15,
+
+    ))
+
+
+    components.append((
+
+        "Return on Equity",
+
+        roe_score(
+
+            info.get(
+                "returnOnEquity"
+            ),
+
+            10,
+
+        ),
+
+        10,
+
+    ))
+
+
+    components.append((
+
+        "Debt / Equity",
+
+        debt_score(
+
+            info.get(
+                "debtToEquity"
+            ),
+
+            10,
+
+        ),
+
+        10,
+
+    ))
+
+
+    components.append((
+
+        "Liquidity",
+
+        liquidity_score(
+
+            info.get(
+                "currentRatio"
+            ),
+
+            5,
+
+        ),
+
+        5,
+
+    ))
+
+
+    return normalize_components(
+        components
+    )
+
+
+# ============================================================
+# FUNDAMENTAL MODEL ROUTER
+# ============================================================
+
+def fundamental_score(
+    info,
+    sector=None,
+):
+
+    model = scoring_model_name(
+        sector
+    )
+
+
+    if model == "Bank":
+
+        return bank_fundamental_score(
+            info
+        )
+
+
+    if model == "REIT":
+
+        return reit_fundamental_score(
+            info
+        )
+
+
+    if model == "Semiconductor":
+
+        return semiconductor_fundamental_score(
+            info
+        )
+
+
+    return general_fundamental_score(
+        info
+    )
+
+
+# ============================================================
+# VALUATION HELPERS
+# ============================================================
+
+def forward_pe_component_score(
+    value,
+    maximum_points,
+):
+
+    value = safe_number(
+        value
+    )
+
+
+    if value is None:
+        return None
+
+
+    if value <= 0:
+        multiplier = 0.10
+
+    elif value <= 12:
+        multiplier = 1.00
+
+    elif value <= 18:
+        multiplier = 0.85
+
+    elif value <= 25:
+        multiplier = 0.70
+
+    elif value <= 35:
+        multiplier = 0.45
+
+    else:
+        multiplier = 0.25
+
+
+    return (
+        maximum_points
+        *
+        multiplier
+    )
+
+
+def price_to_book_component_score(
+    value,
+    maximum_points,
+):
+
+    value = safe_number(
+        value
+    )
+
+
+    if value is None:
+        return None
+
+
+    if value <= 0:
+        multiplier = 0.10
+
+    elif value <= 1:
+        multiplier = 1.00
+
+    elif value <= 1.5:
+        multiplier = 0.90
+
+    elif value <= 3:
+        multiplier = 0.75
+
+    elif value <= 6:
+        multiplier = 0.50
+
+    else:
+        multiplier = 0.25
+
+
+    return (
+        maximum_points
+        *
+        multiplier
+    )
+
+
+def price_to_sales_component_score(
+    value,
+    maximum_points,
+):
+
+    value = safe_number(
+        value
+    )
+
+
+    if value is None:
+        return None
+
+
+    if value <= 1:
+        multiplier = 1.00
+
+    elif value <= 3:
+        multiplier = 0.85
+
+    elif value <= 6:
+        multiplier = 0.65
+
+    elif value <= 10:
+        multiplier = 0.40
+
+    else:
+        multiplier = 0.20
+
+
+    return (
+        maximum_points
+        *
+        multiplier
+    )
+
+
+def peg_component_score(
+    value,
+    maximum_points,
+):
+
+    value = safe_number(
+        value
+    )
+
+
+    if value is None:
+        return None
+
+
+    if value <= 0:
+        multiplier = 0.20
+
+    elif value <= 1:
+        multiplier = 1.00
+
+    elif value <= 1.5:
+        multiplier = 0.85
+
+    elif value <= 2:
+        multiplier = 0.65
+
+    elif value <= 3:
+        multiplier = 0.40
+
+    else:
+        multiplier = 0.20
+
+
+    return (
+        maximum_points
+        *
+        multiplier
+    )
+
+
+def normalized_valuation(
+    components,
+):
+
+    score = 0
+
+    available_points = 0
+
+
+    for (
+        result,
+        maximum_points,
+    ) in components:
+
+        if result is None:
+            continue
+
+
+        score += result
+
+        available_points += (
+            maximum_points
+        )
+
+
+    if available_points == 0:
         return 50
 
 
     return round(
-        sum(scores)
-        / len(scores)
+
+        clamp(
+
+            score
+
+            /
+
+            available_points
+
+            *
+
+            100
+
+        )
+
     )
 
+
+# ============================================================
+# GENERAL VALUATION
+# ============================================================
+
+def general_valuation_score(info):
+
+    return normalized_valuation([
+
+        (
+
+            forward_pe_component_score(
+
+                info.get(
+                    "forwardPE"
+                ),
+
+                60,
+
+            ),
+
+            60,
+
+        ),
+
+        (
+
+            price_to_book_component_score(
+
+                info.get(
+                    "priceToBook"
+                ),
+
+                40,
+
+            ),
+
+            40,
+
+        ),
+
+    ])
+
+
+# ============================================================
+# BANK VALUATION
+# ============================================================
+
+def bank_valuation_score(info):
+
+    return normalized_valuation([
+
+        (
+
+            price_to_book_component_score(
+
+                info.get(
+                    "priceToBook"
+                ),
+
+                45,
+
+            ),
+
+            45,
+
+        ),
+
+        (
+
+            forward_pe_component_score(
+
+                info.get(
+                    "forwardPE"
+                ),
+
+                35,
+
+            ),
+
+            35,
+
+        ),
+
+        (
+
+            dividend_yield_score(
+
+                info.get(
+                    "dividendYield"
+                ),
+
+                20,
+
+            ),
+
+            20,
+
+        ),
+
+    ])
+
+
+# ============================================================
+# REIT VALUATION
+# ============================================================
+
+def reit_valuation_score(info):
+
+    return normalized_valuation([
+
+        (
+
+            price_to_book_component_score(
+
+                info.get(
+                    "priceToBook"
+                ),
+
+                40,
+
+            ),
+
+            40,
+
+        ),
+
+        (
+
+            dividend_yield_score(
+
+                info.get(
+                    "dividendYield"
+                ),
+
+                35,
+
+            ),
+
+            35,
+
+        ),
+
+        (
+
+            forward_pe_component_score(
+
+                info.get(
+                    "forwardPE"
+                ),
+
+                25,
+
+            ),
+
+            25,
+
+        ),
+
+    ])
+
+
+# ============================================================
+# SEMICONDUCTOR VALUATION
+# ============================================================
+
+def semiconductor_valuation_score(info):
+
+    return normalized_valuation([
+
+        (
+
+            forward_pe_component_score(
+
+                info.get(
+                    "forwardPE"
+                ),
+
+                55,
+
+            ),
+
+            55,
+
+        ),
+
+        (
+
+            peg_component_score(
+
+                info.get(
+                    "pegRatio"
+                ),
+
+                25,
+
+            ),
+
+            25,
+
+        ),
+
+        (
+
+            price_to_sales_component_score(
+
+                info.get(
+                    "priceToSalesTrailing12Months"
+                ),
+
+                20,
+
+            ),
+
+            20,
+
+        ),
+
+    ])
+
+
+# ============================================================
+# VALUATION MODEL ROUTER
+# ============================================================
+
+def valuation_score(
+    info,
+    sector=None,
+):
+
+    model = scoring_model_name(
+        sector
+    )
+
+
+    if model == "Bank":
+
+        return bank_valuation_score(
+            info
+        )
+
+
+    if model == "REIT":
+
+        return reit_valuation_score(
+            info
+        )
+
+
+    if model == "Semiconductor":
+
+        return semiconductor_valuation_score(
+            info
+        )
+
+
+    return general_valuation_score(
+        info
+    )
+
+
+# ============================================================
+# OVERALL SCORE
+# ============================================================
 
 def overall_score(
     technical,
     momentum,
     fundamental,
     valuation,
+    sector=None,
 ):
-    return round(
+
+    weights = scoring_weights(
+        sector
+    )
+
+
+    score = (
 
         technical
-        * 0.25
+        *
+        weights[
+            "technical"
+        ]
 
         +
 
         momentum
-        * 0.20
+        *
+        weights[
+            "momentum"
+        ]
 
         +
 
         fundamental
-        * 0.40
+        *
+        weights[
+            "fundamental"
+        ]
 
         +
 
         valuation
-        * 0.15
+        *
+        weights[
+            "valuation"
+        ]
 
     )
 
 
+    return round(
+        clamp(score)
+    )
+
+
+# ============================================================
+# RATING
+# ============================================================
+
 def rating(score):
+
     if score >= 80:
-        return "STRONG BUY"
+        return "Strong Buy"
 
     if score >= 65:
-        return "BUY"
+        return "Buy"
 
     if score >= 50:
-        return "HOLD"
+        return "Hold"
 
     if score >= 35:
-        return "WATCH"
+        return "Watch"
 
-    return "CAUTION"
+    return "Caution"
