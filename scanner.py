@@ -11,45 +11,138 @@ from scoring import (
 
 
 US_STOCKS = {
+
+    # Semiconductors
     "MU": "Micron Technology",
     "NVDA": "NVIDIA",
     "AMD": "Advanced Micro Devices",
+    "AVGO": "Broadcom",
+    "QCOM": "Qualcomm",
+    "TXN": "Texas Instruments",
+    "INTC": "Intel",
+    "AMAT": "Applied Materials",
+    "LRCX": "Lam Research",
+    "KLAC": "KLA",
+    "TSM": "TSMC",
+    "ASML": "ASML",
+
+    # Large Technology
     "AAPL": "Apple",
     "MSFT": "Microsoft",
     "GOOGL": "Alphabet",
     "AMZN": "Amazon",
     "META": "Meta Platforms",
-    "AVGO": "Broadcom",
-    "TSM": "TSMC",
+    "ORCL": "Oracle",
+    "CRM": "Salesforce",
+    "ADBE": "Adobe",
+
+    # Financials
     "JPM": "JPMorgan Chase",
     "BAC": "Bank of America",
+    "GS": "Goldman Sachs",
+    "MS": "Morgan Stanley",
     "V": "Visa",
     "MA": "Mastercard",
-    "XOM": "Exxon Mobil",
-    "CVX": "Chevron",
+    "AXP": "American Express",
+    "BLK": "BlackRock",
+
+    # Healthcare
+    "LLY": "Eli Lilly",
+    "UNH": "UnitedHealth",
+    "JNJ": "Johnson & Johnson",
+    "ABBV": "AbbVie",
+    "MRK": "Merck",
+    "TMO": "Thermo Fisher Scientific",
+
+    # Consumer
+    "COST": "Costco",
+    "WMT": "Walmart",
+    "HD": "Home Depot",
+    "MCD": "McDonald's",
+    "NKE": "Nike",
+    "SBUX": "Starbucks",
+    "PG": "Procter & Gamble",
+    "KO": "Coca-Cola",
+
+    # Industrials
     "CAT": "Caterpillar",
     "GE": "GE Aerospace",
-    "LLY": "Eli Lilly",
-    "COST": "Costco",
+    "HON": "Honeywell",
+    "RTX": "RTX",
+    "BA": "Boeing",
+    "DE": "Deere",
+    "UPS": "UPS",
+
+    # Energy
+    "XOM": "Exxon Mobil",
+    "CVX": "Chevron",
+    "COP": "ConocoPhillips",
+    "SLB": "SLB",
+
+    # Communication / Media
+    "NFLX": "Netflix",
+    "DIS": "Walt Disney",
+    "TMUS": "T-Mobile",
+    "VZ": "Verizon",
+
+    # Other Growth / High Interest
+    "TSLA": "Tesla",
+    "PLTR": "Palantir",
+    "UBER": "Uber",
+    "SHOP": "Shopify",
 }
 
 
 SINGAPORE_STOCKS = {
+
+    # Banks
     "D05.SI": "DBS Group",
     "O39.SI": "OCBC",
     "U11.SI": "UOB",
+
+    # Telecom
     "Z74.SI": "Singtel",
+    "CC3.SI": "StarHub",
+
+    # Industrials
     "BN4.SI": "Keppel",
     "U96.SI": "Sembcorp Industries",
+    "S63.SI": "ST Engineering",
+    "5E2.SI": "Seatrium",
+    "BS6.SI": "Yangzijiang Shipbuilding",
+
+    # Transport
     "C6L.SI": "Singapore Airlines",
+    "S58.SI": "SATS",
+    "C52.SI": "ComfortDelGro",
+
+    # Exchange / Financial Services
     "S68.SI": "Singapore Exchange",
+    "AIY.SI": "iFAST",
+
+    # REITs
     "C38U.SI": "CapitaLand Integrated Commercial Trust",
     "A17U.SI": "CapitaLand Ascendas REIT",
     "M44U.SI": "Mapletree Logistics Trust",
     "N2IU.SI": "Mapletree Pan Asia Commercial Trust",
     "ME8U.SI": "Mapletree Industrial Trust",
-    "J36.SI": "Jardine Matheson",
+    "AJBU.SI": "Keppel DC REIT",
+    "J69U.SI": "Frasers Centrepoint Trust",
+
+    # Property
+    "9CI.SI": "CapitaLand Investment",
+    "U14.SI": "UOL Group",
+    "H78.SI": "Hongkong Land",
     "F34.SI": "Wilmar International",
+
+    # Consumer / Defensive
+    "D01.SI": "DFI Retail Group",
+    "C07.SI": "Jardine Cycle & Carriage",
+    "Y92.SI": "Thai Beverage",
+
+    # Conglomerates / Others
+    "J36.SI": "Jardine Matheson",
+    "G13.SI": "Genting Singapore",
 }
 
 
@@ -262,7 +355,7 @@ if __name__ == "__main__":
 
     for stock in data[
         "us"
-    ][:5]:
+    ][:10]:
 
         print(
 
@@ -282,7 +375,7 @@ if __name__ == "__main__":
 
     for stock in data[
         "singapore"
-    ][:5]:
+    ][:10]:
 
         print(
 
