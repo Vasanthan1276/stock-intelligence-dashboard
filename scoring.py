@@ -1,6 +1,11 @@
 import math
 
-import pandas as pd
+
+# ============================================================
+# MODEL VERSION
+# ============================================================
+
+SCORING_MODEL_VERSION = "v2-sector-specific"
 
 
 # ============================================================
@@ -38,7 +43,7 @@ def clamp(
 
 
 # ============================================================
-# SCORING MODEL SELECTION
+# MODEL SELECTION
 # ============================================================
 
 def scoring_model_name(sector):
@@ -57,10 +62,7 @@ def scoring_model_name(sector):
         return "REIT"
 
 
-    if (
-        "semiconductor"
-        in sector_value
-    ):
+    if "semiconductor" in sector_value:
         return "Semiconductor"
 
 
@@ -87,9 +89,9 @@ def scoring_weights(sector):
     if model == "REIT":
 
         return {
-            "technical": 0.10,
+            "technical": 0.15,
             "momentum": 0.10,
-            "fundamental": 0.45,
+            "fundamental": 0.40,
             "valuation": 0.35,
         }
 
@@ -130,11 +132,9 @@ def calculate_rsi(
 
     delta = close.diff()
 
-
     gains = delta.clip(
         lower=0
     )
-
 
     losses = (
         -delta.clip(
@@ -407,27 +407,10 @@ def technical_score(history):
 def momentum_score(history):
 
     periods = [
-
-        (
-            5,
-            10,
-        ),
-
-        (
-            21,
-            20,
-        ),
-
-        (
-            63,
-            30,
-        ),
-
-        (
-            126,
-            40,
-        ),
-
+        (5, 10),
+        (21, 20),
+        (63, 30),
+        (126, 40),
     ]
 
 
@@ -450,51 +433,22 @@ def momentum_score(history):
 
 
         if performance > 0.20:
-
-            score += (
-                weight
-                * 1.00
-            )
-
+            score += weight * 1.00
 
         elif performance > 0.10:
-
-            score += (
-                weight
-                * 0.85
-            )
-
+            score += weight * 0.85
 
         elif performance > 0.03:
-
-            score += (
-                weight
-                * 0.70
-            )
-
+            score += weight * 0.70
 
         elif performance >= 0:
-
-            score += (
-                weight
-                * 0.55
-            )
-
+            score += weight * 0.55
 
         elif performance > -0.05:
-
-            score += (
-                weight
-                * 0.40
-            )
-
+            score += weight * 0.40
 
         elif performance > -0.15:
-
-            score += (
-                weight
-                * 0.20
-            )
+            score += weight * 0.20
 
 
     return round(
@@ -503,7 +457,7 @@ def momentum_score(history):
 
 
 # ============================================================
-# GENERIC SCORING HELPERS
+# GENERIC COMPONENT SCORING
 # ============================================================
 
 def positive_growth_score(
@@ -586,6 +540,46 @@ def margin_score(
     )
 
 
+def bank_profit_margin_score(
+    value,
+    maximum_points,
+):
+
+    value = safe_number(
+        value
+    )
+
+
+    if value is None:
+        return None
+
+
+    if value >= 0.35:
+        multiplier = 1.00
+
+    elif value >= 0.25:
+        multiplier = 0.85
+
+    elif value >= 0.18:
+        multiplier = 0.70
+
+    elif value >= 0.10:
+        multiplier = 0.45
+
+    elif value > 0:
+        multiplier = 0.25
+
+    else:
+        multiplier = 0.05
+
+
+    return (
+        maximum_points
+        *
+        multiplier
+    )
+
+
 def roe_score(
     value,
     maximum_points,
@@ -614,6 +608,49 @@ def roe_score(
 
     elif value > 0:
         multiplier = 0.25
+
+    else:
+        multiplier = 0.05
+
+
+    return (
+        maximum_points
+        *
+        multiplier
+    )
+
+
+def bank_roe_score(
+    value,
+    maximum_points,
+):
+
+    value = safe_number(
+        value
+    )
+
+
+    if value is None:
+        return None
+
+
+    if value >= 0.20:
+        multiplier = 1.00
+
+    elif value >= 0.15:
+        multiplier = 0.90
+
+    elif value >= 0.12:
+        multiplier = 0.75
+
+    elif value >= 0.09:
+        multiplier = 0.55
+
+    elif value >= 0.06:
+        multiplier = 0.35
+
+    elif value > 0:
+        multiplier = 0.15
 
     else:
         multiplier = 0.05
@@ -666,6 +703,46 @@ def roa_score(
     )
 
 
+def bank_roa_score(
+    value,
+    maximum_points,
+):
+
+    value = safe_number(
+        value
+    )
+
+
+    if value is None:
+        return None
+
+
+    if value >= 0.018:
+        multiplier = 1.00
+
+    elif value >= 0.014:
+        multiplier = 0.85
+
+    elif value >= 0.010:
+        multiplier = 0.70
+
+    elif value >= 0.006:
+        multiplier = 0.45
+
+    elif value > 0:
+        multiplier = 0.20
+
+    else:
+        multiplier = 0.05
+
+
+    return (
+        maximum_points
+        *
+        multiplier
+    )
+
+
 def dividend_yield_score(
     value,
     maximum_points,
@@ -680,20 +757,70 @@ def dividend_yield_score(
         return None
 
 
-    if value >= 0.06:
+    if value >= 0.08:
+        multiplier = 0.75
+
+    elif value >= 0.06:
         multiplier = 1.00
 
     elif value >= 0.04:
         multiplier = 0.90
 
     elif value >= 0.025:
-        multiplier = 0.75
+        multiplier = 0.70
 
     elif value >= 0.01:
-        multiplier = 0.50
+        multiplier = 0.45
 
     elif value > 0:
-        multiplier = 0.25
+        multiplier = 0.20
+
+    else:
+        multiplier = 0.05
+
+
+    return (
+        maximum_points
+        *
+        multiplier
+    )
+
+
+def reit_dividend_yield_score(
+    value,
+    maximum_points,
+):
+
+    value = safe_number(
+        value
+    )
+
+
+    if value is None:
+        return None
+
+
+    # Very high yields can indicate elevated risk,
+    # so the highest yield does not automatically
+    # receive the maximum score.
+
+    if value >= 0.10:
+        multiplier = 0.45
+
+    elif value >= 0.08:
+        multiplier = 0.70
+
+    elif value >= 0.055:
+        multiplier = 1.00
+
+    elif value >= 0.04:
+        multiplier = 0.85
+
+    elif value >= 0.025:
+        multiplier = 0.60
+
+    elif value > 0:
+        multiplier = 0.30
 
     else:
         multiplier = 0.05
@@ -730,6 +857,47 @@ def debt_score(
         multiplier = 0.60
 
     elif value <= 150:
+        multiplier = 0.35
+
+    else:
+        multiplier = 0.10
+
+
+    return (
+        maximum_points
+        *
+        multiplier
+    )
+
+
+def reit_debt_score(
+    value,
+    maximum_points,
+):
+
+    value = safe_number(
+        value
+    )
+
+
+    if value is None:
+        return None
+
+
+    # yfinance debtToEquity is not the same as
+    # regulatory aggregate leverage. This is only
+    # a conservative proxy.
+
+    if value <= 40:
+        multiplier = 1.00
+
+    elif value <= 70:
+        multiplier = 0.80
+
+    elif value <= 100:
+        multiplier = 0.60
+
+    elif value <= 140:
         multiplier = 0.35
 
     else:
@@ -873,635 +1041,7 @@ def normalize_components(
 
 
 # ============================================================
-# GENERAL COMPANY FUNDAMENTALS
-# ============================================================
-
-def general_fundamental_score(info):
-
-    components = []
-
-
-    components.append((
-
-        "Revenue Growth",
-
-        positive_growth_score(
-
-            info.get(
-                "revenueGrowth"
-            ),
-
-            15,
-
-        ),
-
-        15,
-
-    ))
-
-
-    components.append((
-
-        "Earnings Growth",
-
-        positive_growth_score(
-
-            info.get(
-                "earningsGrowth"
-            ),
-
-            15,
-
-        ),
-
-        15,
-
-    ))
-
-
-    components.append((
-
-        "Forward Valuation",
-
-        forward_pe_component_score(
-
-            info.get(
-                "forwardPE"
-            ),
-
-            15,
-
-        ),
-
-        15,
-
-    ))
-
-
-    components.append((
-
-        "Gross Margin",
-
-        margin_score(
-
-            info.get(
-                "grossMargins"
-            ),
-
-            15,
-
-        ),
-
-        15,
-
-    ))
-
-
-    components.append((
-
-        "Operating Margin",
-
-        margin_score(
-
-            info.get(
-                "operatingMargins"
-            ),
-
-            10,
-
-        ),
-
-        10,
-
-    ))
-
-
-    components.append((
-
-        "Return on Equity",
-
-        roe_score(
-
-            info.get(
-                "returnOnEquity"
-            ),
-
-            10,
-
-        ),
-
-        10,
-
-    ))
-
-
-    components.append((
-
-        "Debt / Equity",
-
-        debt_score(
-
-            info.get(
-                "debtToEquity"
-            ),
-
-            10,
-
-        ),
-
-        10,
-
-    ))
-
-
-    components.append((
-
-        "Liquidity",
-
-        liquidity_score(
-
-            info.get(
-                "currentRatio"
-            ),
-
-            10,
-
-        ),
-
-        10,
-
-    ))
-
-
-    return normalize_components(
-        components
-    )
-
-
-# ============================================================
-# BANK FUNDAMENTALS
-# ============================================================
-
-def bank_fundamental_score(info):
-
-    components = []
-
-
-    components.append((
-
-        "Return on Equity",
-
-        roe_score(
-
-            info.get(
-                "returnOnEquity"
-            ),
-
-            25,
-
-        ),
-
-        25,
-
-    ))
-
-
-    components.append((
-
-        "Return on Assets",
-
-        roa_score(
-
-            info.get(
-                "returnOnAssets"
-            ),
-
-            15,
-
-        ),
-
-        15,
-
-    ))
-
-
-    components.append((
-
-        "Earnings Growth",
-
-        positive_growth_score(
-
-            info.get(
-                "earningsGrowth"
-            ),
-
-            20,
-
-        ),
-
-        20,
-
-    ))
-
-
-    components.append((
-
-        "Revenue Growth",
-
-        positive_growth_score(
-
-            info.get(
-                "revenueGrowth"
-            ),
-
-            10,
-
-        ),
-
-        10,
-
-    ))
-
-
-    components.append((
-
-        "Profit Margin",
-
-        margin_score(
-
-            info.get(
-                "profitMargins"
-            ),
-
-            20,
-
-        ),
-
-        20,
-
-    ))
-
-
-    components.append((
-
-        "Dividend Yield",
-
-        dividend_yield_score(
-
-            info.get(
-                "dividendYield"
-            ),
-
-            10,
-
-        ),
-
-        10,
-
-    ))
-
-
-    return normalize_components(
-        components
-    )
-
-
-# ============================================================
-# REIT FUNDAMENTALS
-# ============================================================
-
-def reit_fundamental_score(info):
-
-    components = []
-
-
-    components.append((
-
-        "Dividend Yield",
-
-        dividend_yield_score(
-
-            info.get(
-                "dividendYield"
-            ),
-
-            25,
-
-        ),
-
-        25,
-
-    ))
-
-
-    components.append((
-
-        "Revenue Growth",
-
-        positive_growth_score(
-
-            info.get(
-                "revenueGrowth"
-            ),
-
-            15,
-
-        ),
-
-        15,
-
-    ))
-
-
-    components.append((
-
-        "Earnings Growth",
-
-        positive_growth_score(
-
-            info.get(
-                "earningsGrowth"
-            ),
-
-            10,
-
-        ),
-
-        10,
-
-    ))
-
-
-    components.append((
-
-        "Operating Margin",
-
-        margin_score(
-
-            info.get(
-                "operatingMargins"
-            ),
-
-            20,
-
-        ),
-
-        20,
-
-    ))
-
-
-    components.append((
-
-        "Profit Margin",
-
-        margin_score(
-
-            info.get(
-                "profitMargins"
-            ),
-
-            15,
-
-        ),
-
-        15,
-
-    ))
-
-
-    components.append((
-
-        "Return on Assets",
-
-        roa_score(
-
-            info.get(
-                "returnOnAssets"
-            ),
-
-            5,
-
-        ),
-
-        5,
-
-    ))
-
-
-    components.append((
-
-        "Debt / Equity",
-
-        debt_score(
-
-            info.get(
-                "debtToEquity"
-            ),
-
-            10,
-
-        ),
-
-        10,
-
-    ))
-
-
-    return normalize_components(
-        components
-    )
-
-
-# ============================================================
-# SEMICONDUCTOR FUNDAMENTALS
-# ============================================================
-
-def semiconductor_fundamental_score(info):
-
-    components = []
-
-
-    components.append((
-
-        "Revenue Growth",
-
-        positive_growth_score(
-
-            info.get(
-                "revenueGrowth"
-            ),
-
-            20,
-
-        ),
-
-        20,
-
-    ))
-
-
-    components.append((
-
-        "Earnings Growth",
-
-        positive_growth_score(
-
-            info.get(
-                "earningsGrowth"
-            ),
-
-            20,
-
-        ),
-
-        20,
-
-    ))
-
-
-    components.append((
-
-        "Gross Margin",
-
-        margin_score(
-
-            info.get(
-                "grossMargins"
-            ),
-
-            20,
-
-        ),
-
-        20,
-
-    ))
-
-
-    components.append((
-
-        "Operating Margin",
-
-        margin_score(
-
-            info.get(
-                "operatingMargins"
-            ),
-
-            15,
-
-        ),
-
-        15,
-
-    ))
-
-
-    components.append((
-
-        "Return on Equity",
-
-        roe_score(
-
-            info.get(
-                "returnOnEquity"
-            ),
-
-            10,
-
-        ),
-
-        10,
-
-    ))
-
-
-    components.append((
-
-        "Debt / Equity",
-
-        debt_score(
-
-            info.get(
-                "debtToEquity"
-            ),
-
-            10,
-
-        ),
-
-        10,
-
-    ))
-
-
-    components.append((
-
-        "Liquidity",
-
-        liquidity_score(
-
-            info.get(
-                "currentRatio"
-            ),
-
-            5,
-
-        ),
-
-        5,
-
-    ))
-
-
-    return normalize_components(
-        components
-    )
-
-
-# ============================================================
-# FUNDAMENTAL MODEL ROUTER
-# ============================================================
-
-def fundamental_score(
-    info,
-    sector=None,
-):
-
-    model = scoring_model_name(
-        sector
-    )
-
-
-    if model == "Bank":
-
-        return bank_fundamental_score(
-            info
-        )
-
-
-    if model == "REIT":
-
-        return reit_fundamental_score(
-            info
-        )
-
-
-    if model == "Semiconductor":
-
-        return semiconductor_fundamental_score(
-            info
-        )
-
-
-    return general_fundamental_score(
-        info
-    )
-
-
-# ============================================================
-# VALUATION HELPERS
+# VALUATION COMPONENT HELPERS
 # ============================================================
 
 def forward_pe_component_score(
@@ -1575,6 +1115,89 @@ def price_to_book_component_score(
 
     else:
         multiplier = 0.25
+
+
+    return (
+        maximum_points
+        *
+        multiplier
+    )
+
+
+def reit_price_to_book_score(
+    value,
+    maximum_points,
+):
+
+    value = safe_number(
+        value
+    )
+
+
+    if value is None:
+        return None
+
+
+    if value <= 0:
+        multiplier = 0.10
+
+    elif value <= 0.70:
+        multiplier = 0.75
+
+    elif value <= 1.00:
+        multiplier = 1.00
+
+    elif value <= 1.20:
+        multiplier = 0.85
+
+    elif value <= 1.50:
+        multiplier = 0.65
+
+    elif value <= 2:
+        multiplier = 0.40
+
+    else:
+        multiplier = 0.20
+
+
+    return (
+        maximum_points
+        *
+        multiplier
+    )
+
+
+def bank_price_to_book_score(
+    value,
+    maximum_points,
+):
+
+    value = safe_number(
+        value
+    )
+
+
+    if value is None:
+        return None
+
+
+    if value <= 0:
+        multiplier = 0.10
+
+    elif value <= 0.8:
+        multiplier = 0.90
+
+    elif value <= 1.2:
+        multiplier = 1.00
+
+    elif value <= 1.6:
+        multiplier = 0.80
+
+    elif value <= 2.2:
+        multiplier = 0.55
+
+    else:
+        multiplier = 0.30
 
 
     return (
@@ -1710,7 +1333,459 @@ def normalized_valuation(
 
 
 # ============================================================
-# GENERAL VALUATION
+# FUNDAMENTAL MODELS
+# ============================================================
+
+def general_fundamental_score(info):
+
+    components = [
+
+        (
+            "Revenue Growth",
+
+            positive_growth_score(
+                info.get(
+                    "revenueGrowth"
+                ),
+                15,
+            ),
+
+            15,
+        ),
+
+        (
+            "Earnings Growth",
+
+            positive_growth_score(
+                info.get(
+                    "earningsGrowth"
+                ),
+                15,
+            ),
+
+            15,
+        ),
+
+        (
+            "Forward Valuation",
+
+            forward_pe_component_score(
+                info.get(
+                    "forwardPE"
+                ),
+                15,
+            ),
+
+            15,
+        ),
+
+        (
+            "Gross Margin",
+
+            margin_score(
+                info.get(
+                    "grossMargins"
+                ),
+                15,
+            ),
+
+            15,
+        ),
+
+        (
+            "Operating Margin",
+
+            margin_score(
+                info.get(
+                    "operatingMargins"
+                ),
+                10,
+            ),
+
+            10,
+        ),
+
+        (
+            "Return on Equity",
+
+            roe_score(
+                info.get(
+                    "returnOnEquity"
+                ),
+                10,
+            ),
+
+            10,
+        ),
+
+        (
+            "Debt / Equity",
+
+            debt_score(
+                info.get(
+                    "debtToEquity"
+                ),
+                10,
+            ),
+
+            10,
+        ),
+
+        (
+            "Liquidity",
+
+            liquidity_score(
+                info.get(
+                    "currentRatio"
+                ),
+                10,
+            ),
+
+            10,
+        ),
+
+    ]
+
+
+    return normalize_components(
+        components
+    )
+
+
+def bank_fundamental_score(info):
+
+    components = [
+
+        (
+            "Return on Equity",
+
+            bank_roe_score(
+                info.get(
+                    "returnOnEquity"
+                ),
+                30,
+            ),
+
+            30,
+        ),
+
+        (
+            "Return on Assets",
+
+            bank_roa_score(
+                info.get(
+                    "returnOnAssets"
+                ),
+                15,
+            ),
+
+            15,
+        ),
+
+        (
+            "Earnings Growth",
+
+            positive_growth_score(
+                info.get(
+                    "earningsGrowth"
+                ),
+                20,
+            ),
+
+            20,
+        ),
+
+        (
+            "Revenue Growth",
+
+            positive_growth_score(
+                info.get(
+                    "revenueGrowth"
+                ),
+                10,
+            ),
+
+            10,
+        ),
+
+        (
+            "Profit Margin",
+
+            bank_profit_margin_score(
+                info.get(
+                    "profitMargins"
+                ),
+                15,
+            ),
+
+            15,
+        ),
+
+        (
+            "Dividend Yield",
+
+            dividend_yield_score(
+                info.get(
+                    "dividendYield"
+                ),
+                10,
+            ),
+
+            10,
+        ),
+
+    ]
+
+
+    return normalize_components(
+        components
+    )
+
+
+def reit_fundamental_score(info):
+
+    components = [
+
+        (
+            "Dividend Yield",
+
+            reit_dividend_yield_score(
+                info.get(
+                    "dividendYield"
+                ),
+                20,
+            ),
+
+            20,
+        ),
+
+        (
+            "Revenue Growth",
+
+            positive_growth_score(
+                info.get(
+                    "revenueGrowth"
+                ),
+                15,
+            ),
+
+            15,
+        ),
+
+        (
+            "Earnings Growth",
+
+            positive_growth_score(
+                info.get(
+                    "earningsGrowth"
+                ),
+                10,
+            ),
+
+            10,
+        ),
+
+        (
+            "Operating Margin",
+
+            margin_score(
+                info.get(
+                    "operatingMargins"
+                ),
+                20,
+            ),
+
+            20,
+        ),
+
+        (
+            "Profit Margin",
+
+            margin_score(
+                info.get(
+                    "profitMargins"
+                ),
+                15,
+            ),
+
+            15,
+        ),
+
+        (
+            "Return on Assets",
+
+            roa_score(
+                info.get(
+                    "returnOnAssets"
+                ),
+                5,
+            ),
+
+            5,
+        ),
+
+        (
+            "Debt Proxy",
+
+            reit_debt_score(
+                info.get(
+                    "debtToEquity"
+                ),
+                15,
+            ),
+
+            15,
+        ),
+
+    ]
+
+
+    return normalize_components(
+        components
+    )
+
+
+def semiconductor_fundamental_score(info):
+
+    components = [
+
+        (
+            "Revenue Growth",
+
+            positive_growth_score(
+                info.get(
+                    "revenueGrowth"
+                ),
+                20,
+            ),
+
+            20,
+        ),
+
+        (
+            "Earnings Growth",
+
+            positive_growth_score(
+                info.get(
+                    "earningsGrowth"
+                ),
+                20,
+            ),
+
+            20,
+        ),
+
+        (
+            "Gross Margin",
+
+            margin_score(
+                info.get(
+                    "grossMargins"
+                ),
+                20,
+            ),
+
+            20,
+        ),
+
+        (
+            "Operating Margin",
+
+            margin_score(
+                info.get(
+                    "operatingMargins"
+                ),
+                15,
+            ),
+
+            15,
+        ),
+
+        (
+            "Return on Equity",
+
+            roe_score(
+                info.get(
+                    "returnOnEquity"
+                ),
+                10,
+            ),
+
+            10,
+        ),
+
+        (
+            "Debt / Equity",
+
+            debt_score(
+                info.get(
+                    "debtToEquity"
+                ),
+                10,
+            ),
+
+            10,
+        ),
+
+        (
+            "Liquidity",
+
+            liquidity_score(
+                info.get(
+                    "currentRatio"
+                ),
+                5,
+            ),
+
+            5,
+        ),
+
+    ]
+
+
+    return normalize_components(
+        components
+    )
+
+
+def fundamental_score(
+    info,
+    sector=None,
+):
+
+    model = scoring_model_name(
+        sector
+    )
+
+
+    if model == "Bank":
+
+        return bank_fundamental_score(
+            info
+        )
+
+
+    if model == "REIT":
+
+        return reit_fundamental_score(
+            info
+        )
+
+
+    if model == "Semiconductor":
+
+        return semiconductor_fundamental_score(
+            info
+        )
+
+
+    return general_fundamental_score(
+        info
+    )
+
+
+# ============================================================
+# VALUATION MODELS
 # ============================================================
 
 def general_valuation_score(info):
@@ -1718,220 +1793,138 @@ def general_valuation_score(info):
     return normalized_valuation([
 
         (
-
             forward_pe_component_score(
-
                 info.get(
                     "forwardPE"
                 ),
-
                 60,
-
             ),
-
             60,
-
         ),
 
         (
-
             price_to_book_component_score(
-
                 info.get(
                     "priceToBook"
                 ),
-
                 40,
-
             ),
-
             40,
-
         ),
 
     ])
 
-
-# ============================================================
-# BANK VALUATION
-# ============================================================
 
 def bank_valuation_score(info):
 
     return normalized_valuation([
 
         (
-
-            price_to_book_component_score(
-
+            bank_price_to_book_score(
                 info.get(
                     "priceToBook"
                 ),
-
-                45,
-
+                50,
             ),
-
-            45,
-
+            50,
         ),
 
         (
-
             forward_pe_component_score(
-
                 info.get(
                     "forwardPE"
                 ),
-
                 35,
-
             ),
-
             35,
-
         ),
 
         (
-
             dividend_yield_score(
-
                 info.get(
                     "dividendYield"
                 ),
-
-                20,
-
+                15,
             ),
-
-            20,
-
+            15,
         ),
 
     ])
 
-
-# ============================================================
-# REIT VALUATION
-# ============================================================
 
 def reit_valuation_score(info):
 
     return normalized_valuation([
 
         (
-
-            price_to_book_component_score(
-
+            reit_price_to_book_score(
                 info.get(
                     "priceToBook"
                 ),
-
-                40,
-
+                45,
             ),
-
-            40,
-
+            45,
         ),
 
         (
-
-            dividend_yield_score(
-
+            reit_dividend_yield_score(
                 info.get(
                     "dividendYield"
                 ),
-
                 35,
-
             ),
-
             35,
-
         ),
 
         (
-
             forward_pe_component_score(
-
                 info.get(
                     "forwardPE"
                 ),
-
-                25,
-
+                20,
             ),
-
-            25,
-
+            20,
         ),
 
     ])
 
-
-# ============================================================
-# SEMICONDUCTOR VALUATION
-# ============================================================
 
 def semiconductor_valuation_score(info):
 
     return normalized_valuation([
 
         (
-
             forward_pe_component_score(
-
                 info.get(
                     "forwardPE"
                 ),
-
                 55,
-
             ),
-
             55,
-
         ),
 
         (
-
             peg_component_score(
-
                 info.get(
                     "pegRatio"
                 ),
-
                 25,
-
             ),
-
             25,
-
         ),
 
         (
-
             price_to_sales_component_score(
-
                 info.get(
                     "priceToSalesTrailing12Months"
                 ),
-
                 20,
-
             ),
-
             20,
-
         ),
 
     ])
 
-
-# ============================================================
-# VALUATION MODEL ROUTER
-# ============================================================
 
 def valuation_score(
     info,
