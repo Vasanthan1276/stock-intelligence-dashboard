@@ -1,0 +1,515 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>
+V Stock Intelligence · Guide
+</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: #07111f;
+    color: #edf4ff;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.container {
+    width: min(1000px, 94%);
+    margin: auto;
+    padding: 30px 0 70px;
+}
+
+.back {
+    color: #68b9ff;
+    text-decoration: none;
+    font-size: 13px;
+}
+
+.title {
+    font-size: 36px;
+    font-weight: 800;
+    margin-top: 28px;
+}
+
+.subtitle {
+    color: #8ca5c4;
+    margin-top: 8px;
+    line-height: 1.5;
+}
+
+.card {
+    background: #111e31;
+    border: 1px solid #263c5b;
+    border-radius: 16px;
+    padding: 23px;
+    margin-top: 20px;
+}
+
+.section-title {
+    font-size: 22px;
+    font-weight: 800;
+    margin-bottom: 18px;
+}
+
+.term {
+    padding: 15px 0;
+    border-bottom: 1px solid #263a55;
+}
+
+.term:last-child {
+    border-bottom: none;
+}
+
+.term-name {
+    font-size: 17px;
+    font-weight: 800;
+}
+
+.term-description {
+    color: #afc0d5;
+    line-height: 1.55;
+    margin-top: 6px;
+}
+
+.score-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.score-table td {
+    padding: 12px 8px;
+    border-bottom: 1px solid #263a55;
+}
+
+.weight {
+    color: #68b9ff;
+    font-weight: 800;
+    text-align: right;
+}
+
+.note {
+    background: #0b1728;
+    border-radius: 12px;
+    padding: 17px;
+    color: #afc0d5;
+    line-height: 1.6;
+}
+
+.footer {
+    text-align: center;
+    color: #7089a8;
+    margin-top: 30px;
+    font-size: 12px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+
+<a
+    class="back"
+    href="../"
+>
+    ← Back to Market Dashboard
+</a>
+
+
+<div class="title">
+    How to Read V Stock Intelligence
+</div>
+
+<div class="subtitle">
+
+    This guide explains the terminology, scores and
+    opportunity screens used throughout the dashboard.
+
+</div>
+
+
+<div class="card">
+
+    <div class="section-title">
+        Dashboard Rating
+    </div>
+
+    <div class="note">
+
+        Ratings such as Strong Buy, Buy, Hold, Watch and Caution
+        are automated quantitative ratings created by this dashboard.
+
+        <br><br>
+
+        They are not analyst recommendations and should be used
+        as a starting point for further research rather than as
+        instructions to buy or sell a stock.
+
+    </div>
+
+</div>
+
+
+<div class="card">
+
+    <div class="section-title">
+        Overall Score Methodology
+    </div>
+
+    <table class="score-table">
+
+        <tr>
+            <td>Technical Score</td>
+            <td class="weight">25%</td>
+        </tr>
+
+        <tr>
+            <td>Momentum Score</td>
+            <td class="weight">20%</td>
+        </tr>
+
+        <tr>
+            <td>Fundamental Score</td>
+            <td class="weight">40%</td>
+        </tr>
+
+        <tr>
+            <td>Valuation Score</td>
+            <td class="weight">15%</td>
+        </tr>
+
+    </table>
+
+</div>
+
+
+<div class="card">
+
+    <div class="section-title">
+        Core Investment Scores
+    </div>
+
+
+    <div class="term">
+
+        <div class="term-name">
+            Technical Score
+        </div>
+
+        <div class="term-description">
+
+            Measures the current share-price trend using indicators
+            such as the 20-day, 50-day and 200-day moving averages,
+            RSI and MACD.
+
+            A high score indicates stronger technical conditions.
+
+        </div>
+
+    </div>
+
+
+    <div class="term">
+
+        <div class="term-name">
+            Momentum Score
+        </div>
+
+        <div class="term-description">
+
+            Measures recent price performance across several periods,
+            including approximately one week, one month, three months
+            and six months.
+
+        </div>
+
+    </div>
+
+
+    <div class="term">
+
+        <div class="term-name">
+            Fundamental Score
+        </div>
+
+        <div class="term-description">
+
+            Evaluates available business and financial information
+            such as revenue growth, earnings growth, profit margins,
+            return on equity, debt and liquidity.
+
+        </div>
+
+    </div>
+
+
+    <div class="term">
+
+        <div class="term-name">
+            Valuation Score
+        </div>
+
+        <div class="term-description">
+
+            Estimates how attractively a stock appears to be priced
+            using available valuation metrics such as forward P/E
+            and price-to-book.
+
+            A high valuation score means the shares appear relatively
+            attractive under the dashboard's valuation rules.
+
+        </div>
+
+    </div>
+
+
+    <div class="term">
+
+        <div class="term-name">
+            Data Quality
+        </div>
+
+        <div class="term-description">
+
+            Shows how much of the fundamental scoring model had usable
+            data available.
+
+            High data quality provides greater confidence in the
+            completeness of the score. Limited data quality means the
+            score should be interpreted more cautiously.
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+<div class="card">
+
+    <div class="section-title">
+        Market Opportunity Screens
+    </div>
+
+
+    <div class="term">
+
+        <div class="term-name">
+            Oversold Watch
+        </div>
+
+        <div class="term-description">
+
+            Shows stocks with RSI below 35.
+
+            These shares have experienced unusually weak recent
+            price momentum and may deserve further investigation.
+
+            Being oversold does not mean that a share price will
+            automatically recover.
+
+        </div>
+
+    </div>
+
+
+    <div class="term">
+
+        <div class="term-name">
+            Momentum Leaders
+        </div>
+
+        <div class="term-description">
+
+            Highlights stocks with stronger recent price performance
+            while requiring minimum fundamental strength and
+            sufficient data quality.
+
+        </div>
+
+    </div>
+
+
+    <div class="term">
+
+        <div class="term-name">
+            Value Opportunities
+        </div>
+
+        <div class="term-description">
+
+            Combines the Valuation Score and Fundamental Score equally.
+
+            A high score therefore suggests that a company has both
+            relatively attractive valuation characteristics and
+            stronger underlying fundamentals.
+
+        </div>
+
+    </div>
+
+
+    <div class="term">
+
+        <div class="term-name">
+            Best Balanced
+        </div>
+
+        <div class="term-description">
+
+            Looks for stocks that perform consistently across
+            Technical, Momentum, Fundamentals and Valuation.
+
+            The score is reduced when a stock is extremely strong
+            in one area but weak in another.
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+<div class="card">
+
+    <div class="section-title">
+        Technical Terms
+    </div>
+
+
+    <div class="term">
+
+        <div class="term-name">
+            RSI — Relative Strength Index
+        </div>
+
+        <div class="term-description">
+
+            RSI ranges from 0 to 100 and measures recent price momentum.
+
+            <br><br>
+
+            Below 30: heavily oversold
+
+            <br>
+
+            30–40: weak
+
+            <br>
+
+            40–60: broadly neutral
+
+            <br>
+
+            60–70: strong momentum
+
+            <br>
+
+            Above 70: potentially overbought
+
+        </div>
+
+    </div>
+
+
+    <div class="term">
+
+        <div class="term-name">
+            Moving Average
+        </div>
+
+        <div class="term-description">
+
+            The average share price over a specific number of
+            trading days.
+
+            The dashboard uses 20-day, 50-day and 200-day averages
+            to assess short-, medium- and longer-term price trends.
+
+        </div>
+
+    </div>
+
+
+    <div class="term">
+
+        <div class="term-name">
+            MACD
+        </div>
+
+        <div class="term-description">
+
+            Moving Average Convergence Divergence is a trend and
+            momentum indicator.
+
+            The dashboard uses the relationship between the MACD line
+            and its signal line as one component of the Technical Score.
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+<div class="card">
+
+    <div class="section-title">
+        Important Limitations
+    </div>
+
+    <div class="note">
+
+        The dashboard uses automated third-party market and financial data.
+        Data may occasionally be delayed, incomplete or inconsistent.
+
+        <br><br>
+
+        Quantitative scores cannot fully capture company-specific risks,
+        future events, management quality, macroeconomic conditions or
+        sudden changes in market sentiment.
+
+        <br><br>
+
+        Always conduct additional research before making an investment decision.
+
+    </div>
+
+</div>
+
+
+<div class="footer">
+
+    Last updated:
+    19 July 2026, 03:30 UTC
+
+</div>
+
+
+</div>
+
+</body>
+
+</html>

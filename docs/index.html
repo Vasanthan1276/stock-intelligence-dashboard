@@ -58,6 +58,17 @@ body {
     text-align: right;
 }
 
+.nav {
+    margin-top: 10px;
+}
+
+.nav a {
+    color: #68b9ff;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 700;
+}
+
 .card {
     background: #111e31;
     border: 1px solid #263c5b;
@@ -77,17 +88,78 @@ body {
 .section-subtitle {
     color: #8098b6;
     font-size: 13px;
-    margin-top: 4px;
+    margin-top: 5px;
     margin-bottom: 16px;
+    line-height: 1.4;
+}
+
+.info-wrap {
+    position: relative;
+    display: inline-block;
+    margin-left: 5px;
+    color: #68b9ff;
+    cursor: help;
+    font-size: 14px;
+    outline: none;
+}
+
+.tooltip {
+    visibility: hidden;
+    opacity: 0;
+
+    position: absolute;
+    z-index: 100;
+
+    left: 50%;
+    top: 25px;
+
+    transform:
+        translateX(-50%);
+
+    width: 280px;
+
+    background:
+        #020912;
+
+    color:
+        #d9e5f5;
+
+    border:
+        1px solid
+        #345274;
+
+    border-radius:
+        10px;
+
+    padding:
+        12px;
+
+    font-size:
+        12px;
+
+    font-weight:
+        normal;
+
+    line-height:
+        1.45;
+
+    text-align:
+        left;
+
+    transition:
+        opacity 0.15s;
+}
+
+.info-wrap:hover .tooltip,
+.info-wrap:focus .tooltip {
+    visibility: visible;
+    opacity: 1;
 }
 
 .micron-layout {
     display: grid;
     grid-template-columns:
-        1.5fr
-        1fr
-        0.8fr
-        1.2fr;
+        1.5fr 1fr 0.8fr 1.2fr;
     gap: 25px;
     align-items: center;
 }
@@ -195,12 +267,12 @@ body {
 
 .strong-buy {
     color: #51e5a0;
-    background: rgba(55, 219, 143, 0.15);
+    background: rgba(55,219,143,0.15);
 }
 
 .buy {
     color: #66bdff;
-    background: rgba(86, 184, 255, 0.15);
+    background: rgba(86,184,255,0.15);
 }
 
 .hold {
@@ -251,7 +323,15 @@ body {
 .screen-title {
     font-size: 17px;
     font-weight: 800;
-    margin-bottom: 12px;
+    margin-bottom: 5px;
+}
+
+.screen-description {
+    color: #718ba9;
+    font-size: 11px;
+    line-height: 1.4;
+    min-height: 48px;
+    margin-bottom: 8px;
 }
 
 .mini-row {
@@ -262,10 +342,6 @@ body {
     border-bottom: 1px solid #223650;
     text-decoration: none;
     color: inherit;
-}
-
-.mini-row:hover {
-    background: rgba(255,255,255,0.02);
 }
 
 .mini-row:last-child {
@@ -351,6 +427,7 @@ td {
     color: #6f88a8;
     margin-top: 30px;
     font-size: 12px;
+    line-height: 1.6;
 }
 
 @media (
@@ -397,6 +474,10 @@ td {
         display: none;
     }
 
+    .tooltip {
+        width: 240px;
+    }
+
 }
 
 </style>
@@ -420,7 +501,16 @@ td {
             US & Singapore Market Opportunity Dashboard
         </div>
 
+        <div class="nav">
+
+            <a href="guide/">
+                How to Read This Dashboard →
+            </a>
+
+        </div>
+
     </div>
+
 
     <div class="updated">
 
@@ -428,7 +518,7 @@ td {
 
         <br>
 
-        19 July 2026, 01:01 UTC
+        19 July 2026, 03:30 UTC
 
     </div>
 
@@ -503,17 +593,34 @@ td {
 </div>
 
 
-<div class="
-    card
-    section
-">
+<div class="card section">
 
     <div class="section-title">
+
         US Top Opportunities
+
+        
+    <span
+        class="info-wrap"
+        tabindex="0"
+        aria-label="The combined dashboard score. It uses Technical 25%, Momentum 20%, Fundamentals 40% and Valuation 15%."
+    >
+        ⓘ
+
+        <span class="tooltip">
+            The combined dashboard score. It uses Technical 25%, Momentum 20%, Fundamentals 40% and Valuation 15%.
+        </span>
+
+    </span>
+    
+
     </div>
 
     <div class="section-subtitle">
-        Click any stock to open its individual analysis
+
+        Highest-ranked US stocks using the dashboard's
+        combined quantitative score.
+
     </div>
 
     <div class="opportunity-grid">
@@ -541,7 +648,6 @@ td {
                     </div>
 
                 </div>
-
 
                 <div class="
                     rating-badge
@@ -659,7 +765,6 @@ td {
 
                 </div>
 
-
                 <div class="
                     rating-badge
                     strong-buy
@@ -775,7 +880,6 @@ td {
                     </div>
 
                 </div>
-
 
                 <div class="
                     rating-badge
@@ -893,7 +997,6 @@ td {
 
                 </div>
 
-
                 <div class="
                     rating-badge
                     strong-buy
@@ -1010,7 +1113,6 @@ td {
 
                 </div>
 
-
                 <div class="
                     rating-badge
                     buy
@@ -1110,17 +1212,34 @@ td {
 </div>
 
 
-<div class="
-    card
-    section
-">
+<div class="card section">
 
     <div class="section-title">
+
         Singapore Top Opportunities
+
+        
+    <span
+        class="info-wrap"
+        tabindex="0"
+        aria-label="The combined dashboard score. It uses Technical 25%, Momentum 20%, Fundamentals 40% and Valuation 15%."
+    >
+        ⓘ
+
+        <span class="tooltip">
+            The combined dashboard score. It uses Technical 25%, Momentum 20%, Fundamentals 40% and Valuation 15%.
+        </span>
+
+    </span>
+    
+
     </div>
 
     <div class="section-subtitle">
-        Click any stock to open its individual analysis
+
+        Highest-ranked SGX stocks using the same
+        quantitative scoring methodology.
+
     </div>
 
     <div class="opportunity-grid">
@@ -1148,7 +1267,6 @@ td {
                     </div>
 
                 </div>
-
 
                 <div class="
                     rating-badge
@@ -1266,7 +1384,6 @@ td {
 
                 </div>
 
-
                 <div class="
                     rating-badge
                     buy
@@ -1382,7 +1499,6 @@ td {
                     </div>
 
                 </div>
-
 
                 <div class="
                     rating-badge
@@ -1500,7 +1616,6 @@ td {
 
                 </div>
 
-
                 <div class="
                     rating-badge
                     buy
@@ -1617,7 +1732,6 @@ td {
 
                 </div>
 
-
                 <div class="
                     rating-badge
                     buy
@@ -1717,18 +1831,20 @@ td {
 </div>
 
 
-<div class="
-    card
-    section
-">
+<div class="card section">
 
     <div class="section-title">
         Market Opportunity Screens
     </div>
 
     <div class="section-subtitle">
-        Component scores are shown to explain each ranking
+
+        Alternative ways of finding potential opportunities.
+        These screens may rank stocks differently from the
+        main Overall Score.
+
     </div>
+
 
     <div class="screen-grid">
 
@@ -1736,7 +1852,31 @@ td {
         <div class="screen-card">
 
             <div class="screen-title">
+
                 Oversold Watch
+
+                
+    <span
+        class="info-wrap"
+        tabindex="0"
+        aria-label="Stocks with RSI below 35. These shares have experienced weak recent price momentum. Oversold does not necessarily mean the share price will rebound."
+    >
+        ⓘ
+
+        <span class="tooltip">
+            Stocks with RSI below 35. These shares have experienced weak recent price momentum. Oversold does not necessarily mean the share price will rebound.
+        </span>
+
+    </span>
+    
+
+            </div>
+
+            <div class="screen-description">
+
+                Stocks with RSI below 35 that have experienced
+                unusually weak recent price momentum.
+
             </div>
 
             
@@ -1855,7 +1995,31 @@ td {
         <div class="screen-card">
 
             <div class="screen-title">
+
                 Momentum Leaders
+
+                
+    <span
+        class="info-wrap"
+        tabindex="0"
+        aria-label="Stocks with strong recent price performance that also meet minimum fundamental and data-quality requirements."
+    >
+        ⓘ
+
+        <span class="tooltip">
+            Stocks with strong recent price performance that also meet minimum fundamental and data-quality requirements.
+        </span>
+
+    </span>
+    
+
+            </div>
+
+            <div class="screen-description">
+
+                Strong recent price performers that also meet
+                minimum fundamental and data-quality requirements.
+
             </div>
 
             
@@ -2082,7 +2246,31 @@ td {
         <div class="screen-card">
 
             <div class="screen-title">
+
                 Value Opportunities
+
+                
+    <span
+        class="info-wrap"
+        tabindex="0"
+        aria-label="Combines the Fundamental Score and Valuation Score equally. A high score suggests relatively attractive valuation together with stronger underlying business fundamentals."
+    >
+        ⓘ
+
+        <span class="tooltip">
+            Combines the Fundamental Score and Valuation Score equally. A high score suggests relatively attractive valuation together with stronger underlying business fundamentals.
+        </span>
+
+    </span>
+    
+
+            </div>
+
+            <div class="screen-description">
+
+                Stocks combining relatively attractive valuation
+                with stronger underlying fundamentals.
+
             </div>
 
             
@@ -2309,7 +2497,31 @@ td {
         <div class="screen-card">
 
             <div class="screen-title">
+
                 Best Balanced
+
+                
+    <span
+        class="info-wrap"
+        tabindex="0"
+        aria-label="Rewards stocks that perform consistently across Technical, Momentum, Fundamentals and Valuation, while penalising large differences between those scores."
+    >
+        ⓘ
+
+        <span class="tooltip">
+            Rewards stocks that perform consistently across Technical, Momentum, Fundamentals and Valuation, while penalising large differences between those scores.
+        </span>
+
+    </span>
+    
+
+            </div>
+
+            <div class="screen-description">
+
+                Stocks showing more consistent strength across
+                all four major scoring categories.
+
             </div>
 
             
@@ -2538,17 +2750,16 @@ td {
 </div>
 
 
-<div class="
-    card
-    section
-">
+<div class="card section">
 
     <div class="section-title">
         US Stock Rankings
     </div>
 
     <div class="section-subtitle">
-        Click a company name to open its analysis
+
+        Click any company name to open its individual analysis.
+
     </div>
 
     <div class="table-wrapper">
@@ -2568,26 +2779,130 @@ td {
                     <th>Day</th>
 
                     <th class="desktop-column">
-                        Tech
+                        Technical
+                        
+    <span
+        class="info-wrap"
+        tabindex="0"
+        aria-label="Measures the stock&#x27;s current price trend using indicators such as moving averages, RSI and MACD. A higher score means stronger technical conditions."
+    >
+        ⓘ
+
+        <span class="tooltip">
+            Measures the stock&#x27;s current price trend using indicators such as moving averages, RSI and MACD. A higher score means stronger technical conditions.
+        </span>
+
+    </span>
+    
                     </th>
 
                     <th class="desktop-column">
                         Momentum
+                        
+    <span
+        class="info-wrap"
+        tabindex="0"
+        aria-label="Measures recent share-price performance over approximately 1 week, 1 month, 3 months and 6 months."
+    >
+        ⓘ
+
+        <span class="tooltip">
+            Measures recent share-price performance over approximately 1 week, 1 month, 3 months and 6 months.
+        </span>
+
+    </span>
+    
                     </th>
 
                     <th class="desktop-column">
                         Fundamental
+                        
+    <span
+        class="info-wrap"
+        tabindex="0"
+        aria-label="Measures business strength using available data such as revenue growth, earnings growth, margins, return on equity, debt and liquidity."
+    >
+        ⓘ
+
+        <span class="tooltip">
+            Measures business strength using available data such as revenue growth, earnings growth, margins, return on equity, debt and liquidity.
+        </span>
+
+    </span>
+    
                     </th>
 
                     <th class="desktop-column">
                         Value
+                        
+    <span
+        class="info-wrap"
+        tabindex="0"
+        aria-label="Measures how attractively the stock appears to be priced using valuation indicators such as forward P/E and price-to-book."
+    >
+        ⓘ
+
+        <span class="tooltip">
+            Measures how attractively the stock appears to be priced using valuation indicators such as forward P/E and price-to-book.
+        </span>
+
+    </span>
+    
                     </th>
 
-                    <th>Score</th>
+                    <th>
+                        Overall
+                        
+    <span
+        class="info-wrap"
+        tabindex="0"
+        aria-label="The combined dashboard score. It uses Technical 25%, Momentum 20%, Fundamentals 40% and Valuation 15%."
+    >
+        ⓘ
 
-                    <th>Data</th>
+        <span class="tooltip">
+            The combined dashboard score. It uses Technical 25%, Momentum 20%, Fundamentals 40% and Valuation 15%.
+        </span>
 
-                    <th>Rating</th>
+    </span>
+    
+                    </th>
+
+                    <th>
+                        Data
+                        
+    <span
+        class="info-wrap"
+        tabindex="0"
+        aria-label="Shows how much of the fundamental scoring model had usable data. A lower score means the investment score should be interpreted with more caution."
+    >
+        ⓘ
+
+        <span class="tooltip">
+            Shows how much of the fundamental scoring model had usable data. A lower score means the investment score should be interpreted with more caution.
+        </span>
+
+    </span>
+    
+                    </th>
+
+                    <th>
+                        Dashboard Rating
+                        
+    <span
+        class="info-wrap"
+        tabindex="0"
+        aria-label="This is an automated quantitative rating generated by V Stock Intelligence. It is not an analyst recommendation and is not financial advice."
+    >
+        ⓘ
+
+        <span class="tooltip">
+            This is an automated quantitative rating generated by V Stock Intelligence. It is not an analyst recommendation and is not financial advice.
+        </span>
+
+    </span>
+    
+                    </th>
 
                 </tr>
 
@@ -2625,41 +2940,33 @@ td {
 
             </td>
 
-
             <td>
                 $1,065.22
             </td>
-
 
             <td class="negative">
                 -2.76%
             </td>
 
-
             <td class="desktop-column">
                 100
             </td>
-
 
             <td class="desktop-column">
                 73
             </td>
 
-
             <td class="desktop-column">
                 88
             </td>
-
 
             <td class="desktop-column">
                 75
             </td>
 
-
             <td class="score">
                 86
             </td>
-
 
             <td>
 
@@ -2671,7 +2978,6 @@ td {
                 </span>
 
             </td>
-
 
             <td>
 
@@ -2715,41 +3021,33 @@ td {
 
             </td>
 
-
             <td>
                 $341.10
             </td>
-
 
             <td class="negative">
                 -0.60%
             </td>
 
-
             <td class="desktop-column">
                 100
             </td>
-
 
             <td class="desktop-column">
                 79
             </td>
 
-
             <td class="desktop-column">
                 75
             </td>
 
-
             <td class="desktop-column">
                 75
             </td>
-
 
             <td class="score">
                 82
             </td>
-
 
             <td>
 
@@ -2761,7 +3059,6 @@ td {
                 </span>
 
             </td>
-
 
             <td>
 
@@ -2805,41 +3102,33 @@ td {
 
             </td>
 
-
             <td>
                 $61.27
             </td>
-
 
             <td class="negative">
                 -0.36%
             </td>
 
-
             <td class="desktop-column">
                 93
             </td>
-
 
             <td class="desktop-column">
                 79
             </td>
 
-
             <td class="desktop-column">
                 75
             </td>
-
 
             <td class="desktop-column">
                 80
             </td>
 
-
             <td class="score">
                 81
             </td>
-
 
             <td>
 
@@ -2851,7 +3140,6 @@ td {
                 </span>
 
             </td>
-
 
             <td>
 
@@ -2895,41 +3183,33 @@ td {
 
             </td>
 
-
             <td>
                 $646.01
             </td>
-
 
             <td class="negative">
                 -2.79%
             </td>
 
-
             <td class="desktop-column">
                 90
             </td>
-
 
             <td class="desktop-column">
                 58
             </td>
 
-
             <td class="desktop-column">
                 94
             </td>
-
 
             <td class="desktop-column">
                 55
             </td>
 
-
             <td class="score">
                 80
             </td>
-
 
             <td>
 
@@ -2941,7 +3221,6 @@ td {
                 </span>
 
             </td>
-
 
             <td>
 
@@ -2985,41 +3264,33 @@ td {
 
             </td>
 
-
             <td>
                 $202.81
             </td>
-
 
             <td class="negative">
                 -2.21%
             </td>
 
-
             <td class="desktop-column">
                 80
             </td>
-
 
             <td class="desktop-column">
                 62
             </td>
 
-
             <td class="desktop-column">
                 95
             </td>
-
 
             <td class="desktop-column">
                 55
             </td>
 
-
             <td class="score">
                 79
             </td>
-
 
             <td>
 
@@ -3031,7 +3302,6 @@ td {
                 </span>
 
             </td>
-
 
             <td>
 
@@ -3075,41 +3345,33 @@ td {
 
             </td>
 
-
             <td>
                 $358.56
             </td>
-
 
             <td class="negative">
                 -1.80%
             </td>
 
-
             <td class="desktop-column">
                 100
             </td>
-
 
             <td class="desktop-column">
                 73
             </td>
 
-
             <td class="desktop-column">
                 80
             </td>
-
 
             <td class="desktop-column">
                 48
             </td>
 
-
             <td class="score">
                 79
             </td>
-
 
             <td>
 
@@ -3121,7 +3383,6 @@ td {
                 </span>
 
             </td>
-
 
             <td>
 
@@ -3165,41 +3426,33 @@ td {
 
             </td>
 
-
             <td>
                 $1,072.20
             </td>
-
 
             <td class="negative">
                 -1.37%
             </td>
 
-
             <td class="desktop-column">
                 90
             </td>
-
 
             <td class="desktop-column">
                 55
             </td>
 
-
             <td class="desktop-column">
                 86
             </td>
-
 
             <td class="desktop-column">
                 75
             </td>
 
-
             <td class="score">
                 79
             </td>
-
 
             <td>
 
@@ -3211,7 +3464,6 @@ td {
                 </span>
 
             </td>
-
 
             <td>
 
@@ -3255,41 +3507,33 @@ td {
 
             </td>
 
-
             <td>
                 $254.49
             </td>
-
 
             <td class="positive">
                 +0.04%
             </td>
 
-
             <td class="desktop-column">
                 85
             </td>
-
 
             <td class="desktop-column">
                 86
             </td>
 
-
             <td class="desktop-column">
                 65
             </td>
-
 
             <td class="desktop-column">
                 82
             </td>
 
-
             <td class="score">
                 77
             </td>
-
 
             <td>
 
@@ -3301,7 +3545,6 @@ td {
                 </span>
 
             </td>
-
 
             <td>
 
@@ -3345,41 +3588,33 @@ td {
 
             </td>
 
-
             <td>
                 $333.74
             </td>
-
 
             <td class="positive">
                 +0.14%
             </td>
 
-
             <td class="desktop-column">
                 93
             </td>
-
 
             <td class="desktop-column">
                 94
             </td>
 
-
             <td class="desktop-column">
                 71
             </td>
-
 
             <td class="desktop-column">
                 38
             </td>
 
-
             <td class="score">
                 76
             </td>
-
 
             <td>
 
@@ -3391,7 +3626,6 @@ td {
                 </span>
 
             </td>
-
 
             <td>
 
@@ -3435,41 +3669,33 @@ td {
 
             </td>
 
-
             <td>
                 $215.50
             </td>
-
 
             <td class="negative">
                 -1.31%
             </td>
 
-
             <td class="desktop-column">
                 70
             </td>
-
 
             <td class="desktop-column">
                 72
             </td>
 
-
             <td class="desktop-column">
                 85
             </td>
-
 
             <td class="desktop-column">
                 65
             </td>
 
-
             <td class="score">
                 76
             </td>
-
 
             <td>
 
@@ -3481,7 +3707,6 @@ td {
                 </span>
 
             </td>
-
 
             <td>
 
@@ -3525,41 +3750,33 @@ td {
 
             </td>
 
-
             <td>
                 $127.50
             </td>
-
 
             <td class="negative">
                 -0.10%
             </td>
 
-
             <td class="desktop-column">
                 85
             </td>
-
 
             <td class="desktop-column">
                 84
             </td>
 
-
             <td class="desktop-column">
                 74
             </td>
-
 
             <td class="desktop-column">
                 55
             </td>
 
-
             <td class="score">
                 76
             </td>
-
 
             <td>
 
@@ -3571,7 +3788,6 @@ td {
                 </span>
 
             </td>
-
 
             <td>
 
@@ -3615,41 +3831,33 @@ td {
 
             </td>
 
-
             <td>
                 $1,179.11
             </td>
-
 
             <td class="positive">
                 +0.85%
             </td>
 
-
             <td class="desktop-column">
                 85
             </td>
-
 
             <td class="desktop-column">
                 76
             </td>
 
-
             <td class="desktop-column">
                 81
             </td>
-
 
             <td class="desktop-column">
                 38
             </td>
 
-
             <td class="score">
                 75
             </td>
-
 
             <td>
 
@@ -3661,7 +3869,6 @@ td {
                 </span>
 
             </td>
-
 
             <td>
 
@@ -3705,41 +3912,33 @@ td {
 
             </td>
 
-
             <td>
                 $848.95
             </td>
-
 
             <td class="negative">
                 -0.50%
             </td>
 
-
             <td class="desktop-column">
                 50
             </td>
-
 
             <td class="desktop-column">
                 72
             </td>
 
-
             <td class="desktop-column">
                 95
             </td>
-
 
             <td class="desktop-column">
                 60
             </td>
 
-
             <td class="score">
                 74
             </td>
-
 
             <td>
 
@@ -3751,7 +3950,6 @@ td {
                 </span>
 
             </td>
-
 
             <td>
 
@@ -3795,41 +3993,33 @@ td {
 
             </td>
 
-
             <td>
                 $1,747.58
             </td>
-
 
             <td class="negative">
                 -2.09%
             </td>
 
-
             <td class="desktop-column">
                 70
             </td>
-
 
             <td class="desktop-column">
                 82
             </td>
 
-
             <td class="desktop-column">
                 83
             </td>
-
 
             <td class="desktop-column">
                 38
             </td>
 
-
             <td class="score">
                 73
             </td>
-
 
             <td>
 
@@ -3841,7 +4031,6 @@ td {
                 </span>
 
             </td>
-
 
             <td>
 
@@ -3885,41 +4074,33 @@ td {
 
             </td>
 
-
             <td>
                 $187.38
             </td>
-
 
             <td class="positive">
                 +1.91%
             </td>
 
-
             <td class="desktop-column">
                 100
             </td>
-
 
             <td class="desktop-column">
                 67
             </td>
 
-
             <td class="desktop-column">
                 59
             </td>
-
 
             <td class="desktop-column">
                 75
             </td>
 
-
             <td class="score">
                 73
             </td>
-
 
             <td>
 
@@ -3931,7 +4112,6 @@ td {
                 </span>
 
             </td>
-
 
             <td>
 
@@ -3975,41 +4155,33 @@ td {
 
             </td>
 
-
             <td>
                 $355.35
             </td>
-
 
             <td class="negative">
                 -1.72%
             </td>
 
-
             <td class="desktop-column">
                 90
             </td>
-
 
             <td class="desktop-column">
                 56
             </td>
 
-
             <td class="desktop-column">
                 76
             </td>
-
 
             <td class="desktop-column">
                 55
             </td>
 
-
             <td class="score">
                 72
             </td>
-
 
             <td>
 
@@ -4021,7 +4193,6 @@ td {
                 </span>
 
             </td>
-
 
             <td>
 
@@ -4065,41 +4236,33 @@ td {
 
             </td>
 
-
             <td>
                 $147.36
             </td>
-
 
             <td class="positive">
                 +0.97%
             </td>
 
-
             <td class="desktop-column">
                 100
             </td>
-
 
             <td class="desktop-column">
                 67
             </td>
 
-
             <td class="desktop-column">
                 55
             </td>
-
 
             <td class="desktop-column">
                 75
             </td>
 
-
             <td class="score">
                 72
             </td>
-
 
             <td>
 
@@ -4111,7 +4274,6 @@ td {
                 </span>
 
             </td>
-
 
             <td>
 
@@ -4155,41 +4317,33 @@ td {
 
             </td>
 
-
             <td>
                 $114.71
             </td>
-
 
             <td class="positive">
                 +1.66%
             </td>
 
-
             <td class="desktop-column">
                 100
             </td>
-
 
             <td class="desktop-column">
                 61
             </td>
 
-
             <td class="desktop-column">
                 58
             </td>
-
 
             <td class="desktop-column">
                 75
             </td>
 
-
             <td class="score">
                 72
             </td>
-
 
             <td>
 
@@ -4201,7 +4355,6 @@ td {
                 </span>
 
             </td>
-
 
             <td>
 
@@ -4245,41 +4398,33 @@ td {
 
             </td>
 
-
             <td>
                 $529.66
             </td>
-
 
             <td class="negative">
                 -5.57%
             </td>
 
-
             <td class="desktop-column">
                 70
             </td>
-
 
             <td class="desktop-column">
                 76
             </td>
 
-
             <td class="desktop-column">
                 80
             </td>
-
 
             <td class="desktop-column">
                 38
             </td>
 
-
             <td class="score">
                 70
             </td>
-
 
             <td>
 
@@ -4291,7 +4436,6 @@ td {
                 </span>
 
             </td>
-
 
             <td>
 
@@ -4335,41 +4479,33 @@ td {
 
             </td>
 
-
             <td>
                 $247.23
             </td>
-
 
             <td class="negative">
                 -1.06%
             </td>
 
-
             <td class="desktop-column">
                 80
             </td>
-
 
             <td class="desktop-column">
                 56
             </td>
 
-
             <td class="desktop-column">
                 78
             </td>
-
 
             <td class="desktop-column">
                 48
             </td>
 
-
             <td class="score">
                 70
             </td>
-
 
             <td>
 
@@ -4381,7 +4517,6 @@ td {
                 </span>
 
             </td>
-
 
             <td>
 
@@ -4425,41 +4560,33 @@ td {
 
             </td>
 
-
             <td>
                 $370.83
             </td>
-
 
             <td class="negative">
                 -0.97%
             </td>
 
-
             <td class="desktop-column">
                 65
             </td>
-
 
             <td class="desktop-column">
                 44
             </td>
 
-
             <td class="desktop-column">
                 91
             </td>
-
 
             <td class="desktop-column">
                 48
             </td>
 
-
             <td class="score">
                 69
             </td>
-
 
             <td>
 
@@ -4471,7 +4598,6 @@ td {
                 </span>
 
             </td>
-
 
             <td>
 
@@ -4515,41 +4641,33 @@ td {
 
             </td>
 
-
             <td>
                 $398.37
             </td>
-
 
             <td class="negative">
                 -2.77%
             </td>
 
-
             <td class="desktop-column">
                 43
             </td>
-
 
             <td class="desktop-column">
                 67
             </td>
 
-
             <td class="desktop-column">
                 93
             </td>
-
 
             <td class="desktop-column">
                 48
             </td>
 
-
             <td class="score">
                 69
             </td>
-
 
             <td>
 
@@ -4561,7 +4679,6 @@ td {
                 </span>
 
             </td>
-
 
             <td>
 
@@ -4605,41 +4722,33 @@ td {
 
             </td>
 
-
             <td>
                 $543.60
             </td>
-
 
             <td class="negative">
                 -1.44%
             </td>
 
-
             <td class="desktop-column">
                 90
             </td>
-
 
             <td class="desktop-column">
                 58
             </td>
 
-
             <td class="desktop-column">
                 69
             </td>
-
 
             <td class="desktop-column">
                 48
             </td>
 
-
             <td class="score">
                 69
             </td>
-
 
             <td>
 
@@ -4651,7 +4760,6 @@ td {
                 </span>
 
             </td>
-
 
             <td>
 
@@ -4695,41 +4803,33 @@ td {
 
             </td>
 
-
             <td>
                 $426.09
             </td>
-
 
             <td class="positive">
                 +0.64%
             </td>
 
-
             <td class="desktop-column">
                 85
             </td>
-
 
             <td class="desktop-column">
                 90
             </td>
 
-
             <td class="desktop-column">
                 53
             </td>
-
 
             <td class="desktop-column">
                 58
             </td>
 
-
             <td class="score">
                 69
             </td>
-
 
             <td>
 
@@ -4741,7 +4841,6 @@ td {
                 </span>
 
             </td>
-
 
             <td>
 
@@ -4785,41 +4884,33 @@ td {
 
             </td>
 
-
             <td>
                 $81.56
             </td>
-
 
             <td class="negative">
                 -3.96%
             </td>
 
-
             <td class="desktop-column">
                 70
             </td>
 
-
             <td class="desktop-column">
                 70
             </td>
-
 
             <td class="desktop-column">
                 75
             </td>
 
-
             <td class="desktop-column">
                 48
             </td>
 
-
             <td class="score">
                 69
             </td>
-
 
             <td>
 
@@ -4831,7 +4922,6 @@ td {
                 </span>
 
             </td>
-
 
             <td>
 
@@ -4856,17 +4946,16 @@ td {
 </div>
 
 
-<div class="
-    card
-    section
-">
+<div class="card section">
 
     <div class="section-title">
         Singapore Stock Rankings
     </div>
 
     <div class="section-subtitle">
-        Click a company name to open its analysis
+
+        Click any company name to open its individual analysis.
+
     </div>
 
     <div class="table-wrapper">
@@ -4886,26 +4975,130 @@ td {
                     <th>Day</th>
 
                     <th class="desktop-column">
-                        Tech
+                        Technical
+                        
+    <span
+        class="info-wrap"
+        tabindex="0"
+        aria-label="Measures the stock&#x27;s current price trend using indicators such as moving averages, RSI and MACD. A higher score means stronger technical conditions."
+    >
+        ⓘ
+
+        <span class="tooltip">
+            Measures the stock&#x27;s current price trend using indicators such as moving averages, RSI and MACD. A higher score means stronger technical conditions.
+        </span>
+
+    </span>
+    
                     </th>
 
                     <th class="desktop-column">
                         Momentum
+                        
+    <span
+        class="info-wrap"
+        tabindex="0"
+        aria-label="Measures recent share-price performance over approximately 1 week, 1 month, 3 months and 6 months."
+    >
+        ⓘ
+
+        <span class="tooltip">
+            Measures recent share-price performance over approximately 1 week, 1 month, 3 months and 6 months.
+        </span>
+
+    </span>
+    
                     </th>
 
                     <th class="desktop-column">
                         Fundamental
+                        
+    <span
+        class="info-wrap"
+        tabindex="0"
+        aria-label="Measures business strength using available data such as revenue growth, earnings growth, margins, return on equity, debt and liquidity."
+    >
+        ⓘ
+
+        <span class="tooltip">
+            Measures business strength using available data such as revenue growth, earnings growth, margins, return on equity, debt and liquidity.
+        </span>
+
+    </span>
+    
                     </th>
 
                     <th class="desktop-column">
                         Value
+                        
+    <span
+        class="info-wrap"
+        tabindex="0"
+        aria-label="Measures how attractively the stock appears to be priced using valuation indicators such as forward P/E and price-to-book."
+    >
+        ⓘ
+
+        <span class="tooltip">
+            Measures how attractively the stock appears to be priced using valuation indicators such as forward P/E and price-to-book.
+        </span>
+
+    </span>
+    
                     </th>
 
-                    <th>Score</th>
+                    <th>
+                        Overall
+                        
+    <span
+        class="info-wrap"
+        tabindex="0"
+        aria-label="The combined dashboard score. It uses Technical 25%, Momentum 20%, Fundamentals 40% and Valuation 15%."
+    >
+        ⓘ
 
-                    <th>Data</th>
+        <span class="tooltip">
+            The combined dashboard score. It uses Technical 25%, Momentum 20%, Fundamentals 40% and Valuation 15%.
+        </span>
 
-                    <th>Rating</th>
+    </span>
+    
+                    </th>
+
+                    <th>
+                        Data
+                        
+    <span
+        class="info-wrap"
+        tabindex="0"
+        aria-label="Shows how much of the fundamental scoring model had usable data. A lower score means the investment score should be interpreted with more caution."
+    >
+        ⓘ
+
+        <span class="tooltip">
+            Shows how much of the fundamental scoring model had usable data. A lower score means the investment score should be interpreted with more caution.
+        </span>
+
+    </span>
+    
+                    </th>
+
+                    <th>
+                        Dashboard Rating
+                        
+    <span
+        class="info-wrap"
+        tabindex="0"
+        aria-label="This is an automated quantitative rating generated by V Stock Intelligence. It is not an analyst recommendation and is not financial advice."
+    >
+        ⓘ
+
+        <span class="tooltip">
+            This is an automated quantitative rating generated by V Stock Intelligence. It is not an analyst recommendation and is not financial advice.
+        </span>
+
+    </span>
+    
+                    </th>
 
                 </tr>
 
@@ -4943,41 +5136,33 @@ td {
 
             </td>
 
-
             <td>
                 S$42.47
             </td>
-
 
             <td class="negative">
                 -2.37%
             </td>
 
-
             <td class="desktop-column">
                 100
             </td>
-
 
             <td class="desktop-column">
                 78
             </td>
 
-
             <td class="desktop-column">
                 55
             </td>
-
 
             <td class="desktop-column">
                 88
             </td>
 
-
             <td class="score">
                 76
             </td>
-
 
             <td>
 
@@ -4989,7 +5174,6 @@ td {
                 </span>
 
             </td>
-
 
             <td>
 
@@ -5033,41 +5217,33 @@ td {
 
             </td>
 
-
             <td>
                 S$3.87
             </td>
-
 
             <td class="negative">
                 -0.77%
             </td>
 
-
             <td class="desktop-column">
                 100
             </td>
 
-
             <td class="desktop-column">
                 76
             </td>
-
 
             <td class="desktop-column">
                 56
             </td>
 
-
             <td class="desktop-column">
                 88
             </td>
 
-
             <td class="score">
                 76
             </td>
-
 
             <td>
 
@@ -5079,7 +5255,6 @@ td {
                 </span>
 
             </td>
-
 
             <td>
 
@@ -5123,41 +5298,33 @@ td {
 
             </td>
 
-
             <td>
                 S$28.56
             </td>
-
 
             <td class="negative">
                 -0.76%
             </td>
 
-
             <td class="desktop-column">
                 85
             </td>
-
 
             <td class="desktop-column">
                 94
             </td>
 
-
             <td class="desktop-column">
                 60
             </td>
 
-
             <td class="desktop-column">
                 75
             </td>
 
-
             <td class="score">
                 75
             </td>
-
 
             <td>
 
@@ -5169,7 +5336,6 @@ td {
                 </span>
 
             </td>
-
 
             <td>
 
@@ -5213,41 +5379,33 @@ td {
 
             </td>
 
-
             <td>
                 S$71.96
             </td>
-
 
             <td class="negative">
                 -0.72%
             </td>
 
-
             <td class="desktop-column">
                 85
             </td>
-
 
             <td class="desktop-column">
                 90
             </td>
 
-
             <td class="desktop-column">
                 60
             </td>
-
 
             <td class="desktop-column">
                 75
             </td>
 
-
             <td class="score">
                 74
             </td>
-
 
             <td>
 
@@ -5259,7 +5417,6 @@ td {
                 </span>
 
             </td>
-
 
             <td>
 
@@ -5303,41 +5460,33 @@ td {
 
             </td>
 
-
             <td>
                 S$2.32
             </td>
-
 
             <td class="positive">
                 +0.00%
             </td>
 
-
             <td class="desktop-column">
                 90
             </td>
-
 
             <td class="desktop-column">
                 61
             </td>
 
-
             <td class="desktop-column">
                 69
             </td>
-
 
             <td class="desktop-column">
                 75
             </td>
 
-
             <td class="score">
                 74
             </td>
-
 
             <td>
 
@@ -5349,7 +5498,6 @@ td {
                 </span>
 
             </td>
-
 
             <td>
 
@@ -5393,41 +5541,33 @@ td {
 
             </td>
 
-
             <td>
                 S$9.57
             </td>
-
 
             <td class="positive">
                 +0.31%
             </td>
 
-
             <td class="desktop-column">
                 83
             </td>
-
 
             <td class="desktop-column">
                 49
             </td>
 
-
             <td class="desktop-column">
                 85
             </td>
-
 
             <td class="desktop-column">
                 48
             </td>
 
-
             <td class="score">
                 72
             </td>
-
 
             <td>
 
@@ -5439,7 +5579,6 @@ td {
                 </span>
 
             </td>
-
 
             <td>
 
@@ -5483,41 +5622,33 @@ td {
 
             </td>
 
-
             <td>
                 S$0.46
             </td>
-
 
             <td class="positive">
                 +3.41%
             </td>
 
-
             <td class="desktop-column">
                 90
             </td>
-
 
             <td class="desktop-column">
                 56
             </td>
 
-
             <td class="desktop-column">
                 63
             </td>
-
 
             <td class="desktop-column">
                 80
             </td>
 
-
             <td class="score">
                 71
             </td>
-
 
             <td>
 
@@ -5529,7 +5660,6 @@ td {
                 </span>
 
             </td>
-
 
             <td>
 
@@ -5573,41 +5703,33 @@ td {
 
             </td>
 
-
             <td>
                 S$3.63
             </td>
-
 
             <td class="negative">
                 -0.55%
             </td>
 
-
             <td class="desktop-column">
                 65
             </td>
-
 
             <td class="desktop-column">
                 36
             </td>
 
-
             <td class="desktop-column">
                 86
             </td>
-
 
             <td class="desktop-column">
                 80
             </td>
 
-
             <td class="score">
                 70
             </td>
-
 
             <td>
 
@@ -5619,7 +5741,6 @@ td {
                 </span>
 
             </td>
-
 
             <td>
 
@@ -5663,41 +5784,33 @@ td {
 
             </td>
 
-
             <td>
                 S$23.88
             </td>
-
 
             <td class="positive">
                 +0.08%
             </td>
 
-
             <td class="desktop-column">
                 70
             </td>
-
 
             <td class="desktop-column">
                 78
             </td>
 
-
             <td class="desktop-column">
                 75
             </td>
-
 
             <td class="desktop-column">
                 38
             </td>
 
-
             <td class="score">
                 69
             </td>
-
 
             <td>
 
@@ -5709,7 +5822,6 @@ td {
                 </span>
 
             </td>
-
 
             <td>
 
@@ -5753,41 +5865,33 @@ td {
 
             </td>
 
-
             <td>
                 S$7.65
             </td>
-
 
             <td class="positive">
                 +0.53%
             </td>
 
-
             <td class="desktop-column">
                 85
             </td>
-
 
             <td class="desktop-column">
                 84
             </td>
 
-
             <td class="desktop-column">
                 47
             </td>
-
 
             <td class="desktop-column">
                 75
             </td>
 
-
             <td class="score">
                 68
             </td>
-
 
             <td>
 
@@ -5799,7 +5903,6 @@ td {
                 </span>
 
             </td>
-
 
             <td>
 
@@ -5843,41 +5946,33 @@ td {
 
             </td>
 
-
             <td>
                 S$4.63
             </td>
-
 
             <td class="positive">
                 +0.87%
             </td>
 
-
             <td class="desktop-column">
                 78
             </td>
-
 
             <td class="desktop-column">
                 85
             </td>
 
-
             <td class="desktop-column">
                 53
             </td>
 
-
             <td class="desktop-column">
                 68
             </td>
 
-
             <td class="score">
                 68
             </td>
-
 
             <td>
 
@@ -5889,7 +5984,6 @@ td {
                 </span>
 
             </td>
-
 
             <td>
 
@@ -5933,41 +6027,33 @@ td {
 
             </td>
 
-
             <td>
                 S$2.47
             </td>
-
 
             <td class="positive">
                 +0.82%
             </td>
 
-
             <td class="desktop-column">
                 83
             </td>
-
 
             <td class="desktop-column">
                 62
             </td>
 
-
             <td class="desktop-column">
                 56
             </td>
-
 
             <td class="desktop-column">
                 75
             </td>
 
-
             <td class="score">
                 67
             </td>
-
 
             <td>
 
@@ -5979,7 +6065,6 @@ td {
                 </span>
 
             </td>
-
 
             <td>
 
@@ -6023,41 +6108,33 @@ td {
 
             </td>
 
-
             <td>
                 S$11.30
             </td>
-
 
             <td class="negative">
                 -1.40%
             </td>
 
-
             <td class="desktop-column">
                 90
             </td>
-
 
             <td class="desktop-column">
                 49
             </td>
 
-
             <td class="desktop-column">
                 56
             </td>
-
 
             <td class="desktop-column">
                 68
             </td>
 
-
             <td class="score">
                 65
             </td>
-
 
             <td>
 
@@ -6069,7 +6146,6 @@ td {
                 </span>
 
             </td>
-
 
             <td>
 
@@ -6113,41 +6189,33 @@ td {
 
             </td>
 
-
             <td>
                 S$2.26
             </td>
-
 
             <td class="positive">
                 +0.44%
             </td>
 
-
             <td class="desktop-column">
                 65
             </td>
-
 
             <td class="desktop-column">
                 44
             </td>
 
-
             <td class="desktop-column">
                 72
             </td>
-
 
             <td class="desktop-column">
                 75
             </td>
 
-
             <td class="score">
                 65
             </td>
-
 
             <td>
 
@@ -6159,7 +6227,6 @@ td {
                 </span>
 
             </td>
-
 
             <td>
 
@@ -6203,41 +6270,33 @@ td {
 
             </td>
 
-
             <td>
                 S$7.65
             </td>
-
 
             <td class="positive">
                 +1.46%
             </td>
 
-
             <td class="desktop-column">
                 100
             </td>
-
 
             <td class="desktop-column">
                 41
             </td>
 
-
             <td class="desktop-column">
                 54
             </td>
 
-
             <td class="desktop-column">
                 65
             </td>
 
-
             <td class="score">
                 65
             </td>
-
 
             <td>
 
@@ -6249,7 +6308,6 @@ td {
                 </span>
 
             </td>
-
 
             <td>
 
@@ -6293,41 +6351,33 @@ td {
 
             </td>
 
-
             <td>
                 S$1.34
             </td>
-
 
             <td class="positive">
                 +0.75%
             </td>
 
-
             <td class="desktop-column">
                 58
             </td>
-
 
             <td class="desktop-column">
                 40
             </td>
 
-
             <td class="desktop-column">
                 64
             </td>
-
 
             <td class="desktop-column">
                 82
             </td>
 
-
             <td class="score">
                 60
             </td>
-
 
             <td>
 
@@ -6339,7 +6389,6 @@ td {
                 </span>
 
             </td>
-
 
             <td>
 
@@ -6383,41 +6432,33 @@ td {
 
             </td>
 
-
             <td>
                 S$1.94
             </td>
-
 
             <td class="positive">
                 +1.04%
             </td>
 
-
             <td class="desktop-column">
                 65
             </td>
-
 
             <td class="desktop-column">
                 30
             </td>
 
-
             <td class="desktop-column">
                 64
             </td>
-
 
             <td class="desktop-column">
                 82
             </td>
 
-
             <td class="score">
                 60
             </td>
-
 
             <td>
 
@@ -6429,7 +6470,6 @@ td {
                 </span>
 
             </td>
-
 
             <td>
 
@@ -6473,41 +6513,33 @@ td {
 
             </td>
 
-
             <td>
                 S$1.34
             </td>
-
 
             <td class="positive">
                 +0.00%
             </td>
 
-
             <td class="desktop-column">
                 65
             </td>
-
 
             <td class="desktop-column">
                 34
             </td>
 
-
             <td class="desktop-column">
                 59
             </td>
-
 
             <td class="desktop-column">
                 82
             </td>
 
-
             <td class="score">
                 59
             </td>
-
 
             <td>
 
@@ -6519,7 +6551,6 @@ td {
                 </span>
 
             </td>
-
 
             <td>
 
@@ -6563,41 +6594,33 @@ td {
 
             </td>
 
-
             <td>
                 S$9.60
             </td>
-
 
             <td class="negative">
                 -0.83%
             </td>
 
-
             <td class="desktop-column">
                 40
             </td>
-
 
             <td class="desktop-column">
                 34
             </td>
 
-
             <td class="desktop-column">
                 75
             </td>
-
 
             <td class="desktop-column">
                 82
             </td>
 
-
             <td class="score">
                 59
             </td>
-
 
             <td>
 
@@ -6609,7 +6632,6 @@ td {
                 </span>
 
             </td>
-
 
             <td>
 
@@ -6653,41 +6675,33 @@ td {
 
             </td>
 
-
             <td>
                 S$0.63
             </td>
-
 
             <td class="positive">
                 +0.00%
             </td>
 
-
             <td class="desktop-column">
                 65
             </td>
-
 
             <td class="desktop-column">
                 30
             </td>
 
-
             <td class="desktop-column">
                 62
             </td>
-
 
             <td class="desktop-column">
                 82
             </td>
 
-
             <td class="score">
                 59
             </td>
-
 
             <td>
 
@@ -6699,7 +6713,6 @@ td {
                 </span>
 
             </td>
-
 
             <td>
 
@@ -6743,41 +6756,33 @@ td {
 
             </td>
 
-
             <td>
                 S$2.51
             </td>
-
 
             <td class="positive">
                 +1.21%
             </td>
 
-
             <td class="desktop-column">
                 50
             </td>
-
 
             <td class="desktop-column">
                 35
             </td>
 
-
             <td class="desktop-column">
                 59
             </td>
-
 
             <td class="desktop-column">
                 82
             </td>
 
-
             <td class="score">
                 55
             </td>
-
 
             <td>
 
@@ -6789,7 +6794,6 @@ td {
                 </span>
 
             </td>
-
 
             <td>
 
@@ -6833,41 +6837,33 @@ td {
 
             </td>
 
-
             <td>
                 S$63.23
             </td>
-
 
             <td class="positive">
                 +1.57%
             </td>
 
-
             <td class="desktop-column">
                 45
             </td>
-
 
             <td class="desktop-column">
                 28
             </td>
 
-
             <td class="desktop-column">
                 59
             </td>
-
 
             <td class="desktop-column">
                 88
             </td>
 
-
             <td class="score">
                 54
             </td>
-
 
             <td>
 
@@ -6879,7 +6875,6 @@ td {
                 </span>
 
             </td>
-
 
             <td>
 
@@ -6923,41 +6918,33 @@ td {
 
             </td>
 
-
             <td>
                 S$1.99
             </td>
-
 
             <td class="negative">
                 -0.50%
             </td>
 
-
             <td class="desktop-column">
                 45
             </td>
-
 
             <td class="desktop-column">
                 20
             </td>
 
-
             <td class="desktop-column">
                 61
             </td>
-
 
             <td class="desktop-column">
                 82
             </td>
 
-
             <td class="score">
                 52
             </td>
-
 
             <td>
 
@@ -6969,7 +6956,6 @@ td {
                 </span>
 
             </td>
-
 
             <td>
 
@@ -7013,41 +6999,33 @@ td {
 
             </td>
 
-
             <td>
                 S$1.21
             </td>
-
 
             <td class="positive">
                 +0.00%
             </td>
 
-
             <td class="desktop-column">
                 35
             </td>
 
-
             <td class="desktop-column">
                 35
             </td>
-
 
             <td class="desktop-column">
                 62
             </td>
 
-
             <td class="desktop-column">
                 75
             </td>
 
-
             <td class="score">
                 52
             </td>
-
 
             <td>
 
@@ -7059,7 +7037,6 @@ td {
                 </span>
 
             </td>
-
 
             <td>
 
@@ -7103,41 +7080,33 @@ td {
 
             </td>
 
-
             <td>
                 S$27.12
             </td>
-
 
             <td class="negative">
                 -0.15%
             </td>
 
-
             <td class="desktop-column">
                 45
             </td>
-
 
             <td class="desktop-column">
                 12
             </td>
 
-
             <td class="desktop-column">
                 63
             </td>
-
 
             <td class="desktop-column">
                 88
             </td>
 
-
             <td class="score">
                 52
             </td>
-
 
             <td>
 
@@ -7149,7 +7118,6 @@ td {
                 </span>
 
             </td>
-
 
             <td>
 
@@ -7176,12 +7144,12 @@ td {
 
 <div class="footer">
 
-    Automated quantitative research dashboard.
+    V Stock Intelligence uses automated quantitative scoring.
 
     <br>
 
-    Individual stock pages use the same scoring engine
-    as the main market rankings.
+    Dashboard ratings are not analyst recommendations
+    and are not financial advice.
 
 </div>
 
