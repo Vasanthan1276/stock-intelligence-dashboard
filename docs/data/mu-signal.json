@@ -1,0 +1,53 @@
+{
+  "schema_version": "1.0",
+  "signal_method_version": "mu-wealth-gate-v1",
+  "symbol": "MU",
+  "company": "Micron Technology",
+  "generated_at": "2026-08-25T21:45:22.147536+08:00",
+  "max_age_hours": 72,
+  "source": "V Stock Intelligence",
+  "source_url": "https://vasanthan1276.github.io/stock-intelligence-dashboard/micron/",
+  "sentiment": "positive",
+  "price_outlook": "up",
+  "thesis": "strong",
+  "gate_hint": "defer",
+  "price_usd": 931.47,
+  "scores": {
+    "overall": 86,
+    "short_term": 80,
+    "long_term": 91,
+    "technical": 80,
+    "momentum": 79,
+    "fundamental": 95,
+    "valuation": 84,
+    "data_quality_pct": 100
+  },
+  "ratings": {
+    "overall": "Strong Buy",
+    "short_term": "Strong Buy",
+    "long_term": "Strong Buy"
+  },
+  "analyst": {
+    "recommendation": "STRONG BUY",
+    "mean_target_usd": 1515.1136,
+    "high_target_usd": 2200.0,
+    "low_target_usd": 361.0,
+    "upside_pct": 62.66,
+    "opinion_count": 44
+  },
+  "technical_context": {
+    "rsi": 50.63,
+    "ma20_usd": 902.301,
+    "ma50_usd": 961.8796,
+    "ma200_usd": 578.0303
+  },
+  "reasons": [
+    "Overall investment score is positive.",
+    "Short-term technical/momentum view is positive.",
+    "Long-term semiconductor investment view is positive.",
+    "Analyst recommendation is constructive.",
+    "Consensus target implies at least 10% upside.",
+    "Consensus analyst target is at least 10% above the current price."
+  ],
+  "disclaimer": "Advisory signal only. It may pre-fill Wealth Hub's Market / Thesis Gate but does not authorise or execute trades."
+}
