@@ -1,6 +1,7 @@
 import base64
 import html
 import io
+import json
 import math
 from datetime import datetime
 from pathlib import Path
@@ -22,6 +23,16 @@ from scoring import (
 TICKER = "MU"
 COMPANY_NAME = "Micron Technology"
 SECTOR = "Semiconductors"
+
+MU_SIGNAL_PATH = Path(
+    "docs/data/mu-signal.json"
+)
+
+MU_SIGNAL_METHOD_VERSION = (
+    "mu-wealth-gate-v1"
+)
+
+MU_SIGNAL_MAX_AGE_HOURS = 72
 
 
 # ============================================================
@@ -1515,6 +1526,357 @@ def create_investment_view(
 
 
 # ============================================================
+# WEALTH HUB MU SIGNAL
+# ============================================================
+
+def analyst_recommendation_bias(
+    recommendation,
+):
+    value = str(
+        recommendation
+        or
+        ""
+    ).strip().upper()
+
+    positive = {
+        "STRONG BUY",
+        "BUY",
+        "OUTPERFORM",
+        "OVERWEIGHT",
+    }
+
+    negative = {
+        "SELL",
+        "UNDERPERFORM",
+        "UNDERWEIGHT",
+    }
+
+    if value in positive:
+        return 1
+
+    if value in negative:
+        return -1
+
+    return 0
+
+
+def derive_wealth_hub_mu_signal(
+    overall_score,
+    short_term_score,
+    long_term_score,
+    technical_score,
+    momentum_score,
+    analyst_upside,
+    analyst_recommendation,
+):
+    """
+    Convert existing V Stock Intelligence outputs into a small,
+    transparent advisory signal for Wealth Hub.
+
+    This is intentionally conservative:
+      - Positive sentiment OR an UP price outlook can defer a
+        concentration-reduction review window.
+      - The signal never authorises or executes a trade.
+      - Trading-window status remains manual in Wealth Hub.
+    """
+
+    sentiment_points = 0
+    sentiment_reasons = []
+
+    if overall_score >= 65:
+        sentiment_points += 1
+        sentiment_reasons.append(
+            "Overall investment score is positive."
+        )
+    elif overall_score < 50:
+        sentiment_points -= 1
+        sentiment_reasons.append(
+            "Overall investment score is weak."
+        )
+
+    if short_term_score >= 65:
+        sentiment_points += 1
+        sentiment_reasons.append(
+            "Short-term technical/momentum view is positive."
+        )
+    elif short_term_score < 50:
+        sentiment_points -= 1
+        sentiment_reasons.append(
+            "Short-term technical/momentum view is weak."
+        )
+
+    if long_term_score >= 65:
+        sentiment_points += 1
+        sentiment_reasons.append(
+            "Long-term semiconductor investment view is positive."
+        )
+    elif long_term_score < 50:
+        sentiment_points -= 1
+        sentiment_reasons.append(
+            "Long-term semiconductor investment view is weak."
+        )
+
+    analyst_bias = analyst_recommendation_bias(
+        analyst_recommendation
+    )
+
+    if analyst_bias > 0:
+        sentiment_points += 1
+        sentiment_reasons.append(
+            "Analyst recommendation is constructive."
+        )
+    elif analyst_bias < 0:
+        sentiment_points -= 1
+        sentiment_reasons.append(
+            "Analyst recommendation is negative."
+        )
+
+    if analyst_upside is not None:
+        if analyst_upside >= 0.10:
+            sentiment_points += 1
+            sentiment_reasons.append(
+                "Consensus target implies at least 10% upside."
+            )
+        elif analyst_upside <= -0.10:
+            sentiment_points -= 1
+            sentiment_reasons.append(
+                "Consensus target implies at least 10% downside."
+            )
+
+    if sentiment_points >= 2:
+        sentiment = "positive"
+    elif sentiment_points <= -2:
+        sentiment = "negative"
+    else:
+        sentiment = "neutral"
+
+    outlook_reasons = []
+
+    if (
+        analyst_upside is not None
+        and
+        analyst_upside >= 0.10
+    ):
+        price_outlook = "up"
+        outlook_reasons.append(
+            "Consensus analyst target is at least 10% above the current price."
+        )
+
+    elif (
+        technical_score >= 65
+        and
+        momentum_score >= 65
+    ):
+        price_outlook = "up"
+        outlook_reasons.append(
+            "Technical and momentum scores both support an upward price bias."
+        )
+
+    elif (
+        analyst_upside is not None
+        and
+        analyst_upside <= -0.10
+        and
+        technical_score < 50
+        and
+        momentum_score < 50
+    ):
+        price_outlook = "down"
+        outlook_reasons.append(
+            "Analyst downside is paired with weak technical and momentum scores."
+        )
+
+    elif (
+        technical_score < 40
+        and
+        momentum_score < 40
+    ):
+        price_outlook = "down"
+        outlook_reasons.append(
+            "Technical and momentum scores both indicate a weak price trend."
+        )
+
+    else:
+        price_outlook = "flat"
+        outlook_reasons.append(
+            "The available analyst and price-trend signals do not establish a strong directional bias."
+        )
+
+    if (
+        overall_score >= 80
+        and
+        long_term_score >= 65
+    ):
+        thesis = "strong"
+    elif (
+        overall_score >= 65
+        and
+        long_term_score >= 60
+    ):
+        thesis = "positive"
+    elif (
+        overall_score < 50
+        or
+        long_term_score < 50
+    ):
+        thesis = "weak"
+    else:
+        thesis = "neutral"
+
+    if (
+        sentiment == "positive"
+        or
+        price_outlook == "up"
+    ):
+        gate_hint = "defer"
+    elif (
+        sentiment == "negative"
+        or
+        price_outlook == "down"
+    ):
+        gate_hint = "eligible_review"
+    else:
+        gate_hint = "eligible"
+
+    return {
+        "sentiment": sentiment,
+        "sentiment_points": sentiment_points,
+        "price_outlook": price_outlook,
+        "thesis": thesis,
+        "gate_hint": gate_hint,
+        "reasons": (
+            sentiment_reasons
+            +
+            outlook_reasons
+        )[:8],
+    }
+
+
+def write_mu_signal(
+    updated_iso,
+    price,
+    overall_score,
+    overall_rating,
+    valuation_score,
+    short_term_score,
+    short_term_rating,
+    long_term_score,
+    long_term_rating,
+    technical,
+    momentum,
+    fundamentals,
+    analysts,
+):
+    signal = derive_wealth_hub_mu_signal(
+        overall_score=overall_score,
+        short_term_score=short_term_score,
+        long_term_score=long_term_score,
+        technical_score=technical["score"],
+        momentum_score=momentum["score"],
+        analyst_upside=analysts["upside"],
+        analyst_recommendation=analysts["recommendation"],
+    )
+
+    analyst_upside_pct = (
+        round(
+            analysts["upside"] * 100,
+            2,
+        )
+        if analysts["upside"] is not None
+        else None
+    )
+
+    payload = {
+        "schema_version": "1.0",
+        "signal_method_version": MU_SIGNAL_METHOD_VERSION,
+        "symbol": TICKER,
+        "company": COMPANY_NAME,
+        "generated_at": updated_iso,
+        "max_age_hours": MU_SIGNAL_MAX_AGE_HOURS,
+        "source": "V Stock Intelligence",
+        "source_url": (
+            "https://vasanthan1276.github.io/"
+            "stock-intelligence-dashboard/micron/"
+        ),
+        "sentiment": signal["sentiment"],
+        "price_outlook": signal["price_outlook"],
+        "thesis": signal["thesis"],
+        "gate_hint": signal["gate_hint"],
+        "price_usd": round(price, 4),
+        "scores": {
+            "overall": overall_score,
+            "short_term": short_term_score,
+            "long_term": long_term_score,
+            "technical": technical["score"],
+            "momentum": momentum["score"],
+            "fundamental": fundamentals["score"],
+            "valuation": valuation_score,
+            "data_quality_pct": fundamentals.get(
+                "data_quality"
+            ),
+        },
+        "ratings": {
+            "overall": overall_rating,
+            "short_term": short_term_rating,
+            "long_term": long_term_rating,
+        },
+        "analyst": {
+            "recommendation": analysts["recommendation"],
+            "mean_target_usd": analysts["mean_target"],
+            "high_target_usd": analysts["high_target"],
+            "low_target_usd": analysts["low_target"],
+            "upside_pct": analyst_upside_pct,
+            "opinion_count": analysts["analyst_count"],
+        },
+        "technical_context": {
+            "rsi": round(
+                technical["rsi"],
+                2,
+            ),
+            "ma20_usd": round(
+                technical["ma20"],
+                4,
+            ),
+            "ma50_usd": round(
+                technical["ma50"],
+                4,
+            ),
+            "ma200_usd": round(
+                technical["ma200"],
+                4,
+            ),
+        },
+        "reasons": signal["reasons"],
+        "disclaimer": (
+            "Advisory signal only. It may pre-fill Wealth Hub's "
+            "Market / Thesis Gate but does not authorise or execute trades."
+        ),
+    }
+
+    MU_SIGNAL_PATH.parent.mkdir(
+        parents=True,
+        exist_ok=True,
+    )
+
+    MU_SIGNAL_PATH.write_text(
+        json.dumps(
+            payload,
+            indent=2,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    print(
+        "Wealth Hub MU signal written to "
+        f"{MU_SIGNAL_PATH}: "
+        f"{signal['sentiment']} / "
+        f"{signal['price_outlook']} / "
+        f"{signal['gate_hint']}"
+    )
+
+
+# ============================================================
 # HTML HELPERS
 # ============================================================
 
@@ -2050,17 +2412,23 @@ def main():
     )
 
 
-    updated = datetime.now(
+    now_sgt = datetime.now(
 
         ZoneInfo(
             "Asia/Singapore"
         )
 
-    ).strftime(
+    )
+
+
+    updated = now_sgt.strftime(
 
         "%d %B %Y, %H:%M SGT"
 
     )
+
+
+    updated_iso = now_sgt.isoformat()
 
 
     price_change_class = (
@@ -3247,6 +3615,23 @@ li {{
 
         encoding="utf-8",
 
+    )
+
+
+    write_mu_signal(
+        updated_iso=updated_iso,
+        price=price,
+        overall_score=overall_score,
+        overall_rating=overall_rating,
+        valuation_score=shared_valuation,
+        short_term_score=short_term_score,
+        short_term_rating=short_term_rating,
+        long_term_score=long_term_score,
+        long_term_rating=long_term_rating,
+        technical=technical,
+        momentum=momentum,
+        fundamentals=fundamentals,
+        analysts=analysts,
     )
 
 
