@@ -3,7 +3,7 @@
   "signal_method_version": "mu-wealth-gate-v1",
   "symbol": "MU",
   "company": "Micron Technology",
-  "generated_at": "2026-08-25T21:45:22.147536+08:00",
+  "generated_at": "2026-08-26T06:52:19.531791+08:00",
   "max_age_hours": 72,
   "source": "V Stock Intelligence",
   "source_url": "https://vasanthan1276.github.io/stock-intelligence-dashboard/micron/",
@@ -11,7 +11,7 @@
   "price_outlook": "up",
   "thesis": "strong",
   "gate_hint": "defer",
-  "price_usd": 931.47,
+  "price_usd": 932.97,
   "scores": {
     "overall": 86,
     "short_term": 80,
@@ -32,14 +32,14 @@
     "mean_target_usd": 1515.1136,
     "high_target_usd": 2200.0,
     "low_target_usd": 361.0,
-    "upside_pct": 62.66,
+    "upside_pct": 62.4,
     "opinion_count": 44
   },
   "technical_context": {
-    "rsi": 50.63,
-    "ma20_usd": 902.301,
-    "ma50_usd": 961.8796,
-    "ma200_usd": 578.0303
+    "rsi": 50.78,
+    "ma20_usd": 902.376,
+    "ma50_usd": 961.9096,
+    "ma200_usd": 578.0378
   },
   "reasons": [
     "Overall investment score is positive.",
