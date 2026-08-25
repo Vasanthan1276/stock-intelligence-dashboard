@@ -30,9 +30,14 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Generate Micron deep-dive report
+      - name: Generate Micron deep-dive report and Wealth Hub signal
         run: |
           python main.py
+
+      - name: Validate Wealth Hub MU signal
+        run: |
+          test -f docs/data/mu-signal.json
+          python -m json.tool docs/data/mu-signal.json > /dev/null
 
       - name: Move Micron report to dedicated page
         run: |
@@ -43,7 +48,7 @@ jobs:
         run: |
           python dashboard.py
 
-      - name: Commit updated dashboards
+      - name: Commit updated dashboards and signals
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
