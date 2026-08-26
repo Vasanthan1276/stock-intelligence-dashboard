@@ -1,0 +1,151 @@
+{
+  "schema_version": "1.0",
+  "purpose": "Additional Stock Intelligence scan coverage for direct portfolio holdings.",
+  "us": {
+    "ABNB": {
+      "name": "Airbnb",
+      "sector": "Consumer / Technology"
+    },
+    "AXON": {
+      "name": "Axon Enterprise",
+      "sector": "Industrials / Technology"
+    },
+    "BMY": {
+      "name": "Bristol Myers Squibb",
+      "sector": "Healthcare"
+    },
+    "BMBL": {
+      "name": "Bumble",
+      "sector": "Communication Services"
+    },
+    "CWH": {
+      "name": "Camping World Holdings",
+      "sector": "Consumer"
+    },
+    "CHGG": {
+      "name": "Chegg",
+      "sector": "Consumer / Technology"
+    },
+    "CPNG": {
+      "name": "Coupang",
+      "sector": "Consumer / Technology"
+    },
+    "CRTO": {
+      "name": "Criteo",
+      "sector": "Technology"
+    },
+    "DOCU": {
+      "name": "DocuSign",
+      "sector": "Technology"
+    },
+    "FIRY": {
+      "name": "Firy",
+      "sector": "Technology"
+    },
+    "FVRR": {
+      "name": "Fiverr International",
+      "sector": "Technology"
+    },
+    "GILD": {
+      "name": "Gilead Sciences",
+      "sector": "Healthcare"
+    },
+    "MOMO": {
+      "name": "Hello Group",
+      "sector": "Communication Services"
+    },
+    "IDXX": {
+      "name": "IDEXX Laboratories",
+      "sector": "Healthcare"
+    },
+    "IQ": {
+      "name": "iQIYI",
+      "sector": "Communication Services"
+    },
+    "KMI": {
+      "name": "Kinder Morgan",
+      "sector": "Energy"
+    },
+    "LRCX": {
+      "name": "Lam Research",
+      "sector": "Semiconductor Equipment"
+    },
+    "LULU": {
+      "name": "Lululemon Athletica",
+      "sector": "Consumer"
+    },
+    "MKL": {
+      "name": "Markel Group",
+      "sector": "Financials"
+    },
+    "MRNA": {
+      "name": "Moderna",
+      "sector": "Healthcare"
+    },
+    "NVCR": {
+      "name": "NovoCure",
+      "sector": "Healthcare"
+    },
+    "NTNX": {
+      "name": "Nutanix",
+      "sector": "Technology"
+    },
+    "PTON": {
+      "name": "Peloton Interactive",
+      "sector": "Consumer / Technology"
+    },
+    "PINS": {
+      "name": "Pinterest",
+      "sector": "Communication Services"
+    },
+    "RGEN": {
+      "name": "Repligen",
+      "sector": "Healthcare"
+    },
+    "CRM": {
+      "name": "Salesforce",
+      "sector": "Technology"
+    },
+    "SHOP": {
+      "name": "Shopify",
+      "sector": "Technology"
+    },
+    "SNBR": {
+      "name": "Sleep Number",
+      "sector": "Consumer"
+    },
+    "TDOC": {
+      "name": "Teladoc Health",
+      "sector": "Healthcare"
+    },
+    "TRVG": {
+      "name": "trivago",
+      "sector": "Communication Services"
+    },
+    "UAA": {
+      "name": "Under Armour Class A",
+      "sector": "Consumer"
+    },
+    "UA": {
+      "name": "Under Armour Class C",
+      "sector": "Consumer"
+    },
+    "UPST": {
+      "name": "Upstart Holdings",
+      "sector": "Financial Technology"
+    },
+    "W": {
+      "name": "Wayfair",
+      "sector": "Consumer / Technology"
+    },
+    "WING": {
+      "name": "Wingstop",
+      "sector": "Consumer"
+    },
+    "ZBRA": {
+      "name": "Zebra Technologies",
+      "sector": "Industrials / Technology"
+    }
+  },
+  "singapore": {}
+}

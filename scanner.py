@@ -1,4 +1,6 @@
 import math
+import json
+from pathlib import Path
 
 import yfinance as yf
 
@@ -11,6 +13,142 @@ from scoring import (
     technical_score,
     valuation_score,
 )
+
+
+# ============================================================
+# OPTIONAL PORTFOLIO UNIVERSE
+# ============================================================
+
+PORTFOLIO_UNIVERSE_PATH = Path(
+    "portfolio-universe.json"
+)
+
+
+def load_portfolio_universe():
+    """
+    Load optional portfolio holdings that should always be scanned.
+
+    The file is deliberately separate from watchlist.json:
+      - watchlist.json controls what is highlighted on the dashboard
+      - portfolio-universe.json controls extra scan coverage
+
+    Missing or malformed files are non-fatal; the normal static universe
+    continues to work.
+    """
+
+    empty = {
+        "us": {},
+        "singapore": {},
+    }
+
+    if not PORTFOLIO_UNIVERSE_PATH.exists():
+        return empty
+
+    try:
+        payload = json.loads(
+            PORTFOLIO_UNIVERSE_PATH.read_text(
+                encoding="utf-8"
+            )
+        )
+
+        if not isinstance(payload, dict):
+            return empty
+
+        output = {
+            "us": {},
+            "singapore": {},
+        }
+
+        for market_key in (
+            "us",
+            "singapore",
+        ):
+            raw_market = payload.get(
+                market_key,
+                {},
+            )
+
+            if not isinstance(
+                raw_market,
+                dict,
+            ):
+                continue
+
+            for raw_ticker, raw_meta in raw_market.items():
+                ticker = str(
+                    raw_ticker
+                ).strip().upper()
+
+                if not ticker:
+                    continue
+
+                meta = (
+                    raw_meta
+                    if isinstance(
+                        raw_meta,
+                        dict,
+                    )
+                    else {}
+                )
+
+                name = str(
+                    meta.get(
+                        "name",
+                        ticker,
+                    )
+                    or ticker
+                ).strip()
+
+                sector = str(
+                    meta.get(
+                        "sector",
+                        "General Company",
+                    )
+                    or "General Company"
+                ).strip()
+
+                output[
+                    market_key
+                ][
+                    ticker
+                ] = {
+                    "name": name,
+                    "sector": sector,
+                }
+
+        return output
+
+    except Exception as error:
+        print(
+            "Could not read "
+            "portfolio-universe.json: "
+            f"{error}"
+        )
+
+        return empty
+
+
+def merged_stock_universe(
+    base_universe,
+    extra_universe,
+):
+    """
+    Return a copy of the standard universe plus portfolio-specific tickers.
+
+    Portfolio metadata wins for duplicate tickers so the portfolio file can
+    correct a company name or sector without editing scanner.py.
+    """
+
+    merged = dict(
+        base_universe
+    )
+
+    merged.update(
+        extra_universe
+        or {}
+    )
+
+    return merged
 
 
 # ============================================================
@@ -1105,14 +1243,78 @@ def scan_market(
 
 def run_scanner():
 
+    portfolio_universe = (
+        load_portfolio_universe()
+    )
+
+
+    us_universe = (
+        merged_stock_universe(
+            US_STOCKS,
+            portfolio_universe.get(
+                "us",
+                {},
+            ),
+        )
+    )
+
+
+    singapore_universe = (
+        merged_stock_universe(
+            SINGAPORE_STOCKS,
+            portfolio_universe.get(
+                "singapore",
+                {},
+            ),
+        )
+    )
+
+
+    extra_us_count = max(
+        0,
+        len(
+            us_universe
+        )
+        -
+        len(
+            US_STOCKS
+        ),
+    )
+
+
+    extra_sg_count = max(
+        0,
+        len(
+            singapore_universe
+        )
+        -
+        len(
+            SINGAPORE_STOCKS
+        ),
+    )
+
+
+    if (
+        extra_us_count
+        or extra_sg_count
+    ):
+
+        print(
+            "Portfolio universe loaded: "
+            f"+{extra_us_count} US, "
+            f"+{extra_sg_count} Singapore "
+            "additional ticker(s)."
+        )
+
+
     us_results = scan_market(
-        US_STOCKS,
+        us_universe,
         "US",
     )
 
 
     singapore_results = scan_market(
-        SINGAPORE_STOCKS,
+        singapore_universe,
         "Singapore",
     )
 
