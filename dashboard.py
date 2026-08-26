@@ -3,6 +3,7 @@ from pathlib import Path
 from zoneinfo import ZoneInfo
 import html
 import json
+import math
 import re
 
 from scanner import run_scanner
@@ -46,6 +47,56 @@ def escape(value):
     return html.escape(
         str(value)
     )
+
+
+def json_safe(value):
+
+    if isinstance(
+        value,
+        dict,
+    ):
+
+        return {
+            key: json_safe(item)
+            for key, item in value.items()
+        }
+
+
+    if isinstance(
+        value,
+        list,
+    ):
+
+        return [
+            json_safe(item)
+            for item in value
+        ]
+
+
+    if isinstance(
+        value,
+        tuple,
+    ):
+
+        return [
+            json_safe(item)
+            for item in value
+        ]
+
+
+    if isinstance(
+        value,
+        float,
+    ):
+
+        if not math.isfinite(
+            value
+        ):
+
+            return None
+
+
+    return value
 
 
 def ticker_slug(ticker):
@@ -361,7 +412,9 @@ def load_history():
             list,
         ):
 
-            return data
+            return json_safe(
+                data
+            )
 
 
     except Exception as error:
@@ -477,11 +530,17 @@ def save_history(
     )
 
 
+    history = json_safe(
+        history
+    )
+
+
     HISTORY_PATH.write_text(
 
         json.dumps(
             history,
             indent=2,
+            allow_nan=False,
         ),
 
         encoding="utf-8",
