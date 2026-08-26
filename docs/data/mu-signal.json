@@ -3,7 +3,7 @@
   "signal_method_version": "mu-wealth-gate-v1",
   "symbol": "MU",
   "company": "Micron Technology",
-  "generated_at": "2026-08-26T15:55:30.382276+08:00",
+  "generated_at": "2026-08-26T16:28:45.650047+08:00",
   "max_age_hours": 72,
   "source": "V Stock Intelligence",
   "source_url": "https://vasanthan1276.github.io/stock-intelligence-dashboard/micron/",
@@ -13,13 +13,13 @@
   "gate_hint": "defer",
   "price_usd": 932.97,
   "scores": {
-    "overall": 86,
+    "overall": 89,
     "short_term": 80,
-    "long_term": 91,
+    "long_term": 95,
     "technical": 80,
     "momentum": 79,
     "fundamental": 95,
-    "valuation": 84,
+    "valuation": 100,
     "data_quality_pct": 100
   },
   "ratings": {
