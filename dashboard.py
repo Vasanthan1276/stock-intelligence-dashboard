@@ -489,6 +489,61 @@ def make_history_snapshot(
                     4,
                 ),
 
+            "data_quality":
+                stock.get(
+                    "data_quality"
+                ),
+
+            "rsi":
+                stock.get(
+                    "rsi"
+                ),
+
+            "return_1m":
+                stock.get(
+                    "return_1m"
+                ),
+
+            "return_3m":
+                stock.get(
+                    "return_3m"
+                ),
+
+            "return_6m":
+                stock.get(
+                    "return_6m"
+                ),
+
+            "analyst_target":
+                stock.get(
+                    "analyst_target"
+                ),
+
+            "analyst_high":
+                stock.get(
+                    "analyst_high"
+                ),
+
+            "analyst_low":
+                stock.get(
+                    "analyst_low"
+                ),
+
+            "analyst_upside":
+                stock.get(
+                    "analyst_upside"
+                ),
+
+            "analyst_recommendation":
+                stock.get(
+                    "analyst_recommendation"
+                ),
+
+            "analyst_count":
+                stock.get(
+                    "analyst_count"
+                ),
+
         }
 
 
