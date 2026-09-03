@@ -1,5 +1,6 @@
 import math
 import json
+import time
 from pathlib import Path
 
 import yfinance as yf
@@ -22,6 +23,10 @@ from scoring import (
 PORTFOLIO_UNIVERSE_PATH = Path(
     "portfolio-universe.json"
 )
+
+MARKET_DATA_MAX_ATTEMPTS = 3
+MARKET_DATA_RETRY_SECONDS = 5
+MU_MIN_HISTORY_ROWS = 200
 
 
 def load_portfolio_universe():
@@ -578,13 +583,174 @@ def safe_number(value):
 
         value = float(value)
 
-        if math.isnan(value):
+        if not math.isfinite(value):
             return None
 
         return value
 
     except (TypeError, ValueError):
         return None
+
+
+def is_valid_price(value):
+    number = safe_number(
+        value
+    )
+
+    return (
+        number is not None
+        and number > 0
+    )
+
+
+def validate_price_history(
+    history,
+    ticker,
+    min_rows=2,
+):
+    if history is None or history.empty:
+        raise RuntimeError(
+            f"No market data returned for {ticker}."
+        )
+
+    if "Close" not in history.columns:
+        raise RuntimeError(
+            f"Market data for {ticker} has no Close column."
+        )
+
+    raw_close = history[
+        "Close"
+    ]
+
+    if len(raw_close) < 2:
+        raise RuntimeError(
+            f"Market data for {ticker} has fewer than 2 rows."
+        )
+
+    latest_raw_price = safe_number(
+        raw_close.iloc[-1]
+    )
+
+    if (
+        latest_raw_price is None
+        or latest_raw_price <= 0
+    ):
+        raise RuntimeError(
+            f"Latest Close for {ticker} is invalid: "
+            f"{raw_close.iloc[-1]!r}."
+        )
+
+    valid_close_mask = raw_close.map(
+        is_valid_price
+    )
+
+    cleaned_history = history.loc[
+        valid_close_mask
+    ].copy()
+
+    if len(cleaned_history) < min_rows:
+        raise RuntimeError(
+            f"Only {len(cleaned_history)} valid price rows "
+            f"were returned for {ticker}; "
+            f"at least {min_rows} are required."
+        )
+
+    previous_price = safe_number(
+        cleaned_history[
+            "Close"
+        ].iloc[-2]
+    )
+
+    if (
+        previous_price is None
+        or previous_price <= 0
+    ):
+        raise RuntimeError(
+            f"Previous Close for {ticker} is invalid."
+        )
+
+    removed_rows = (
+        len(history)
+        - len(cleaned_history)
+    )
+
+    if removed_rows:
+        print(
+            f"Removed {removed_rows} invalid historical "
+            f"price row(s) for {ticker}."
+        )
+
+    return cleaned_history
+
+
+def download_valid_market_data(
+    ticker,
+    min_rows=2,
+):
+    last_error = None
+
+    for attempt in range(
+        1,
+        MARKET_DATA_MAX_ATTEMPTS + 1,
+    ):
+        try:
+            stock = yf.Ticker(
+                ticker
+            )
+
+            history = stock.history(
+                period="1y",
+                interval="1d",
+                auto_adjust=False,
+            )
+
+            history = validate_price_history(
+                history,
+                ticker,
+                min_rows=min_rows,
+            )
+
+            price = safe_number(
+                history[
+                    "Close"
+                ].iloc[-1]
+            )
+
+            print(
+                f"{ticker} market data validated: "
+                f"${price:,.2f} "
+                f"({len(history)} valid rows, "
+                f"attempt {attempt}/"
+                f"{MARKET_DATA_MAX_ATTEMPTS})."
+            )
+
+            return stock, history
+
+        except Exception as error:
+            last_error = error
+
+            print(
+                f"{ticker} market data attempt "
+                f"{attempt}/"
+                f"{MARKET_DATA_MAX_ATTEMPTS} failed: "
+                f"{error}"
+            )
+
+            if attempt < MARKET_DATA_MAX_ATTEMPTS:
+                print(
+                    f"Retrying {ticker} market data in "
+                    f"{MARKET_DATA_RETRY_SECONDS} seconds..."
+                )
+
+                time.sleep(
+                    MARKET_DATA_RETRY_SECONDS
+                )
+
+    raise RuntimeError(
+        f"Unable to obtain valid market data for {ticker} "
+        f"after {MARKET_DATA_MAX_ATTEMPTS} attempts. "
+        f"Last error: {last_error}"
+    )
 
 
 def percentage_change(
@@ -653,18 +819,16 @@ def analyze_stock(
             f"Scanning {ticker}..."
         )
 
-        stock = yf.Ticker(
-            ticker
+        minimum_rows = (
+            MU_MIN_HISTORY_ROWS
+            if ticker == "MU"
+            else 2
         )
 
-        history = stock.history(
-            period="1y",
-            interval="1d",
-            auto_adjust=False,
+        stock, history = download_valid_market_data(
+            ticker,
+            min_rows=minimum_rows,
         )
-
-        if history.empty:
-            return None
 
 
         info = (
@@ -1193,6 +1357,13 @@ def analyze_stock(
             f"{ticker}: "
             f"{error}"
         )
+
+        if ticker == "MU":
+            raise RuntimeError(
+                "Critical MU scan failed. "
+                "Dashboard generation is being aborted so "
+                "the previous valid site remains published."
+            ) from error
 
         return None
 
