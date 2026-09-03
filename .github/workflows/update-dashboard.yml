@@ -36,8 +36,73 @@ jobs:
 
       - name: Validate Wealth Hub MU signal
         run: |
-          test -f docs/data/mu-signal.json
-          python -m json.tool docs/data/mu-signal.json > /dev/null
+          python - <<'PY'
+          import json
+          import math
+          from pathlib import Path
+
+          path = Path("docs/data/mu-signal.json")
+
+          if not path.is_file():
+              raise SystemExit(
+                  "MU validation failed: docs/data/mu-signal.json is missing."
+              )
+
+          try:
+              payload = json.loads(
+                  path.read_text(encoding="utf-8"),
+                  parse_constant=lambda value: (_ for _ in ()).throw(
+                      ValueError(f"Invalid JSON numeric constant: {value}")
+                  ),
+              )
+          except Exception as error:
+              raise SystemExit(
+                  f"MU validation failed: signal JSON is invalid: {error}"
+              ) from error
+
+          if payload.get("symbol") != "MU":
+              raise SystemExit(
+                  "MU validation failed: symbol is not MU."
+              )
+
+          price = payload.get("price_usd")
+
+          if (
+              isinstance(price, bool)
+              or not isinstance(price, (int, float))
+              or not math.isfinite(float(price))
+              or float(price) <= 0
+          ):
+              raise SystemExit(
+                  f"MU validation failed: invalid price_usd {price!r}."
+              )
+
+          scores = payload.get("scores") or {}
+
+          for key in (
+              "overall",
+              "technical",
+              "momentum",
+              "fundamental",
+              "valuation",
+          ):
+              value = scores.get(key)
+
+              if (
+                  isinstance(value, bool)
+                  or not isinstance(value, (int, float))
+                  or not math.isfinite(float(value))
+              ):
+                  raise SystemExit(
+                      f"MU validation failed: invalid score {key}={value!r}."
+                  )
+
+          print(
+              "MU signal validated successfully: "
+              f"price=${float(price):,.2f}, "
+              f"overall score={scores['overall']}"
+          )
+          PY
 
       - name: Move Micron report to dedicated page
         run: |
@@ -47,6 +112,44 @@ jobs:
       - name: Generate main dashboard and stock detail pages
         run: |
           python dashboard.py
+
+      - name: Validate generated dashboard artifacts
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          required = [
+              Path("docs/index.html"),
+              Path("docs/micron/index.html"),
+              Path("docs/stocks/mu/index.html"),
+          ]
+
+          missing = [
+              str(path)
+              for path in required
+              if not path.is_file()
+          ]
+
+          if missing:
+              raise SystemExit(
+                  "Dashboard validation failed; missing: "
+                  + ", ".join(missing)
+              )
+
+          main_page = Path("docs/index.html").read_text(
+              encoding="utf-8"
+          )
+
+          if "Micron Technology" not in main_page:
+              raise SystemExit(
+                  "Dashboard validation failed: Micron is absent "
+                  "from the generated main dashboard."
+              )
+
+          print(
+              "Dashboard artifacts validated successfully, including MU."
+          )
+          PY
 
       - name: Commit updated dashboards and signals
         run: |
