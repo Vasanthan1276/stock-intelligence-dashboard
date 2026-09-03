@@ -5624,7 +5624,7 @@ body {{
 
 .table-wrapper {{
     overflow-x:
-        auto;
+        hidden;
 }}
 
 table {{
