@@ -3,28 +3,28 @@
   "signal_method_version": "mu-wealth-gate-v1",
   "symbol": "MU",
   "company": "Micron Technology",
-  "generated_at": "2026-09-03T08:25:56.676524+08:00",
+  "generated_at": "2026-09-03T16:12:05.138584+08:00",
   "max_age_hours": 72,
   "source": "V Stock Intelligence",
   "source_url": "https://vasanthan1276.github.io/stock-intelligence-dashboard/micron/",
-  "sentiment": "neutral",
-  "price_outlook": "down",
-  "thesis": "neutral",
-  "gate_hint": "eligible_review",
-  "price_usd": NaN,
+  "sentiment": "positive",
+  "price_outlook": "up",
+  "thesis": "strong",
+  "gate_hint": "defer",
+  "price_usd": 956.08,
   "scores": {
-    "overall": 54,
-    "short_term": 10,
-    "long_term": 84,
-    "technical": 15,
-    "momentum": 0,
+    "overall": 87,
+    "short_term": 88,
+    "long_term": 93,
+    "technical": 100,
+    "momentum": 66,
     "fundamental": 95,
     "valuation": 84,
     "data_quality_pct": 100
   },
   "ratings": {
-    "overall": "Hold",
-    "short_term": "Caution",
+    "overall": "Strong Buy",
+    "short_term": "Strong Buy",
     "long_term": "Strong Buy"
   },
   "analyst": {
@@ -32,20 +32,22 @@
     "mean_target_usd": 1513.1111,
     "high_target_usd": 2200.0,
     "low_target_usd": 361.0,
-    "upside_pct": null,
+    "upside_pct": 58.26,
     "opinion_count": 45
   },
   "technical_context": {
-    "rsi": 50.45,
-    "ma20_usd": NaN,
-    "ma50_usd": NaN,
-    "ma200_usd": NaN
+    "rsi": 53.23,
+    "ma20_usd": 932.5185,
+    "ma50_usd": 944.026,
+    "ma200_usd": 599.0497
   },
   "reasons": [
-    "Short-term technical/momentum view is weak.",
+    "Overall investment score is positive.",
+    "Short-term technical/momentum view is positive.",
     "Long-term semiconductor investment view is positive.",
     "Analyst recommendation is constructive.",
-    "Technical and momentum scores both indicate a weak price trend."
+    "Consensus target implies at least 10% upside.",
+    "Consensus analyst target is at least 10% above the current price."
   ],
   "disclaimer": "Advisory signal only. It may pre-fill Wealth Hub's Market / Thesis Gate but does not authorise or execute trades."
 }
