@@ -627,19 +627,10 @@ def validate_price_history(
             f"Market data for {ticker} has fewer than 2 rows."
         )
 
-    latest_raw_price = safe_number(
-        raw_close.iloc[-1]
-    )
-
-    if (
-        latest_raw_price is None
-        or latest_raw_price <= 0
-    ):
-        raise RuntimeError(
-            f"Latest Close for {ticker} is invalid: "
-            f"{raw_close.iloc[-1]!r}."
-        )
-
+    # yfinance can occasionally append an incomplete trailing row
+    # whose Close is NaN. Remove invalid Close rows first, then
+    # validate the latest usable observations. This prevents one
+    # incomplete row from invalidating an otherwise healthy history.
     valid_close_mask = raw_close.map(
         is_valid_price
     )
@@ -648,12 +639,40 @@ def validate_price_history(
         valid_close_mask
     ].copy()
 
+    removed_rows = (
+        len(history)
+        - len(cleaned_history)
+    )
+
+    if removed_rows:
+        trailing_invalid = 0
+
+        for value in reversed(
+            raw_close.tolist()
+        ):
+            if is_valid_price(value):
+                break
+
+            trailing_invalid += 1
+
+        print(
+            f"Removed {removed_rows} invalid historical "
+            f"price row(s) for {ticker} "
+            f"({trailing_invalid} trailing incomplete row(s))."
+        )
+
     if len(cleaned_history) < min_rows:
         raise RuntimeError(
             f"Only {len(cleaned_history)} valid price rows "
             f"were returned for {ticker}; "
             f"at least {min_rows} are required."
         )
+
+    latest_price = safe_number(
+        cleaned_history[
+            "Close"
+        ].iloc[-1]
+    )
 
     previous_price = safe_number(
         cleaned_history[
@@ -662,22 +681,19 @@ def validate_price_history(
     )
 
     if (
+        latest_price is None
+        or latest_price <= 0
+    ):
+        raise RuntimeError(
+            f"Latest valid Close for {ticker} is unusable."
+        )
+
+    if (
         previous_price is None
         or previous_price <= 0
     ):
         raise RuntimeError(
             f"Previous Close for {ticker} is invalid."
-        )
-
-    removed_rows = (
-        len(history)
-        - len(cleaned_history)
-    )
-
-    if removed_rows:
-        print(
-            f"Removed {removed_rows} invalid historical "
-            f"price row(s) for {ticker}."
         )
 
     return cleaned_history
