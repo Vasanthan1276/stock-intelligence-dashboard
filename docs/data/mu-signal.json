@@ -3,37 +3,37 @@
   "signal_method_version": "mu-wealth-gate-v1",
   "symbol": "MU",
   "company": "Micron Technology",
-  "generated_at": "2026-10-27T09:33:40.627137+08:00",
+  "generated_at": "2026-10-28T09:30:51.584088+08:00",
   "max_age_hours": 72,
   "source": "V Stock Intelligence",
   "source_url": "https://vasanthan1276.github.io/stock-intelligence-dashboard/micron/",
-  "sentiment": "positive",
-  "price_outlook": "up",
-  "thesis": "positive",
-  "gate_hint": "defer",
+  "sentiment": "neutral",
+  "price_outlook": "flat",
+  "thesis": "weak",
+  "gate_hint": "eligible",
   "price_usd": 903.7,
   "scores": {
-    "overall": 77,
+    "overall": 54,
     "short_term": 52,
-    "long_term": 88,
+    "long_term": 49,
     "technical": 43,
     "momentum": 70,
-    "fundamental": 95,
-    "valuation": 88,
-    "data_quality_pct": 100
+    "fundamental": 50,
+    "valuation": 50,
+    "data_quality_pct": 0
   },
   "ratings": {
-    "overall": "Buy",
+    "overall": "Hold",
     "short_term": "Hold",
-    "long_term": "Strong Buy"
+    "long_term": "Watch"
   },
   "analyst": {
-    "recommendation": "STRONG BUY",
-    "mean_target_usd": 1561.9111,
-    "high_target_usd": 3000.0,
-    "low_target_usd": 361.0,
-    "upside_pct": 72.84,
-    "opinion_count": 45
+    "recommendation": "N/A",
+    "mean_target_usd": null,
+    "high_target_usd": null,
+    "low_target_usd": null,
+    "upside_pct": null,
+    "opinion_count": null
   },
   "technical_context": {
     "rsi": 42.32,
@@ -42,11 +42,8 @@
     "ma200_usd": 734.9862
   },
   "reasons": [
-    "Overall investment score is positive.",
-    "Long-term semiconductor investment view is positive.",
-    "Analyst recommendation is constructive.",
-    "Consensus target implies at least 10% upside.",
-    "Consensus analyst target is at least 10% above the current price."
+    "Long-term semiconductor investment view is weak.",
+    "The available analyst and price-trend signals do not establish a strong directional bias."
   ],
   "disclaimer": "Advisory signal only. It may pre-fill Wealth Hub's Market / Thesis Gate but does not authorise or execute trades."
 }
