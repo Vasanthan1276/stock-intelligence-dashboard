@@ -6,6 +6,9 @@ on:
       - "prediction_market*.py"
       - "tests/test_prediction_market*.py"
       - "dashboard.py"
+      - "dashboard_design.py"
+      - "tests/test_dashboard_design.py"
+      - "docs/assets/**"
       - "scanner.py"
       - "watchlist.json"
       - "portfolio-universe.json"
@@ -28,3 +31,5 @@ jobs:
           python-version: "3.12"
       - name: Test normalization, failure states and integration isolation
         run: python -m unittest discover -s tests -p 'test_prediction_market*.py' -v
+      - name: Test dashboard design and old-layout preservation
+        run: python -m unittest discover -s tests -p 'test_dashboard_design.py' -v
