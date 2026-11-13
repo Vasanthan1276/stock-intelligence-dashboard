@@ -59,7 +59,7 @@ These screens are indicators for further review, not buy or sell instructions.
 
 A separate [Prediction Market Intelligence](https://vasanthan1276.github.io/stock-intelligence-dashboard/prediction-markets/) page reads public, read-only Kalshi and Polymarket records from [pdata.world](https://pdata.world/data), with CC BY 4.0 attribution. Each card shows **Related stocks**, **Why this matters**, a direct-company / sector-risk / macro-context label, the exact outcome, implied probability, 24-hour change in percentage points, source activity and timestamps.
 
-### Company and risk selection (shadow v2)
+### Company and risk selection (shadow v3)
 
 - Load company names and sectors from the literal `US_STOCKS` / `SINGAPORE_STOCKS` dictionaries in `scanner.py`, merge `portfolio-universe.json`, and prioritize `watchlist.json`. This does not import or run the stock scanner. Invalid configuration fails visibly.
 - Query the actual company names in batches of four, plus explicit rules for memory demand, AI infrastructure spending, chip trade restrictions, Taiwan supply disruption, US rates, US inflation/recession and energy supply. Rules only link companies present in the configured universe. These links are qualitative research assumptions, not measured exposures or portfolio weights.
@@ -67,6 +67,24 @@ A separate [Prediction Market Intelligence](https://vasanthan1276.github.io/stoc
 - Rank direct company developments before sector risks and macro context; within each level prioritize watchlist, then portfolio companies. Activity breaks ties by rank **within each venue**, not by comparing raw contracts with shares.
 - Show at most six cards per section, one outcome per venue/event, and two events per company or risk family. Suppress exact normalized duplicate event titles across venues. This is not semantic deduplication; similarly worded questions can still differ in their rules. Probabilities are never averaged or combined.
 - Show **No relevant market found** when the searched sample has no match. Company coverage separately reports direct matches, broader risk context, matches omitted by card limits, and incomplete searches. Failed requests are never presented as evidence of no coverage.
+
+### Stock implications and holding reviews
+
+Each card now separates **why the event matters**, **potential stock direction**, **if the selected outcome happens / does not happen**, **conditions for holding**, **conditions for a reduce/sell review**, and **what to verify next**. Buyer and takeover-target effects, bank and property rate effects, and cloud-operator and chip-supplier capex effects are handled separately. The first implication group is expanded, with the existing dashboard rating and review stance visible in the card.
+
+`prediction_market_impact.py` reads the latest existing `score-history.json` and MU advisory signal without modifying either. It never substitutes an older stock record if the company is missing from the latest snapshot. The current MU thesis, short/long-term ratings and Wealth Hub gate are shown as dated read-only context. The original scores and gate remain authoritative and unchanged.
+
+This is explicit conditional scenario analysis, **not a trained or backtested stock-return forecast**. A 70% event probability is not a 70% probability that the stock rises. Revenue thresholds must be compared with the matching fiscal period, units, company guidance and consensus; an above-negative-growth result can still represent declining sales. Acquisition odds do not establish offer value or completion. Price targets, position sizes, cost basis, tax and personal selling limits are not inferred.
+
+Review labels use disclosed operational rules, not new stock scores:
+
+- Missing/stale/future-dated context, data quality below 70%, less than 100 reported venue units of 24-hour activity, or a probability move greater than 25 percentage points produces **Insufficient evidence**. The freshness limit is 72 hours. These floors are conservative review heuristics, not guarantees of liquidity or accuracy; bid/ask spread and depth are unavailable.
+- An unmatched earnings benchmark or unclear causal direction produces **Wait for confirmation**, regardless of how high the event probability is.
+- A clearly adverse event at least 50% implied, or rising by at least 5 percentage points, prompts **Review downside exposure**, after evidence checks. This is not a sell instruction. A lower-probability adverse event remains a risk to monitor, not an automatic bullish signal.
+- A supportive scenario with at least 50% implied odds and an existing Buy/Strong Buy rating can support a **conditional hold case**. Mixed effects remain **Hold / monitor — conditional**. Existing Watch/Caution ratings remain flagged for review.
+- Every group states what company evidence would support holding or warrant a reduce/sell review. No trades, stock-price targets or Wealth Hub signal changes are produced.
+
+The research principles are linked on the page: [FINRA due diligence and consensus estimates](https://syndication.finra.org/content/stock-investing-and-due-diligence) and [prediction-market information limits](https://www.usbank.com/investing/financial-perspectives/market-news/prediction-markets-vs-investing.html). Scenario mappings and review thresholds are this module's disclosed assumptions, not recommendations endorsed by those sources.
 
 The current universe has 125 companies and produces 39 queries, capped at 60 results each. Searches are bounded samples sorted by activity, so an unreturned market may exist. Up to four requests run concurrently, with a 15-second timeout and one retry for transport failures. The report records its query plan, coverage and failures for review. Known ended, inactive, closed or invalid-probability records are rejected; unknown source timestamps are not proof of freshness. Source row updates may reflect derived fields rather than trades. Volume is activity, not order-book depth.
 
