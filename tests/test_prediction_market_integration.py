@@ -52,7 +52,7 @@ class PredictionMarketIntegrationTests(unittest.TestCase):
                 def fetch(_):
                     if fail:
                         raise OSError("offline")
-                    return [{"source": "kalshi", "id": "1", "question": "Will interest rates change?",
+                    return [{"source": "kalshi", "id": "1", "question": "Will the Federal Reserve cut interest rates?",
                              "probability": .4, "volume_24hr": 100}]
                 report = pm.build_report(fetch)
                 with patch.object(pm, "build_report", return_value=report), contextlib.redirect_stdout(io.StringIO()):
