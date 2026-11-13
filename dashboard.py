@@ -5836,6 +5836,10 @@ td {{
 
         <div class="nav">
 
+            <a href="prediction-markets/">
+                Prediction Market Intelligence →
+            </a>
+
             <a href="guide/">
                 How to Read This Dashboard →
             </a>
