@@ -55,6 +55,18 @@ The dashboard includes automated screens intended to help focus further research
 
 These screens are indicators for further review, not buy or sell instructions.
 
+## Prediction Market Intelligence (advisory shadow model)
+
+A separate [Prediction Market Intelligence](https://vasanthan1276.github.io/stock-intelligence-dashboard/prediction-markets/) page reads **public, read-only** event-contract data from [pdata.world](https://pdata.world/data), with attribution to pdata.world (CC BY 4.0). The page covers rates, inflation/recession, semiconductors/AI, and trade/Taiwan using Kalshi and Polymarket market-data records. It displays event question, source, current market-implied probability, 24-hour probability change in percentage points and source-reported activity, with a link to the originating pdata event. Event/outcome labels distinguish contracts with the same question; source row update and scheduled close times are shown when supplied. A row update can reflect derived fields rather than a recent trade.
+
+This is research context, **not** a fifth weighted component in the existing 0–100 stock scores. `SCORING_MODEL_VERSION` remains unchanged, and the Wealth Hub Micron advisory/gate signal remains untouched. There is no account setup, betting, trading, authentication or order placement.
+
+The scheduled GitHub workflow writes `docs/data/prediction-market-intelligence.json` and `docs/prediction-markets/index.html` after the stock dashboard generator finishes. If the external API is unavailable, the panel explicitly reports **unavailable** or **partial**; it never substitutes fabricated current odds. Search only samples the first page per curated query and is not exhaustive. Market-implied event probabilities are **not** probabilities of stock returns, and contract volumes are not interchangeable across venues.
+
+Pull requests run the offline test suite in a separate workflow with read-only repository permissions and no deployment steps.
+
+To test locally: `python -m unittest discover -s tests -p 'test_prediction_market*.py'`. To generate the page: `python prediction_market_intelligence.py` (requires network access to pdata.world, but produces an honest unavailable-state page if the feed cannot be accessed).
+
 ## Micron Technology Deep-Dive
 
 Micron receives a dedicated report in addition to its normal dashboard entry.
@@ -112,8 +124,9 @@ The workflow performs the following sequence:
 5. Validates the MU signal.
 6. Moves the Micron report to its dedicated page.
 7. Generates the main dashboard and individual stock pages.
-8. Validates critical generated artifacts.
-9. Commits and pushes updated files under `docs/` when changes exist.
+8. Tests and generates the separate prediction-market research page and JSON.
+9. Validates critical generated artifacts.
+10. Commits and pushes updated files under `docs/` when changes exist.
 
 ## Repository Structure
 
@@ -172,6 +185,7 @@ python -m pip install --upgrade pip
 pip install -r requirements.txt
 python main.py
 python dashboard.py
+python prediction_market_intelligence.py
 ```
 
 Generated website files are written under `docs/`.
