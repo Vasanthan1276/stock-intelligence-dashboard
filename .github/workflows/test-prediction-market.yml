@@ -1,0 +1,25 @@
+name: Test Prediction Market Intelligence
+
+on:
+  pull_request:
+    paths:
+      - "prediction_market_intelligence.py"
+      - "tests/test_prediction_market*.py"
+      - "dashboard.py"
+      - ".github/workflows/*"
+
+permissions:
+  contents: read
+
+jobs:
+  offline-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Test normalization, failure states and integration isolation
+        run: python -m unittest discover -s tests -p 'test_prediction_market*.py' -v
