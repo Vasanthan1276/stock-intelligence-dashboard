@@ -124,7 +124,7 @@ jobs:
           import json
           from pathlib import Path
           payload = json.loads(Path("docs/data/prediction-market-intelligence.json").read_text(encoding="utf-8"))
-          assert payload["model_version"] == "prediction-market-shadow-v1"
+          assert payload["model_version"] == "prediction-market-shadow-v2"
           assert payload["status"] in ("ok", "partial", "unavailable", "no_matches")
           assert Path("docs/prediction-markets/index.html").is_file()
           print("Prediction-market research artifacts validated:", payload["status"])
