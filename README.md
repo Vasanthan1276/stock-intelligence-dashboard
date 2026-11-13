@@ -57,15 +57,24 @@ These screens are indicators for further review, not buy or sell instructions.
 
 ## Prediction Market Intelligence (advisory shadow model)
 
-A separate [Prediction Market Intelligence](https://vasanthan1276.github.io/stock-intelligence-dashboard/prediction-markets/) page reads **public, read-only** event-contract data from [pdata.world](https://pdata.world/data), with attribution to pdata.world (CC BY 4.0). The page covers rates, inflation/recession, semiconductors/AI, and trade/Taiwan using Kalshi and Polymarket market-data records. It displays event question, source, current market-implied probability, 24-hour probability change in percentage points and source-reported activity, with a link to the originating pdata event. Event/outcome labels distinguish contracts with the same question; source row update and scheduled close times are shown when supplied. A row update can reflect derived fields rather than a recent trade.
+A separate [Prediction Market Intelligence](https://vasanthan1276.github.io/stock-intelligence-dashboard/prediction-markets/) page reads public, read-only Kalshi and Polymarket records from [pdata.world](https://pdata.world/data), with CC BY 4.0 attribution. Each card shows **Related stocks**, **Why this matters**, a direct-company / sector-risk / macro-context label, the exact outcome, implied probability, 24-hour change in percentage points, source activity and timestamps.
 
-This is research context, **not** a fifth weighted component in the existing 0–100 stock scores. `SCORING_MODEL_VERSION` remains unchanged, and the Wealth Hub Micron advisory/gate signal remains untouched. There is no account setup, betting, trading, authentication or order placement.
+### Company and risk selection (shadow v2)
 
-The scheduled GitHub workflow writes `docs/data/prediction-market-intelligence.json` and `docs/prediction-markets/index.html` after the stock dashboard generator finishes. If the external API is unavailable, the panel explicitly reports **unavailable** or **partial**; it never substitutes fabricated current odds. Search only samples the first page per curated query and is not exhaustive. Market-implied event probabilities are **not** probabilities of stock returns, and contract volumes are not interchangeable across venues.
+- Load company names and sectors from the literal `US_STOCKS` / `SINGAPORE_STOCKS` dictionaries in `scanner.py`, merge `portfolio-universe.json`, and prioritize `watchlist.json`. This does not import or run the stock scanner. Invalid configuration fails visibly.
+- Query the actual company names in batches of four, plus explicit rules for memory demand, AI infrastructure spending, chip trade restrictions, Taiwan supply disruption, US rates, US inflation/recession and energy supply. Rules only link companies present in the configured universe. These links are qualitative research assumptions, not measured exposures or portfolio weights.
+- Require a named company plus an operating/financial/regulatory cue, or both a risk subject and a relevant event. Exclude personal politics, CEO succession, earnings-call word-mention bets and stock-price-only contracts. Short unqualified tickers are not company aliases.
+- Rank direct company developments before sector risks and macro context; within each level prioritize watchlist, then portfolio companies. Activity breaks ties by rank **within each venue**, not by comparing raw contracts with shares.
+- Show at most six cards per section, one outcome per venue/event, and two events per company or risk family. Suppress exact normalized duplicate event titles across venues. This is not semantic deduplication; similarly worded questions can still differ in their rules. Probabilities are never averaged or combined.
+- Show **No relevant market found** when the searched sample has no match. Company coverage separately reports direct matches, broader risk context, matches omitted by card limits, and incomplete searches. Failed requests are never presented as evidence of no coverage.
 
-Pull requests run the offline test suite in a separate workflow with read-only repository permissions and no deployment steps.
+The current universe has 125 companies and produces 39 queries, capped at 60 results each. Searches are bounded samples sorted by activity, so an unreturned market may exist. Up to four requests run concurrently, with a 15-second timeout and one retry for transport failures. The report records its query plan, coverage and failures for review. Known ended, inactive, closed or invalid-probability records are rejected; unknown source timestamps are not proof of freshness. Source row updates may reflect derived fields rather than trades. Volume is activity, not order-book depth.
 
-To test locally: `python -m unittest discover -s tests -p 'test_prediction_market*.py'`. To generate the page: `python prediction_market_intelligence.py` (requires network access to pdata.world, but produces an honest unavailable-state page if the feed cannot be accessed).
+This is research context, **not** a fifth weighted component in the existing 0–100 stock scores. `SCORING_MODEL_VERSION`, the Micron analysis and Wealth Hub advisory/gate signal remain unchanged. There is no account setup, betting, trading, authentication or order placement. Event probabilities are **not** probabilities of stock returns.
+
+The scheduled GitHub workflow writes only `docs/data/prediction-market-intelligence.json` and `docs/prediction-markets/index.html` for this module, after the original stock dashboard generator. An API outage produces an explicit unavailable/partial panel without fabricated odds. Pull requests run offline tests with read-only repository permissions and no deployment steps.
+
+To test locally: `python -m unittest discover -s tests -p 'test_prediction_market*.py'`. To generate the page: `python prediction_market_intelligence.py` (requires network access to pdata.world).
 
 ## Micron Technology Deep-Dive
 
