@@ -1,16 +1,14 @@
 {
   "model_version": "prediction-market-shadow-v2",
-  "status": "partial",
-  "fetched_at_utc": "2026-11-13T07:32:30+00:00",
+  "status": "ok",
+  "fetched_at_utc": "2026-11-13T07:41:05+00:00",
   "attribution": "pdata.world (CC BY 4.0); underlying venue terms also apply",
   "sources": [
     "kalshi",
     "polymarket"
   ],
-  "successful_queries": 38,
-  "failed_queries": [
-    "\"data center\" or \"AI spending\" or \"AI capex\": HTTPError"
-  ],
+  "successful_queries": 39,
+  "failed_queries": [],
   "query_plan": [
     {
       "query": "\"AMD\" or \"Advanced Micro Devices\" or \"DBS\" or \"DBS Group\" or \"JPMorgan\" or \"JP Morgan\" or \"JPMorgan Chase\" or \"Micron\"",
@@ -337,7 +335,7 @@
       "kind": "memory_demand"
     },
     {
-      "query": "\"data center\" or \"AI spending\" or \"AI capex\"",
+      "query": "\"AI spending\" or \"AI capex\" or \"data center spending\"",
       "tickers": [
         "MU",
         "NVDA",
@@ -579,7 +577,7 @@
       "direct_matches": 0,
       "relevant_matches": 9,
       "displayed_matches": 4,
-      "search_incomplete": true
+      "search_incomplete": false
     },
     {
       "ticker": "D05.SI",
@@ -609,7 +607,7 @@
       "direct_matches": 9,
       "relevant_matches": 18,
       "displayed_matches": 6,
-      "search_incomplete": true
+      "search_incomplete": false
     },
     {
       "ticker": "NVDA",
@@ -619,7 +617,7 @@
       "direct_matches": 1,
       "relevant_matches": 10,
       "displayed_matches": 5,
-      "search_incomplete": true
+      "search_incomplete": false
     },
     {
       "ticker": "U11.SI",
@@ -799,7 +797,7 @@
       "direct_matches": 0,
       "relevant_matches": 9,
       "displayed_matches": 4,
-      "search_incomplete": true
+      "search_incomplete": false
     },
     {
       "ticker": "LULU",
@@ -1079,7 +1077,7 @@
       "direct_matches": 0,
       "relevant_matches": 9,
       "displayed_matches": 4,
-      "search_incomplete": true
+      "search_incomplete": false
     },
     {
       "ticker": "AMZN",
@@ -1089,7 +1087,7 @@
       "direct_matches": 1,
       "relevant_matches": 5,
       "displayed_matches": 2,
-      "search_incomplete": true
+      "search_incomplete": false
     },
     {
       "ticker": "ASML",
@@ -1099,7 +1097,7 @@
       "direct_matches": 0,
       "relevant_matches": 9,
       "displayed_matches": 4,
-      "search_incomplete": true
+      "search_incomplete": false
     },
     {
       "ticker": "AVGO",
@@ -1109,7 +1107,7 @@
       "direct_matches": 0,
       "relevant_matches": 9,
       "displayed_matches": 4,
-      "search_incomplete": true
+      "search_incomplete": false
     },
     {
       "ticker": "AXP",
@@ -1329,7 +1327,7 @@
       "direct_matches": 1,
       "relevant_matches": 5,
       "displayed_matches": 2,
-      "search_incomplete": true
+      "search_incomplete": false
     },
     {
       "ticker": "GS",
@@ -1419,7 +1417,7 @@
       "direct_matches": 0,
       "relevant_matches": 9,
       "displayed_matches": 4,
-      "search_incomplete": true
+      "search_incomplete": false
     },
     {
       "ticker": "KO",
@@ -1519,7 +1517,7 @@
       "direct_matches": 1,
       "relevant_matches": 5,
       "displayed_matches": 2,
-      "search_incomplete": true
+      "search_incomplete": false
     },
     {
       "ticker": "N2IU.SI",
@@ -1569,7 +1567,7 @@
       "direct_matches": 0,
       "relevant_matches": 4,
       "displayed_matches": 2,
-      "search_incomplete": true
+      "search_incomplete": false
     },
     {
       "ticker": "PG",
@@ -1699,7 +1697,7 @@
       "direct_matches": 0,
       "relevant_matches": 9,
       "displayed_matches": 4,
-      "search_incomplete": true
+      "search_incomplete": false
     },
     {
       "ticker": "TXN",
@@ -2319,11 +2317,11 @@
           "title": "Will the Fed decrease interest rates by 25 bps after the December 2026 meeting?",
           "event_title": "Fed Decision in December?",
           "outcome": "25 bps decrease",
-          "source_updated_at": "2026-11-13T07:11:35.029919Z",
+          "source_updated_at": "2026-11-13T07:37:12.330163Z",
           "end_date": "2026-12-09T23:59:00Z",
           "probability": 0.0045,
           "change_24h": 0.001,
-          "volume_24hr": 1315385.8089440002,
+          "volume_24hr": 1315385.7689440001,
           "url": "https://pdata.world/events/polymarket/770450",
           "section": "Macro conditions",
           "relevance": "Macro context",
@@ -2467,7 +2465,7 @@
           "title": "US recession by end of 2026?",
           "event_title": "US recession by end of 2026?",
           "outcome": "",
-          "source_updated_at": "2026-11-13T07:10:59.496015Z",
+          "source_updated_at": "2026-11-13T07:36:31.912619Z",
           "end_date": "2027-01-31T00:00:00Z",
           "probability": 0.0225,
           "change_24h": 0.001,
