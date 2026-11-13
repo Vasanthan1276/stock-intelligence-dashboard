@@ -168,6 +168,12 @@ jobs:
           )
           PY
 
+      - name: Test dashboard presentation and classic fallback (offline)
+        run: python -m unittest discover -s tests -p 'test_dashboard_design.py' -v
+
+      - name: Publish refreshed Overview, prediction page and Old Dashboard
+        run: python dashboard_design.py
+
       - name: Commit updated dashboards and signals
         run: |
           git config user.name "github-actions[bot]"
