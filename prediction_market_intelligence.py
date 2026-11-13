@@ -96,7 +96,7 @@ RISK_RULES = (
      r"\b(HBM|DRAM|NAND|memory chips?)\b", r"\b(demand|supply|shortage|prices?|production|capacity|spending)\b",
      lambda c: c["ticker"] == "MU",
      "Memory demand, supply or pricing is relevant to Micron's memory business; this does not estimate its earnings impact."),
-    ("ai_spending", "Sector & supply-chain risks", '"data center" or "AI spending" or "AI capex"',
+    ("ai_spending", "Sector & supply-chain risks", '"AI spending" or "AI capex" or "data center spending"',
      r"\b(AI|artificial intelligence|data cent(?:er|re)s?)\b", r"\b(spending|capex|capital expenditure|investment|demand|capacity)\b",
      lambda c: c["ticker"] in {"MU", "NVDA", "AMD", "AVGO", "TSM", "MSFT", "AMZN", "GOOGL", "ORCL", "AMAT", "LRCX", "KLAC", "ASML"},
      "AI infrastructure spending can affect demand for chips and equipment and the capital needs of cloud operators. Direction and size vary by company."),
