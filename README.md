@@ -230,3 +230,20 @@ Always perform additional research before making an investment decision.
 ## Status
 
 The project is actively maintained as a personal stock-intelligence and portfolio-research system, with particular emphasis on Micron Technology and the user's broader US and Singapore investment universe.
+
+## Overview and Old Dashboard layouts
+
+The default page now uses the compact Overview design. Navigation is **Overview → Prediction Markets → Micron Report → Guide → Old Dashboard**. `docs/classic/index.html` retains the original full dashboard, filters, opportunity screens and stock/report links; its return bar opens the new Overview. Both layouts receive the same scheduled stock scan. The link switches layouts; it does not roll back data or scoring.
+
+`dashboard_design.py` is a presentation-only final publishing pass. It reads the generated dashboard, saved score history, MU signal and prediction report; it writes only the Overview, prediction HTML and classic HTML. `docs/assets/dashboard.css` and `dashboard.js` provide the responsive design and local filters. Existing scanner, scoring, Micron generation, prediction relevance/impact rules, schedules and JSON schemas are unchanged.
+
+The scheduled workflow still runs the original stock and prediction generators first, then runs `python dashboard_design.py`. This preserves the fresh original dashboard before replacing the default page with Overview. Re-running the presentation pass is idempotent and cannot archive the redesigned page as the old layout. Missing prediction data is shown explicitly; invalid stock history stops the pass without replacing existing pages.
+
+To regenerate the design from saved data without a market refresh:
+
+```bash
+python dashboard_design.py
+python -m unittest discover -s tests -p 'test_*.py' -v
+```
+
+To restore the original layout as the default in a future change, remove the final presentation step and run the existing generation workflow. No scoring or signal migration is required.
