@@ -18,10 +18,12 @@ from pathlib import Path
 from urllib.parse import quote, urlencode
 from urllib.request import Request, urlopen
 
+from prediction_market_impact import enrich_report, render_impact
+
 API_URL = "https://api.pdata.world/api/v1/markets"
 DATA_PATH = Path("docs/data/prediction-market-intelligence.json")
 PAGE_PATH = Path("docs/prediction-markets/index.html")
-MODEL_VERSION = "prediction-market-shadow-v2"
+MODEL_VERSION = "prediction-market-shadow-v3"
 ROOT = Path(__file__).resolve().parent
 ALLOWED_SOURCES = {"kalshi", "polymarket"}
 PAGE_SIZE = 60
@@ -354,7 +356,7 @@ def build_report(fetcher=fetch_markets, now=None, companies=None):
     successes = len(plan) - len(errors)
     status = ("unavailable" if successes == 0 else "partial" if errors else
               "ok" if shown else "no_matches")
-    return {
+    report = {
         "model_version": MODEL_VERSION, "status": status,
         "fetched_at_utc": now.isoformat(timespec="seconds"),
         "attribution": "pdata.world (CC BY 4.0); underlying venue terms also apply",
@@ -364,6 +366,7 @@ def build_report(fetcher=fetch_markets, now=None, companies=None):
         "interpretation": "Qualitative company and risk links only; not calibrated stock-return forecasts, stock ratings, or trading advice.",
         "topics": topics,
     }
+    return enrich_report(report, companies, ROOT, now)
 
 
 def fmt_probability(value):
@@ -376,6 +379,24 @@ def fmt_delta(value):
 
 def fmt_volume(value):
     return "—" if value is None else f"{value:,.0f}"
+
+
+def impact_context_html(report):
+    esc = lambda value: html.escape(str(value), quote=True)
+    method = report.get("impact_method", {})
+    mu = report.get("existing_mu_advisory")
+    context = f'<p class="note">Existing dashboard scores as of {esc(method.get("stock_snapshot_at") or "Unavailable")}. Scenario analysis prepared {esc(method.get("analyzed_at_utc") or "Unknown")}.</p>'
+    if mu:
+        status = "current" if mu["fresh"] else "stale / unverified"
+        context += (f'<div class="intro"><strong>Existing Micron / Wealth Hub context</strong><br>'
+                    f'Long-term rating: {esc(mu["long_term_rating"])} · Short-term: {esc(mu["short_term_rating"])} · '
+                    f'Thesis: {esc(mu["thesis"])} · Existing gate hint: {esc(mu["gate_hint"])}.<br>'
+                    f'<span class="meta">As of {esc(mu["as_of"])} · {status}. Read-only reference; the prediction panel does not change this signal.</span></div>')
+    if method.get("context_errors"):
+        context += '<div class="warning">' + esc(' '.join(method["context_errors"])) + '</div>'
+    links = ' · '.join(f'<a href="{esc(s["url"])}" target="_blank" rel="noopener noreferrer">{esc(s["label"])}</a>' for s in method.get("sources", []))
+    context += '<details><summary>How to read the stock implications</summary><p class="note">Each group separates the event scenario, possible business effect and conditions for holding or reviewing a reduction. Existing scores are read unchanged. Event odds do not measure share-price upside or downside. A threshold result needs a matching expectations benchmark.</p><p class="note">Research principles: ' + links + '</p></details>'
+    return context
 
 
 def render_html(report):
@@ -423,7 +444,7 @@ def render_html(report):
                 f'<div class="meta">24h volume: {esc(fmt_volume(m["volume_24hr"]))} {units}</div>'
                 f'<div class="meta">Source row updated: {esc(m["source_updated_at"] or "Unknown")}</div>'
                 f'<div class="meta">Scheduled close: {esc(m["end_date"] or "Unknown")}</div>'
-                '</article>'
+                + render_impact(m) + '</article>'
             )
         empty = "Search incomplete: no relevant market retrieved." if report["failed_queries"] else "No relevant market found in the searched sample."
         cards_html = '\n'.join(cards) if cards else f'<p class="empty">{empty}</p>'
@@ -441,19 +462,23 @@ def render_html(report):
 :root{{color-scheme:dark}} *{{box-sizing:border-box}} body{{margin:0;background:#07111f;color:#edf4ff;font-family:Arial,Helvetica,sans-serif;line-height:1.5}}
 main{{width:min(1150px,94%);margin:30px auto 70px}} a{{color:#67b8fa}} h1{{font-size:30px;margin-bottom:3px}} h2{{font-size:20px;margin:28px 0 12px}}
 .subtitle,.meta,.note{{color:#98acc9;font-size:13px}} .intro,.warning{{background:#111e31;border:1px solid #29415e;border-radius:14px;padding:18px;margin:18px 0}}
-.warning{{border-color:#c59b57}} .cards{{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}}
+.warning{{border-color:#c59b57}} .cards{{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}}
 .market{{background:#111e31;border:1px solid #263c5b;border-radius:12px;padding:17px;min-height:172px;overflow-wrap:anywhere}} .market a{{display:block;font-weight:700;margin:9px 0;line-height:1.35;text-decoration:none}}
 .stats{{display:flex;gap:12px;flex-wrap:wrap;margin:13px 0 8px;font-size:13px}} .stats b{{font-size:21px}} .up{{color:#51e0a0}} .down{{color:#ff8797}} .flat{{color:#a0b5d0}} .empty{{font-size:13px;color:#8ea9c9}}
-.related,.reason{{font-size:13px;margin:14px 0}} .reason{{color:#bdcce0}} .badge{{display:inline-block;padding:3px 7px;margin:4px 4px 0 0;background:#19334e;border-radius:5px;color:#b9ddff;font-size:12px}} details{{margin:10px 0}} summary{{cursor:pointer;color:#67b8fa;font-size:13px}} table{{width:100%;border-collapse:collapse;font-size:13px}} th,td{{text-align:left;padding:10px;border-bottom:1px solid #263c5b;vertical-align:top}} th{{color:#98acc9}} td:first-child{{width:32%}}
+.related,.reason{{font-size:13px;margin:14px 0}} .reason{{color:#e2ecfa;font-size:14px}} .badge{{display:inline-block;padding:3px 7px;margin:4px 4px 0 0;background:#19334e;border-radius:5px;color:#b9ddff;font-size:12px}} details{{margin:10px 0}} summary{{cursor:pointer;color:#67b8fa;font-size:13px}} table{{width:100%;border-collapse:collapse;font-size:13px}} th,td{{text-align:left;padding:10px;border-bottom:1px solid #263c5b;vertical-align:top}} th{{color:#98acc9}} td:first-child{{width:32%}}
+
+.impact-panel{{border-top:1px solid #365577;margin-top:18px;padding-top:12px}} .impact-panel h3{{font-size:17px;margin:0 0 10px;color:#d8ecff}} .impact-panel p,.impact-scenarios{{font-size:14px}} .impact-group>summary{{font-size:14px;font-weight:bold;color:#c3e2ff;padding:8px 0}} .impact-scenarios dt{{font-weight:bold;color:#b9ddff;margin-top:12px}} .impact-scenarios dd{{margin:4px 0 0;color:#edf4ff}} .impact-warning{{border-left:3px solid #c59b57;background:#272333;padding:10px 12px;font-size:13px;margin:12px 0}} .impact-warning ul{{padding-left:18px;margin:6px 0 0}} .impact-table{{font-size:12px}} .impact-table th,.impact-table td{{padding:8px 5px}} .impact-table td:first-child{{width:13%}} .impact-table td:nth-child(2){{width:35%}} .impact-table .meta{{font-size:12px}} .probability-note{{color:#b6cde7}} .method-note{{font-size:13px;color:#b6cde7}}
 @media(max-width:900px){{.cards{{grid-template-columns:repeat(2,minmax(0,1fr))}}}}@media(max-width:650px){{.cards{{grid-template-columns:1fr}}h1{{font-size:25px}}}}
 </style></head><body><main>
 <a href="../">← Back to V Stock Intelligence</a>
-<h1>Prediction Market Intelligence</h1><div class="subtitle">Company &amp; business-risk relevance · Shadow model v2 · {esc(report["status"])}</div>
+<h1>Prediction Market Intelligence</h1><div class="subtitle">Company &amp; business-risk relevance · Shadow model v3 · {esc(report["status"])}</div>
 <div class="intro">Data: <a href="https://pdata.world/" target="_blank" rel="noopener noreferrer">pdata.world</a> (CC BY 4.0), aggregating Kalshi and Polymarket. Fetched: {esc(report["fetched_at_utc"])}. These are event-contract implied probabilities, <strong>not</strong> probabilities of a stock rising. No positions or bets are placed. Existing stock scores are unchanged.</div>
 {warning}
+{impact_context_html(report)}
 <p class="note">Selection: company developments first, then sector risks, then macro context. Watchlist companies have priority, followed by portfolio companies. Each event appears once; no more than two events per company or risk family. Related stocks are qualitative research links, not measured exposure.</p>
 {''.join(sections)}
 {coverage_html}
+<p class="method-note">Review labels are conditional prompts, not orders or calibrated return forecasts. Freshness limit: 72 hours; dashboard data-quality floor: 70%; activity floor: 100 venue units. Adverse-event review flags use 50% implied odds or a +5 percentage-point change, after evidence checks. Moves over 25 percentage points require history verification. These are transparent review rules, not backtested trading thresholds. Position size, cost basis, tax and personal sale limits are not available here.</p>
 <p class="note">Source row timestamps are supplied by pdata and may reflect derived-field updates, not the time of the last trade. Unknown timestamps do not establish freshness. Volume is activity, not order-book depth; inspect the linked event's rules and liquidity before interpreting a price.</p>
 <p class="note">Searches use the configured company names plus explicit business-risk rules, with up to {report["sample_limit_per_query"]} results per query; coverage is not exhaustive. Personal politics, CEO succession, word-mention bets and stock-price-only questions are excluded. Relevance ranks before within-venue activity. One representative outcome is shown per event; exact duplicate event titles across venues are suppressed, but semantic duplicates may remain. A 24-hour change is shown in percentage points. Volumes are contracts (Kalshi) or shares (Polymarket), not interchangeable liquidity. Do not combine or average probabilities. Refresh occurs only when the GitHub workflow runs.</p>
 </main></body></html>'''
