@@ -3,28 +3,28 @@
   "signal_method_version": "mu-wealth-gate-v1",
   "symbol": "MU",
   "company": "Micron Technology",
-  "generated_at": "2026-11-16T10:17:58.593847+08:00",
+  "generated_at": "2026-11-17T12:40:17.298369+08:00",
   "max_age_hours": 72,
   "source": "V Stock Intelligence",
   "source_url": "https://vasanthan1276.github.io/stock-intelligence-dashboard/micron/",
   "sentiment": "positive",
   "price_outlook": "up",
-  "thesis": "positive",
+  "thesis": "neutral",
   "gate_hint": "defer",
-  "price_usd": 778.31,
+  "price_usd": 719.02,
   "scores": {
-    "overall": 70,
-    "short_term": 45,
-    "long_term": 89,
-    "technical": 50,
-    "momentum": 36,
+    "overall": 63,
+    "short_term": 23,
+    "long_term": 86,
+    "technical": 18,
+    "momentum": 32,
     "fundamental": 95,
     "valuation": 88,
     "data_quality_pct": 100
   },
   "ratings": {
-    "overall": "Buy",
-    "short_term": "Watch",
+    "overall": "Hold",
+    "short_term": "Caution",
     "long_term": "Strong Buy"
   },
   "analyst": {
@@ -32,17 +32,16 @@
     "mean_target_usd": 1561.9111,
     "high_target_usd": 3000.0,
     "low_target_usd": 361.0,
-    "upside_pct": 100.68,
+    "upside_pct": 117.23,
     "opinion_count": 45
   },
   "technical_context": {
-    "rsi": 42.45,
-    "ma20_usd": 838.0,
-    "ma50_usd": 943.7766,
-    "ma200_usd": 765.6065
+    "rsi": 38.01,
+    "ma20_usd": 828.706,
+    "ma50_usd": 937.8252,
+    "ma200_usd": 767.1272
   },
   "reasons": [
-    "Overall investment score is positive.",
     "Short-term technical/momentum view is weak.",
     "Long-term semiconductor investment view is positive.",
     "Analyst recommendation is constructive.",
